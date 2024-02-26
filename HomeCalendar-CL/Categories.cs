@@ -226,8 +226,15 @@ namespace Calendar
         /// <exception cref="ArgumentOutOfRangeException">If the Id passed is not in the existing range of the list.</exception>
         public void Delete(int Id)
         {
-            int i = _Categories.FindIndex(x => x.Id == Id);
-            _Categories.RemoveAt(i);
+            try
+            {
+                int i = _Categories.FindIndex(x => x.Id == Id);
+                _Categories.RemoveAt(i);
+
+            } catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
         }
 
         // ====================================================================
