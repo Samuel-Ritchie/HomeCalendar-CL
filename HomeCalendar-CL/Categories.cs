@@ -282,8 +282,11 @@ namespace Calendar
                         case "event":
                             type = Category.CategoryType.Event;
                             break;
-                        case "allday":
+                        case "alldayevent":
                             type = Category.CategoryType.AllDayEvent;
+                            break;
+                        case "availability":
+                            type = Category.CategoryType.Availability;
                             break;
                         case "holiday":
                             type = Category.CategoryType.Holiday;

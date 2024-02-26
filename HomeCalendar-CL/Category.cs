@@ -51,6 +51,8 @@ namespace Calendar
             /// An event that lasts all day.
             /// </summary>
             AllDayEvent,
+            //tests
+            Availability,
             /// <summary>
             /// A special holiday, can last several days (maybe).
             /// </summary>
