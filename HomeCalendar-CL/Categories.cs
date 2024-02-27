@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.IO;
 using System.Xml;
+using System.Data.SQLite;
 
 // ============================================================================
 // (c) Sandy Bultena 2018
@@ -45,9 +46,14 @@ namespace Calendar
         /// <summary>
         /// Sets the Categories List in the Categories Class with default Categories.
         /// </summary>
-        public Categories()
+        public Categories(SQLiteConnection connection = null, bool isnewDb = false)
         {
-            SetCategoriesToDefaults();
+            if (connection != null && isnewDb)
+                SetCategoriesToDefaults(); // change
+            else if (connection != null && !isnewDb)
+                SetCategoriesToDefaults(); // change
+            else
+                SetCategoriesToDefaults();
         }
 
         // ====================================================================
@@ -213,6 +219,11 @@ namespace Calendar
                 new_num++;
             }
             _Categories.Add(new Category(new_num, desc, type));
+        }
+
+        public void UpdateProperties(int a, string b, Category.CategoryType c)
+        {
+
         }
 
         // ====================================================================
