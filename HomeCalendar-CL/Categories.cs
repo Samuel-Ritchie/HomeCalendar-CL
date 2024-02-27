@@ -49,13 +49,13 @@ namespace Calendar
         public Categories(SQLiteConnection connection = null, bool isnewDb = false)
         {
             if (connection != null && isnewDb)
-                SetCategoriesToDefaults(); // change
+                SetCategoriesFromDB(connection);
             else if (connection != null && !isnewDb)
-                SetCategoriesToDefaults(); // change
+                SetCategoriesFromDB(connection);
             else
                 SetCategoriesToDefaults();
         }
-
+        
         // ====================================================================
         // get a specific category from the list where the id is the one specified
         // ====================================================================
@@ -192,6 +192,17 @@ namespace Calendar
             Add("Travel days", Category.CategoryType.AllDayEvent);
             Add("Canadian Holidays", Category.CategoryType.Holiday);
             Add("US Holidays", Category.CategoryType.Holiday);
+        }
+
+        public void SetCategoriesFromDB(SQLiteConnection connection)
+        {
+            var cmd = new SQLiteCommand("Select * from categories", connection);
+            SQLiteDataReader categoriesToAdd = cmd.ExecuteReader();
+            while (categoriesToAdd.Read())
+            {
+                //_Categories.Add();
+                Add(Convert.ToString(categoriesToAdd["Description"]), Category.CategoryType.Event);
+            }
         }
 
         // ====================================================================
