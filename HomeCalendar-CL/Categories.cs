@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.IO;
 using System.Xml;
+using System.Data.SQLite;
 
 // ============================================================================
 // (c) Sandy Bultena 2018
@@ -45,11 +46,16 @@ namespace Calendar
         /// <summary>
         /// Sets the Categories List in the Categories Class with default Categories.
         /// </summary>
-        public Categories()
+        public Categories(SQLiteConnection connection = null, bool isnewDb = false)
         {
-            SetCategoriesToDefaults();
+            if (connection != null && isnewDb)
+                SetCategoriesFromDB(connection);
+            else if (connection != null && !isnewDb)
+                SetCategoriesFromDB(connection);
+            else
+                SetCategoriesToDefaults();
         }
-
+        
         // ====================================================================
         // get a specific category from the list where the id is the one specified
         // ====================================================================
@@ -177,15 +183,26 @@ namespace Calendar
             // ---------------------------------------------------------------
             // Add Defaults
             // ---------------------------------------------------------------
-            Add("School", Category.CategoryType.Event);
-            Add("Personal", Category.CategoryType.Event);
-            Add("VideoGames", Category.CategoryType.Event);
-            Add("Medical", Category.CategoryType.Event);
-            Add("Sleep", Category.CategoryType.Event);
-            Add("Vacation", Category.CategoryType.AllDayEvent);
-            Add("Travel days", Category.CategoryType.AllDayEvent);
-            Add("Canadian Holidays", Category.CategoryType.Holiday);
-            Add("US Holidays", Category.CategoryType.Holiday);
+            //Add("School", Category.CategoryType.Event);
+            //Add("Personal", Category.CategoryType.Event);
+            //Add("VideoGames", Category.CategoryType.Event);
+            //Add("Medical", Category.CategoryType.Event);
+            //Add("Sleep", Category.CategoryType.Event);
+            //Add("Vacation", Category.CategoryType.AllDayEvent);
+            //Add("Travel days", Category.CategoryType.AllDayEvent);
+            //Add("Canadian Holidays", Category.CategoryType.Holiday);
+            //Add("US Holidays", Category.CategoryType.Holiday);
+        }
+
+        public void SetCategoriesFromDB(SQLiteConnection connection)
+        {
+            var cmd = new SQLiteCommand("Select * from categories", connection);
+            SQLiteDataReader categoriesToAdd = cmd.ExecuteReader();
+            while (categoriesToAdd.Read())
+            {
+                //_Categories.Add();
+                Add(Convert.ToString(categoriesToAdd["Description"]), Category.CategoryType.Event);
+            }
         }
 
         // ====================================================================
@@ -213,6 +230,11 @@ namespace Calendar
                 new_num++;
             }
             _Categories.Add(new Category(new_num, desc, type));
+        }
+
+        public void UpdateProperties(int id, string desc, Category.CategoryType categoryType)
+        {
+            _Categories[_Categories.FindIndex(x => x.Id == id)] = new Category(id, desc, categoryType);
         }
 
         // ====================================================================

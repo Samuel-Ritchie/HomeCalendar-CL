@@ -28,15 +28,24 @@ namespace Calendar
         /// <summary>
         /// Gets Id of Category Object.
         /// </summary>
-        public int Id { get; set; }
+        public int Id 
+        { 
+            get;
+        }
         /// <summary>
         /// Gets Description of Category Object.
         /// </summary>
-        public String Description { get; set; }
+        public String Description 
+        { 
+            get;
+        }
         /// <summary>
         /// Gets the Type of a Category Object.
         /// </summary>
-        public CategoryType Type { get; set; }
+        public CategoryType Type 
+        { 
+            get;
+        }
         /// <summary>
         /// Defines the three Types of Categories there can be.
         /// </summary>
