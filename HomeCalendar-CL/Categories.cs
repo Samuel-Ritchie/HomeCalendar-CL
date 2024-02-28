@@ -12,12 +12,7 @@ using System.Data.SQLite;
 
 namespace Calendar
 {
-    // ====================================================================
-    // CLASS: categories
-    //        - A collection of category items,
-    //        - Read / write to file
-    //        - etc
-    // ====================================================================
+
     /// <summary>
     /// Holds a list of Category Objects, and File location info corresponding to a Categories File.
     /// </summary>
@@ -76,12 +71,6 @@ namespace Calendar
             return c;
         }
 
-        // ====================================================================
-        // populate categories from a file
-        // if filepath is not specified, read/save in AppData file
-        // Throws System.IO.FileNotFoundException if file does not exist
-        // Throws System.Exception if cannot read the file correctly (parsing XML)
-        // ====================================================================
         /// <summary>
         /// Sets/Updates the list of Category Objects using default values, or data from a Categories file.
         /// Clears the old list of Category Objects, along with the file name and path.
@@ -121,10 +110,6 @@ namespace Calendar
             _FileName = Path.GetFileName(filepath);
         }
 
-        // ====================================================================
-        // save to a file
-        // if filepath is not specified, read/save in AppData file
-        // ====================================================================
         /// <summary>
         /// Saves Categories list of Category Objects data to a file in the XML Format.
         /// Creates a file name and chooses a path if the values are previously null.
@@ -167,9 +152,6 @@ namespace Calendar
             _FileName = Path.GetFileName(filepath);
         }
 
-        // ====================================================================
-        // set categories to default
-        // ====================================================================
         /// <summary>
         /// Sets the Categories List of Category Objects to an assortment of Default Categories.
         /// </summary>
@@ -237,9 +219,6 @@ namespace Calendar
             _Categories[_Categories.FindIndex(x => x.Id == id)] = new Category(id, desc, categoryType);
         }
 
-        // ====================================================================
-        // Delete category
-        // ====================================================================
         /// <summary>
         /// Removes an existing Category Object from the Categories List in the Categories Class.
         /// Takes in an ID number that determines which event to remove.

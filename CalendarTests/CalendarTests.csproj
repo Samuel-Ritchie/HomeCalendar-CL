@@ -26,4 +26,16 @@
     <ProjectReference Include="..\HomeCalendar-CL\HomeCalendar-CL.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="sqldiff.exe">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="sqlite3.exe">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="sqlite3_analyzer.exe">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>
