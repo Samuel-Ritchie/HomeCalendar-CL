@@ -183,15 +183,15 @@ namespace Calendar
             // ---------------------------------------------------------------
             // Add Defaults
             // ---------------------------------------------------------------
-            Add("School", Category.CategoryType.Event);
-            Add("Personal", Category.CategoryType.Event);
-            Add("VideoGames", Category.CategoryType.Event);
-            Add("Medical", Category.CategoryType.Event);
-            Add("Sleep", Category.CategoryType.Event);
-            Add("Vacation", Category.CategoryType.AllDayEvent);
-            Add("Travel days", Category.CategoryType.AllDayEvent);
-            Add("Canadian Holidays", Category.CategoryType.Holiday);
-            Add("US Holidays", Category.CategoryType.Holiday);
+            //Add("School", Category.CategoryType.Event);
+            //Add("Personal", Category.CategoryType.Event);
+            //Add("VideoGames", Category.CategoryType.Event);
+            //Add("Medical", Category.CategoryType.Event);
+            //Add("Sleep", Category.CategoryType.Event);
+            //Add("Vacation", Category.CategoryType.AllDayEvent);
+            //Add("Travel days", Category.CategoryType.AllDayEvent);
+            //Add("Canadian Holidays", Category.CategoryType.Holiday);
+            //Add("US Holidays", Category.CategoryType.Holiday);
         }
 
         public void SetCategoriesFromDB(SQLiteConnection connection)
@@ -232,9 +232,9 @@ namespace Calendar
             _Categories.Add(new Category(new_num, desc, type));
         }
 
-        public void UpdateProperties(int a, string b, Category.CategoryType c)
+        public void UpdateProperties(int id, string desc, Category.CategoryType categoryType)
         {
-
+            _Categories[_Categories.FindIndex(x => x.Id == id)] = new Category(id, desc, categoryType);
         }
 
         // ====================================================================
