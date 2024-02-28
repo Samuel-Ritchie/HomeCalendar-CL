@@ -302,7 +302,7 @@ namespace Calendar
                     ele.AppendChild(d);
                     d.AppendChild(dText);
 
-                    XmlElement de = doc.CreateElement("Items");
+                    XmlElement de = doc.CreateElement("Details");
                     XmlText deText = doc.CreateTextNode(exp.Details);
                     ele.AppendChild(de);
                     de.AppendChild(deText);

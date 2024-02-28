@@ -251,7 +251,7 @@ namespace CalendarCodeTests
             SQLiteConnection conn = Database.dbConnection;
             Categories categories = new Categories(conn, true);
             String newDescr = "Shopping";
-            int id = 11;
+            int id = 11; //cHANGE FOR IT TO FUNCTION
 
             // Act
             categories.UpdateProperties(id,newDescr, Category.CategoryType.Event);

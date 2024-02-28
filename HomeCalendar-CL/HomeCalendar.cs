@@ -88,11 +88,6 @@ namespace Calendar
         /// <value>
         /// (HomeCalendar) new Object. Object data fields set to default.
         /// </value>
-        public HomeCalendar()
-        {
-            _categories = new Categories();
-            _events = new Events();
-        }
         public HomeCalendar(String databaseFile, String eventsXMLFile, bool newDB = false)
         {
             // if database exists, and user doesn't want a new database, open existing DB

@@ -4,6 +4,7 @@ using System.Linq;
 using System.IO;
 using System.Xml;
 using System.Data.SQLite;
+using static System.Data.Entity.Infrastructure.Design.Executor;
 
 // ============================================================================
 // (c) Sandy Bultena 2018
@@ -18,8 +19,6 @@ namespace Calendar
     /// </summary>
     public class Categories
     {
-        private static String DefaultFileName = "calendarCategories.txt";
-        private List<Category> _Categories = new List<Category>();
         private string? _FileName;
         private string? _DirName;
 
@@ -45,9 +44,7 @@ namespace Calendar
         {
             if (connection != null && isnewDb)
                 SetCategoriesFromDB(connection);
-            else if (connection != null && !isnewDb)
-                SetCategoriesFromDB(connection);
-            else
+            else if (connection == null)
                 SetCategoriesToDefaults();
         }
 
@@ -58,16 +55,15 @@ namespace Calendar
         /// Gets the Category according to it's Id.
         /// Uses the Id passed as a parameter to select and return a specific Category.
         /// </summary>
-        /// <param name="i">The Id number of the Category Object.</param>
+        /// <param name="id">The Id number of the Category Object.</param>
         /// <returns>A Category Object with the Id passed.</returns>
         /// <exception cref="Exception">If Id does not correspond to an existing Category.</exception>
-        public Category GetCategoryFromId(int i)
+        public Category GetCategoryFromId(int id)
         {
-            Category? c = _Categories.Find(x => x.Id == i);
-            if (c == null)
-            {
-                throw new Exception("Cannot find category with id " + i.ToString());
-            }
+            SQLiteCommand cmd = new SQLiteCommand($"SELECT * FROM categories WHERE Id = {id}", Database.dbConnection);
+            SQLiteDataReader result = cmd.ExecuteReader();
+            
+            Category? c = new Category(id, Convert.ToString(result["Description"]), (Category.CategoryType)Convert.ToInt32(result["TypeId"]));
             return c;
         }
 
@@ -79,11 +75,9 @@ namespace Calendar
             // ---------------------------------------------------------------
             // reset any current categories,
             // ---------------------------------------------------------------
-            _Categories.Clear();
+            SQLiteCommand cmd = new SQLiteCommand($"DELETE FROM categories", Database.dbConnection);
+            cmd.ExecuteNonQuery();
 
-            // ---------------------------------------------------------------
-            // Add Defaults
-            // ---------------------------------------------------------------
             //Add("School", Category.CategoryType.Event);
             //Add("Personal", Category.CategoryType.Event);
             //Add("VideoGames", Category.CategoryType.Event);
@@ -95,15 +89,28 @@ namespace Calendar
             //Add("US Holidays", Category.CategoryType.Holiday);
         }
 
-        public void SetCategoriesFromDB(SQLiteConnection connection)
+        private void SetCategoriesFromDB(SQLiteConnection connection)
         {
-            var cmd = new SQLiteCommand("Select * from categories", connection);
-            SQLiteDataReader categoriesToAdd = cmd.ExecuteReader();
-            while (categoriesToAdd.Read())
+            string query = "SELECT Id, Description, TypeId FROM categories";
+            using var cmd = new SQLiteCommand(query, connection);
+            using var reader = cmd.ExecuteReader();
+
+            while (reader.Read())
             {
-                //_Categories.Add();
-                Add(Convert.ToString(categoriesToAdd["Description"]), Category.CategoryType.Event);
+                int id = reader.GetInt32(0);
+                string description = reader.GetString(1);
+                Category.CategoryType categoryType = (Category.CategoryType)reader.GetInt32(2);
+
+
+                //Add(description, categoryType);
             }
+            //var cmd = new SQLiteCommand("SELECT Id, Description, TypeId FROM categories", connection);
+            //using SQLiteDataReader categoriesToAdd = cmd.ExecuteReader();
+
+            //while (categoriesToAdd.Read())
+            //{
+            //    Add(categoriesToAdd.GetString(1), Category.CategoryType.Event);
+            //}
         }
 
         // ====================================================================
@@ -111,7 +118,10 @@ namespace Calendar
         // ====================================================================
         private void Add(Category category)
         {
-            _Categories.Add(category);
+            SQLiteCommand cmd = new SQLiteCommand($"INSERT INTO categories (Id, Description ,TypeId) " +
+                $"VALUES({category.Id}, '{category.Description}', {(int)category.Type});", Database.dbConnection);
+
+            cmd.ExecuteNonQuery();
         }
 
         /// <summary>
@@ -124,18 +134,27 @@ namespace Calendar
         /// <param name="type"></param>
         public void Add(String desc, Category.CategoryType type)
         {
-            int new_num = 1;
-            if (_Categories.Count > 0)
-            {
-                new_num = (from c in _Categories select c.Id).Max();
-                new_num++;
-            }
-            _Categories.Add(new Category(new_num, desc, type));
+            SQLiteCommand cmd = new SQLiteCommand($"INSERT INTO categories (Description ,TypeId) " +
+                $"VALUES(@desc, {(int)type})", Database.dbConnection);
+            cmd.Parameters.AddWithValue("@desc", desc);
+
+            cmd.ExecuteNonQuery();
+            string a = "";
         }
 
         public void UpdateProperties(int id, string desc, Category.CategoryType categoryType)
         {
-            _Categories[_Categories.FindIndex(x => x.Id == id)] = new Category(id, desc, categoryType);
+            //UPDATE table
+            //SET column_1 = new_value_1,
+            //column_2 = new_value_2
+            //WHERE
+            //search_condition
+            SQLiteCommand cmd = new SQLiteCommand(
+                "UPDATE categories " +
+               $"Description = '{desc}', TypeId = {(int)categoryType}" +
+               $"WHERE Id = {id}", Database.dbConnection);
+
+            cmd.ExecuteNonQuery();
         }
 
         /// <summary>
@@ -144,17 +163,10 @@ namespace Calendar
         /// </summary>
         /// <param name="Id">(Int) The id of the Category Object to Remove.</param>
         /// <exception cref="ArgumentOutOfRangeException">If the Id passed is not in the existing range of the list.</exception>
-        public void Delete(int Id)
+        public void Delete(int id)
         {
-            try
-            {
-                int i = _Categories.FindIndex(x => x.Id == Id);
-                _Categories.RemoveAt(i);
-
-            } catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message);
-            }
+            SQLiteCommand cmd = new SQLiteCommand($"DELETE FROM categories WHERE Id = {id}", Database.dbConnection);
+            cmd.ExecuteNonQuery();
         }
 
         /// <summary>
@@ -163,12 +175,16 @@ namespace Calendar
         /// <returns>A list of all Category Objects in the Categories Class list</returns>
         public List<Category> List()
         {
-            List<Category> newList = new List<Category>();
-            foreach (Category category in _Categories)
+            List<Category> categories = new List<Category>();
+
+            SQLiteCommand cmd = new SQLiteCommand($"SELECT Id, Description, TypeId FROM categories", Database.dbConnection);
+            SQLiteDataReader results = cmd.ExecuteReader();
+            while (results.Read())
             {
-                newList.Add(new Category(category));
+                categories.Add(new Category(Convert.ToInt32(results["Id"]), Convert.ToString(results["Description"]), (Category.CategoryType)Convert.ToInt32(results["TypeId"])));
             }
-            return newList;
+
+            return categories;
         }
     }
 }
