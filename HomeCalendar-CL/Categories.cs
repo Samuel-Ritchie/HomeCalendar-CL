@@ -65,7 +65,6 @@ namespace Calendar
         /// <exception cref="Exception">If Id does not correspond to an existing Category.</exception>
         public Category GetCategoryFromId(int id)
         {
-            // CategoryTypes
             SQLiteCommand cmd = new SQLiteCommand($"SELECT Description, TypeId FROM categories WHERE Id = {id};", Database.dbConnection);
             SQLiteDataReader result = cmd.ExecuteReader();
 
@@ -73,6 +72,7 @@ namespace Calendar
 
             if (result.Read())
                 c = new Category(id, result.GetString(0), (Category.CategoryType)result.GetInt32(1));
+
             return c;
         }
 
