@@ -46,6 +46,16 @@ namespace Calendar
             using var cmd = new SQLiteCommand(dbConnection);
 
             // ====================================================================
+            // Removing Data
+            // ====================================================================
+            cmd.CommandText =
+                "DROP TABLE IF EXISTS events; " +
+                "DROP TABLE IF EXISTS categories; " +
+                "DROP TABLE IF EXISTS categoryTypes; ";
+
+            cmd.ExecuteNonQuery();
+
+            // ====================================================================
             // Category Types
             // ====================================================================
             cmd.CommandText =
@@ -78,16 +88,6 @@ namespace Calendar
                     "Description TEXT," +
                     "TypeId INTEGER," +
                     "FOREIGN KEY(TypeId) REFERENCES categoryTypes(Id)); ";
-
-            cmd.ExecuteNonQuery();
-
-            // ====================================================================
-            // Removing Data
-            // ====================================================================
-            cmd.CommandText =
-                "DELETE FROM events; " +
-                "DELETE FROM categories; " +
-                "DELETE FROM categoryTypes; ";
 
             cmd.ExecuteNonQuery();
         }

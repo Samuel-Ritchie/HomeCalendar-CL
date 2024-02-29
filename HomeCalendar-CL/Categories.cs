@@ -21,20 +21,12 @@ namespace Calendar
     /// </summary>
     public class Categories
     {
-        private string? _FileName;
-        private string? _DirName;
+        private SQLiteConnection? _connection;
 
         // ====================================================================
         // Properties
         // ====================================================================
-        /// <summary>
-        /// Gets name of Categories File.
-        /// </summary>
-        public String? FileName { get { return _FileName; } }
-        /// <summary>
-        /// Gets name of directory where the Categories file is located.
-        /// </summary>
-        public String? DirName { get { return _DirName; } }
+        public SQLiteConnection Connection{ get { return _connection; } }
 
         // ====================================================================
         // Constructor
@@ -44,13 +36,14 @@ namespace Calendar
         /// </summary>
         public Categories(SQLiteConnection connection = null, bool isnewDb = false)
         {
+            _connection = connection;
+
             if (connection != null && isnewDb)
             {
                 SetCategoryTypes();
-                SetCategoriesFromDB(connection);
-            }
-            else if (connection == null)
                 SetCategoriesToDefaults();
+            }
+
         }
 
         // ====================================================================
@@ -65,7 +58,7 @@ namespace Calendar
         /// <exception cref="Exception">If Id does not correspond to an existing Category.</exception>
         public Category GetCategoryFromId(int id)
         {
-            SQLiteCommand cmd = new SQLiteCommand($"SELECT Description, TypeId FROM categories WHERE Id = {id};", Database.dbConnection);
+            SQLiteCommand cmd = new SQLiteCommand($"SELECT Description, TypeId FROM categories WHERE Id = {id};", Connection);
             SQLiteDataReader result = cmd.ExecuteReader();
 
             Category? c = null;
@@ -84,72 +77,50 @@ namespace Calendar
             // ---------------------------------------------------------------
             // reset any current categories,
             // ---------------------------------------------------------------
-            SQLiteCommand cmd = new SQLiteCommand("DELETE FROM categories;", Database.dbConnection);
+            SQLiteCommand cmd = new SQLiteCommand("DELETE FROM categories;", Connection);
             cmd.ExecuteNonQuery();
 
-            Add("School", Category.CategoryType.Event);
-            Add("Personal", Category.CategoryType.Event);
-            Add("VideoGames", Category.CategoryType.Event);
-            Add("Medical", Category.CategoryType.Event);
-            Add("Sleep", Category.CategoryType.Event);
-            Add("Vacation", Category.CategoryType.AllDayEvent);
-            Add("Travel days", Category.CategoryType.AllDayEvent);
-            Add("Canadian Holidays", Category.CategoryType.Holiday);
-            Add("US Holidays", Category.CategoryType.Holiday);
+            // ---------------------------------------------------------------
+            // Add default categories
+            // ---------------------------------------------------------------
+
+            Dictionary<string, Category.CategoryType> categoriesToAdd= new Dictionary<string, Category.CategoryType>()
+            {
+                { "School", Category.CategoryType.Event },
+                { "Personal", Category.CategoryType.Event },
+                { "VideoGames", Category.CategoryType.Event },
+                { "Medical", Category.CategoryType.Event },
+                { "Sleep", Category.CategoryType.Event },
+                { "Vacation", Category.CategoryType.AllDayEvent },
+                { "Travel days", Category.CategoryType.AllDayEvent },
+                { "Canadian Holidays", Category.CategoryType.Holiday },
+                { "US Holidays", Category.CategoryType.Holiday }
+            };
+
+            foreach (KeyValuePair<string, Category.CategoryType> category in categoriesToAdd) 
+            {
+                Add(category.Key, category.Value);
+            }
         }
 
         private void SetCategoryTypes()
         {
-            SQLiteCommand cmd = new SQLiteCommand(Database.dbConnection);
-
-            cmd.CommandText =
-                "DELETE FROM categoryTypes;" +
-                "INSERT INTO categoryTypes (Id ,Description) " +
-                    $"VALUES({(int)Category.CategoryType.Holiday}, '{Category.CategoryType.Holiday}');" + 
-                "INSERT INTO categoryTypes (Id ,Description) " +
-                    $"VALUES({(int)Category.CategoryType.Availability}, '{Category.CategoryType.Availability}');" +
-                "INSERT INTO categoryTypes (Id ,Description) " +
-                    $"VALUES({(int)Category.CategoryType.Event}, '{Category.CategoryType.Event}');" +
-                "INSERT INTO categoryTypes (Id ,Description) " +
-                    $"VALUES({(int)Category.CategoryType.AllDayEvent}, '{Category.CategoryType.AllDayEvent}');";
-
-            cmd.ExecuteNonQuery();
-        }
-
-        private void SetCategoriesFromDB(SQLiteConnection connection)
-        {
-            SQLiteCommand cmd = new SQLiteCommand("DELETE FROM categories;", Database.dbConnection);
-            cmd.ExecuteNonQuery();
-
-            cmd = new SQLiteCommand("SELECT Id, Description, TypeId FROM categories;", connection);
-            using SQLiteDataReader categoriesToAdd = cmd.ExecuteReader();
-
-            if (categoriesToAdd.HasRows)
+            List<Category.CategoryType> typesToAdd = new List<Category.CategoryType>() 
             {
-                while (categoriesToAdd.Read())
-                {
-                    Add(new Category(
-                        categoriesToAdd.GetInt32(0),
-                        categoriesToAdd.GetString(1),
-                        (Category.CategoryType)categoriesToAdd.GetInt32(2)));
-                }
+                Category.CategoryType.Holiday,
+                Category.CategoryType.Availability,
+                Category.CategoryType.Event,
+                Category.CategoryType.AllDayEvent
+            };
+
+            SQLiteCommand cmd = new SQLiteCommand(Connection);
+            cmd.CommandText = "";
+
+            for (int type = 0; type < typesToAdd.Count; type++)
+            {
+                cmd.CommandText += "INSERT INTO categoryTypes (Id ,Description) " +
+                    $"VALUES({(int)typesToAdd[type]}, '{typesToAdd[type]}'); ";
             }
-            else
-                SetCategoriesToDefaults();
-        }
-
-        // ====================================================================
-        // Add category
-        // ====================================================================
-        private void Add(Category category)
-        {
-            SQLiteCommand cmd = new SQLiteCommand(
-                $"INSERT INTO categories (Id, Description ,TypeId) " +
-                $"VALUES(@id, @desc, @typeId)", Database.dbConnection);
-
-            cmd.Parameters.AddWithValue("@id", category.Id);
-            cmd.Parameters.AddWithValue("@desc", category.Description);
-            cmd.Parameters.AddWithValue("@typeId", (int)category.Type);
 
             cmd.ExecuteNonQuery();
         }
@@ -166,7 +137,7 @@ namespace Calendar
         {
             SQLiteCommand cmd = new SQLiteCommand(
                 "INSERT INTO categories (Description ,TypeId) " +
-                "VALUES(@desc, @typeId)", Database.dbConnection);
+                "VALUES(@desc, @typeId)", Connection);
 
             cmd.Parameters.AddWithValue("@desc", desc);
             cmd.Parameters.AddWithValue("@typeId", (int)type);
@@ -180,7 +151,7 @@ namespace Calendar
                 "UPDATE categories SET " +
                 "Description = @desc, " +
                 "TypeId = @typeId " +
-                "WHERE Id = @id;", Database.dbConnection);
+                "WHERE Id = @id;", Connection);
 
             cmd.Parameters.AddWithValue("@id", id);
             cmd.Parameters.AddWithValue("@desc", desc);
@@ -197,7 +168,7 @@ namespace Calendar
         /// <exception cref="ArgumentOutOfRangeException">If the Id passed is not in the existing range of the list.</exception>
         public void Delete(int id)
         {
-            SQLiteCommand cmd = new SQLiteCommand($"DELETE FROM categories WHERE Id = {id}", Database.dbConnection);
+            SQLiteCommand cmd = new SQLiteCommand($"DELETE FROM categories WHERE Id = {id}", Connection);
             cmd.ExecuteNonQuery();
         }
 
@@ -209,7 +180,7 @@ namespace Calendar
         {
             List<Category> categories = new List<Category>();
 
-            SQLiteCommand cmd = new SQLiteCommand("SELECT Id, Description, TypeId FROM categories;", Database.dbConnection);
+            SQLiteCommand cmd = new SQLiteCommand("SELECT Id, Description, TypeId FROM categories;", Connection);
             SQLiteDataReader results = cmd.ExecuteReader();
 
             while (results.Read())
