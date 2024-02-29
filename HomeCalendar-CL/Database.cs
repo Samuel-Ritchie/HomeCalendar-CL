@@ -54,6 +54,23 @@ namespace Calendar
             Description TEXT)";
             cmd.ExecuteNonQuery();
 
+            // CategoryTypes
+            cmd.CommandText = $"INSERT INTO categoryTypes (Id ,Description) " +
+                $"VALUES({(int)Category.CategoryType.Holiday}, '{Category.CategoryType.Holiday}')";
+            cmd.ExecuteNonQuery();
+
+            cmd.CommandText = $"INSERT INTO categoryTypes (Id ,Description) " +
+                $"VALUES({(int)Category.CategoryType.Availability}, '{Category.CategoryType.Availability}')";
+            cmd.ExecuteNonQuery();
+
+            cmd.CommandText = $"INSERT INTO categoryTypes (Id ,Description) " +
+                $"VALUES({(int)Category.CategoryType.Event}, '{Category.CategoryType.Event}')";
+            cmd.ExecuteNonQuery();
+
+            cmd.CommandText = $"INSERT INTO categoryTypes (Id ,Description) " +
+                $"VALUES({(int)Category.CategoryType.AllDayEvent}, '{Category.CategoryType.AllDayEvent}')";
+            cmd.ExecuteNonQuery();
+
             // Events
             cmd.CommandText = "DROP TABLE IF EXISTS events";
             cmd.ExecuteNonQuery();
@@ -72,7 +89,7 @@ namespace Calendar
             cmd.ExecuteNonQuery();
 
             cmd.CommandText = @"CREATE TABLE categories(
-            Id INTEGER PRIMARY KEY,
+            Id INTEGER PRIMARY KEY AUTOINCREMENT,
             Description TEXT,
             TypeId INTEGER,
             FOREIGN KEY(TypeId) REFERENCES categoryTypes(Id))";
