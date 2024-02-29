@@ -19,9 +19,6 @@ namespace Calendar
     //        - Read / write to file
     //        - etc
     // ====================================================================
-    /// <summary>
-    /// Holds A list of Event Objects and File location info corresponding to an Events file.
-    /// </summary>
     public class Events
     {
         private static String DefaultFileName = "calendar.txt";
@@ -32,13 +29,7 @@ namespace Calendar
         // ====================================================================
         // Properties
         // ====================================================================
-        /// <summary>
-        /// Gets name of Events File.
-        /// </summary>
         public String FileName { get { return _FileName; } }
-        /// <summary>
-        /// Gets name of directory where the Events file is located.
-        /// </summary>
         public String DirName { get { return _DirName; } }
 
         // ====================================================================
@@ -47,17 +38,6 @@ namespace Calendar
         // Throws System.IO.FileNotFoundException if file does not exist
         // Throws System.Exception if cannot read the file correctly (parsing XML)
         // ====================================================================
-        /// <summary>
-        /// Sets/Updates the list of Event Objects using default values, or data from an Events file.
-        /// Clears the old list of Event Objects, along with the file name and path.
-        /// Tests reading from file. Throws exception if file not found.
-        /// Parses the XML from the file, storing values in an Event Object.
-        /// Adds each of the created Event Objects to the Events list data field.
-        /// re-Assigns file Names and Paths for future use.
-        /// </summary>
-        /// <param name="filepath">Name of file to load.</param>
-        /// <exception cref="System.IO.FileNotFoundException">If file doesn't exist.</exception>
-        /// <exception cref="System.Exception">If XML Parsing fails.</exception>
         public void ReadFromFile(String filepath = null)
         {
 
@@ -97,15 +77,6 @@ namespace Calendar
         // save to a file
         // if filepath is not specified, read/save in AppData file
         // ====================================================================
-        /// <summary>
-        /// Saves Events list of Event Objects data to a file in the XML Format.
-        /// Creates a file name and chooses a path if the values are previously null.
-        /// Tests writing to file. Throws exception if not found.
-        /// Saves data from Event Objects in Events Class in as XML file.
-        /// re-Saves file Names and Paths for future use.
-        /// </summary>
-        /// <param name="filepath">Name of file to write to.</param>
-        /// <exception cref="Exception">If failed to write to file.</exception>
         public void SaveToFile(String filepath = null)
         {
             // ---------------------------------------------------------------
@@ -149,16 +120,6 @@ namespace Calendar
             _Events.Add(exp);
         }
 
-        /// <summary>
-        /// Adds a new Event Object to the Events list in the Categories Class.
-        /// Generates an Id number for a new Event Object.
-        /// Creates an Event Object, assigning it the values passed as parameters.
-        /// Adds the new Event Object to the list in the Events Class.
-        /// </summary>
-        /// <param name="date">(DateTime) The date of the event object.</param>
-        /// <param name="category">(Int) The category id of the event object.</param>
-        /// <param name="duration">(Double) The duration of the event object.</param>
-        /// <param name="details">(String) The Details of the event object.</param>
         public void Add(DateTime date, int category, Double duration, String details)
         {
             int new_id = 1;
@@ -177,23 +138,16 @@ namespace Calendar
         // ====================================================================
         // Delete Event
         // ====================================================================
-        /// <summary>
-        /// Removes an existing Event Object from the Events list in the Events Class.
-        /// Takes in an ID number that determines which event to remove.
-        /// </summary>
-        /// <param name="Id">(Int) The id of the Event Object to Remove.</param>
-        /// <exception cref="ArgumentOutOfRangeException">If the Id passed is not in the existing range of the list.</exception>
         public void Delete(int Id)
         {
-            try
-            {
-                int i = _Events.FindIndex(x => x.Id == Id);
-                _Events.RemoveAt(i);
-            } catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message);
+            foreach (Event e in _Events) 
+            { 
+                if (e.Id == Id)
+                {
+                    _Events.Remove(e);
+                    break;
+                }
             }
-
         }
 
         // ====================================================================
@@ -201,10 +155,6 @@ namespace Calendar
         // Note:  make new copy of list, so user cannot modify what is part of
         //        this instance
         // ====================================================================
-        /// <summary>
-        /// Gets a list of all Event Objects in the Events Class list.
-        /// </summary>
-        /// <returns>A list of default Event Objects.</returns>
         public List<Event> List()
         {
             List<Event> newList = new List<Event>();
@@ -298,7 +248,7 @@ namespace Calendar
 
                     // child attributes (date, description, DurationInMinutes, category)
                     XmlElement d = doc.CreateElement("StartDateTime");
-                    XmlText dText = doc.CreateTextNode(exp.StartDateTime.ToString());
+                    XmlText dText = doc.CreateTextNode(exp.StartDateTime.ToString("M\\/d\\/yyyy h:mm:ss tt"));
                     ele.AppendChild(d);
                     d.AppendChild(dText);
 

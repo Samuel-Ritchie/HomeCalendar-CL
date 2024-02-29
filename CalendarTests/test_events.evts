@@ -47,4 +47,10 @@
     <DurationInMinutes>60</DurationInMinutes>
     <Category>2</Category>
   </Event>
+  <Event ID="9">
+    <StartDateTime>1/11/2019 9:30:00 AM</StartDateTime>
+    <Details>training</Details>
+    <DurationInMinutes>60</DurationInMinutes>
+    <Category>2</Category>
+  </Event>
 </Events>
