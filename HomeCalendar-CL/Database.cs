@@ -45,54 +45,50 @@ namespace Calendar
 
             using var cmd = new SQLiteCommand(dbConnection);
 
+            // ====================================================================
             // Category Types
-            cmd.CommandText = "DROP TABLE IF EXISTS categoryTypes";
+            // ====================================================================
+            cmd.CommandText =
+                "CREATE TABLE IF NOT EXISTS categoryTypes(" +
+                    "Id INTEGER PRIMARY KEY, " +
+                    "Description TEXT); ";
+
             cmd.ExecuteNonQuery();
 
-            cmd.CommandText = @"CREATE TABLE categoryTypes(
-            Id INTEGER PRIMARY KEY,
-            Description TEXT)";
-            cmd.ExecuteNonQuery();
-
-            // CategoryTypes
-            cmd.CommandText = $"INSERT INTO categoryTypes (Id ,Description) " +
-                $"VALUES({(int)Category.CategoryType.Holiday}, '{Category.CategoryType.Holiday}')";
-            cmd.ExecuteNonQuery();
-
-            cmd.CommandText = $"INSERT INTO categoryTypes (Id ,Description) " +
-                $"VALUES({(int)Category.CategoryType.Availability}, '{Category.CategoryType.Availability}')";
-            cmd.ExecuteNonQuery();
-
-            cmd.CommandText = $"INSERT INTO categoryTypes (Id ,Description) " +
-                $"VALUES({(int)Category.CategoryType.Event}, '{Category.CategoryType.Event}')";
-            cmd.ExecuteNonQuery();
-
-            cmd.CommandText = $"INSERT INTO categoryTypes (Id ,Description) " +
-                $"VALUES({(int)Category.CategoryType.AllDayEvent}, '{Category.CategoryType.AllDayEvent}')";
-            cmd.ExecuteNonQuery();
-
+            // ====================================================================
             // Events
-            cmd.CommandText = "DROP TABLE IF EXISTS events";
+            // ====================================================================
+            cmd.CommandText =
+                "CREATE TABLE IF NOT EXISTS events(" +
+                    "Id INTEGER PRIMARY KEY, "+
+                    "StartDateTime TEXT, "+
+                    "Details TEXT, "+
+                    "DurationInMinutes DOUBLE, "+
+                    "CategoryId	INTEGER, "+
+                    "FOREIGN KEY(CategoryId) REFERENCES categories(Id)); ";
+
             cmd.ExecuteNonQuery();
 
-            cmd.CommandText = @"CREATE TABLE events(
-            Id INTEGER PRIMARY KEY,
-            StartDateTime TEXT, 
-            Details TEXT, 
-            DurationInMinutes DOUBLE, 
-            CategoryId	INTEGER,
-            FOREIGN KEY(CategoryId) REFERENCES categories(Id))";
-            cmd.ExecuteNonQuery();
-
+            // ====================================================================
             // Categories
-            cmd.CommandText = "DROP TABLE IF EXISTS categories";
+            // ====================================================================
+            cmd.CommandText =
+                "CREATE TABLE IF NOT EXISTS categories(" +
+                    "Id INTEGER PRIMARY KEY AUTOINCREMENT," +
+                    "Description TEXT," +
+                    "TypeId INTEGER," +
+                    "FOREIGN KEY(TypeId) REFERENCES categoryTypes(Id)); ";
+
             cmd.ExecuteNonQuery();
 
-            cmd.CommandText = @"CREATE TABLE categories(
-            Id INTEGER PRIMARY KEY AUTOINCREMENT,
-            Description TEXT,
-            TypeId INTEGER,
-            FOREIGN KEY(TypeId) REFERENCES categoryTypes(Id))";
+            // ====================================================================
+            // Removing Data
+            // ====================================================================
+            cmd.CommandText =
+                "DELETE FROM events; " +
+                "DELETE FROM categories; " +
+                "DELETE FROM categoryTypes; ";
+
             cmd.ExecuteNonQuery();
         }
 
