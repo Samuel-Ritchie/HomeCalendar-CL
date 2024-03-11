@@ -33,34 +33,6 @@ namespace Calendar
         // Properties
         // ===================================================================
 
-        // Properties (location of files etc)
-        /// <summary>
-        /// Gets name of Calendar File.
-        /// </summary>
-        public String? FileName { get { return _FileName; } }
-        /// <summary>
-        /// Gets name of directory where the Calendar file is located.
-        /// </summary>
-        public String? DirName { get { return _DirName; } }
-        /// <summary>
-        /// Gets the full path of Calendar file.
-        /// If name of calendar file or directory is null, returns null; otherwise, the full path of the file.
-        /// </summary>
-        public String? PathName
-        {
-            get
-            {
-                if (_FileName != null && _DirName != null)
-                {
-                    return Path.GetFullPath(_DirName + "\\" + _FileName);
-                }
-                else
-                {
-                    return null;
-                }
-            }
-        }
-
         // Properties (categories and events object)
         /// <summary>
         /// Gets the Calendar Catagories object. *** The Categories Object does. ***
