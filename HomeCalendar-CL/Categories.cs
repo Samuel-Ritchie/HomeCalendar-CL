@@ -16,9 +16,6 @@ using System.Data;
 namespace Calendar
 {
 
-    /// <summary>
-    /// Holds a list of Category Objects, and File location info corresponding to a Categories File.
-    /// </summary>
     public class Categories
     {
         private SQLiteConnection? _connection;
@@ -32,7 +29,8 @@ namespace Calendar
         // Constructor
         // ====================================================================
         /// <summary>
-        /// Sets the Categories List in the Categories Class with default Categories.
+        /// Sets up a database connection with SQLite, if the connection is not null sets categories
+        /// to defaults values and types to defaults.
         /// </summary>
         public Categories(SQLiteConnection connection = null, bool isnewDb = false)
         {
@@ -102,7 +100,13 @@ namespace Calendar
                 Add(category.Key, category.Value);
             }
         }
-
+        /// <summary>
+        /// When a new instance of Categories is created, this method is called to create Category types
+        /// into the DB under the table categoryType, columns:
+        /// CategoryTypeId = {(int)typesToAdd[type]}
+        /// Description = {typesToAdd[type]}
+        /// Category types are stored in a list that is looped through Inserting one at a time.
+        /// </summary>
         private void SetCategoryTypes()
         {
             List<Category.CategoryType> typesToAdd = new List<Category.CategoryType>() 
@@ -126,13 +130,11 @@ namespace Calendar
         }
 
         /// <summary>
-        /// Adds a new Category Object to the Categories list in the Categories Class.
-        /// Generates an Id number for a new Category Object.
-        /// Creates a Category Object, assigning it the values passed as parameters.
-        /// Adds the new Category Object to the list in the Categories Class.
+        /// Adds a new category into the Categories table.
+        /// Takes in description and type parameters that act as each respective column.
         /// </summary>
-        /// <param name="desc"></param>
-        /// <param name="type"></param>
+        /// <param name="desc">Description of the category, will be added into Description column.</param>
+        /// <param name="type">Type of the category, will be added into CategoryType column.</param>
         public void Add(String desc, Category.CategoryType type)
         {
             SQLiteCommand cmd = new SQLiteCommand(
@@ -145,6 +147,13 @@ namespace Calendar
             cmd.ExecuteNonQuery();
         }
 
+        /// <summary>
+        /// Updates a categories values based on ID parameter.
+        /// Update statement is done using parameter binding to avoid SQL injection.
+        /// </summary>
+        /// <param name="id">Category ID to determine which Category to update.</param>
+        /// <param name="desc">New description to update previous value.</param>
+        /// <param name="categoryType">New categoryType updating the typeId.</param>
         public void UpdateProperties(int id, string desc, Category.CategoryType categoryType)
         {
             SQLiteCommand cmd = new SQLiteCommand(
@@ -159,13 +168,11 @@ namespace Calendar
 
             cmd.ExecuteNonQuery();
         }
-
+        
         /// <summary>
-        /// Removes an existing Category Object from the Categories List in the Categories Class.
-        /// Takes in an ID number that determines which event to remove.
+        /// Deletes a category based on parameter id.
         /// </summary>
-        /// <param name="Id">(Int) The id of the Category Object to Remove.</param>
-        /// <exception cref="ArgumentOutOfRangeException">If the Id passed is not in the existing range of the list.</exception>
+        /// <param name="id">Id of category to be deleted.</param>
         public void Delete(int id)
         {
             SQLiteCommand cmd = new SQLiteCommand($"DELETE FROM categories WHERE Id = {id}", Connection);
@@ -173,9 +180,10 @@ namespace Calendar
         }
 
         /// <summary>
-        /// Gets a list of all Category Objects in the Categories Class list.
+        /// Selects all information from categories, loops through the select statement foreach category
+        /// and adds each one to list Categories. 
         /// </summary>
-        /// <returns>A list of all Category Objects in the Categories Class list</returns>
+        /// <returns>Returns list of all Categories.</returns>
         public List<Category> List()
         {
             List<Category> categories = new List<Category>();
