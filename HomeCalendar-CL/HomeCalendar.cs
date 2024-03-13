@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.SQLite;
 using System.IO;
 using System.Linq;
 
@@ -88,7 +89,7 @@ namespace Calendar
         /// <value>
         /// (HomeCalendar) new Object. Object data fields set to default.
         /// </value>
-        public HomeCalendar(String databaseFile, String eventsXMLFile, bool newDB = false)
+        public HomeCalendar(String databaseFile, bool newDB = false)
         {
             // if database exists, and user doesn't want a new database, open existing DB
             if (!newDB && File.Exists(databaseFile))
@@ -107,8 +108,8 @@ namespace Calendar
             _categories = new Categories(Database.dbConnection, newDB);
 
             // create the _events course
+            // _events = new Events(Database.dbConnection, newDB);
             _events = new Events();
-            _events.ReadFromFile(eventsXMLFile);
         }
 
         #region OpenNewAndSave
@@ -298,17 +299,37 @@ namespace Calendar
             Start = Start ?? new DateTime(1900, 1, 1);
             End = End ?? new DateTime(2500, 1, 1);
 
+            // Old query for xml
             var query =  from c in _categories.List()
                         join e in _events.List() on c.Id equals e.Category
                         where e.StartDateTime >= Start && e.StartDateTime <= End
                         select new { CatId = c.Id, EventId = e.Id, e.StartDateTime, Category = c.Description, e.Details, e.DurationInMinutes };
+            
+
+            // Query for database.
+            SQLiteCommand cmd = new SQLiteCommand($"SELECT Id, StartDateTime, Details, DurationInMinutes, CategoryId FROM Events ORDER BY StartDateTime;");
+            SQLiteDataReader result = cmd.ExecuteReader();
+
+            // Create list to hold all rows.
+            List<CalendarItem> items = new List<CalendarItem>();
+            Double totalBusyTime = 0;
+
+            foreach (var row in result)
+            {
+                if (FilterFlag && CategoryID != e.CatId)
+                {
+                    continue;
+                }
+
+            }
 
             // ------------------------------------------------------------------------
             // create a CalendarItem list with totals,
             // ------------------------------------------------------------------------
+            /*
             List<CalendarItem> items = new List<CalendarItem>();
             Double totalBusyTime = 0;
-
+            */
             foreach (var e in query.OrderBy(q => q.StartDateTime))
             {
                 // filter out unwanted categories if filter flag is on
