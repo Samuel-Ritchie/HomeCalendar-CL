@@ -139,7 +139,7 @@ namespace Calendar
         {
             SQLiteCommand cmd = new SQLiteCommand(
                 "INSERT INTO categories (Description ,TypeId) " +
-                "VALUES(@desc, @typeId)", Connection);
+                "VALUES(@desc, @typeId);", Connection);
 
             cmd.Parameters.AddWithValue("@desc", desc);
             cmd.Parameters.AddWithValue("@typeId", (int)type);
@@ -175,7 +175,9 @@ namespace Calendar
         /// <param name="id">Id of category to be deleted.</param>
         public void Delete(int id)
         {
-            SQLiteCommand cmd = new SQLiteCommand($"DELETE FROM categories WHERE Id = {id}", Connection);
+            SQLiteCommand cmd = new SQLiteCommand($"DELETE FROM categories WHERE Id = @id;", Connection);
+            cmd.Parameters.AddWithValue("@id", id);
+
             cmd.ExecuteNonQuery();
         }
 
