@@ -37,16 +37,13 @@ namespace CalendarCodeTests
         // ========================================================================
 
         [Fact]
-        public void EventsMethod_ReadFromFile_ValidateCorrectDataWasRead()
+        public void EventsMethod_ReadFromDatabase_ValidateCorrectDataWasRead()
         {
             // Arrange
             String folder = TestConstants.GetSolutionDir();
             String existingDB = $"{folder}\\{TestConstants.testDBInputFile}";
             Database.existingDatabase(existingDB);
             SQLiteConnection conn = Database.dbConnection;
-
-            String dir = TestConstants.GetSolutionDir();
-            Events Events = new Events();
 
             // Act
             Events events = new Events(conn, false);
@@ -98,7 +95,7 @@ namespace CalendarCodeTests
             string descr = "New Category";
             Category.CategoryType type = Category.CategoryType.Event;
 
-            int category = 57;
+            int category = 1;
             double DurationInMinutes = 98.1;
 
             // Act
@@ -166,6 +163,53 @@ namespace CalendarCodeTests
             {
                 Assert.True(false, "Invalid ID causes Delete to break");
             }
+        }
+
+        // ========================================================================
+
+        [Fact]
+        public void EventsMethod_UpdateEvents()
+        {
+            // Arrange
+            String folder = TestConstants.GetSolutionDir();
+            String goodDB = $"{folder}\\{TestConstants.testDBInputFile}";
+            String messyDB = $"{folder}\\messyDB";
+            System.IO.File.Copy(goodDB, messyDB, true);
+            Database.existingDatabase(messyDB);
+            SQLiteConnection conn = Database.dbConnection;
+            Events events = new Events(conn, true);
+            //         public void UpdateProperties(int Id, DateTime date, int category, Double duration, String details)
+            int id = 5;
+            DateTime date = DateTime.Now;
+            int categoryId = 0;
+            double duration = 60;
+            string details = "Staff party";
+
+
+            // Act
+            events.UpdateProperties(id, date, categoryId, duration, details);
+            string eventsList = "";
+            string updated = 
+                id + ", " +
+                date + ", " +
+                categoryId + ", " +
+                duration + ", " +
+                details;
+
+            foreach(Event e in events.List()) 
+            {
+                string eventProperties = 
+                    e.Id + ", " +
+                    e.StartDateTime + ", " +
+                    e.Category + ", " +
+                    e.DurationInMinutes + ", " +
+                    e.Details;
+
+                eventsList += eventProperties + "\n";
+            }
+
+            // Assert 
+            Assert.Contains(updated, eventsList);
         }
     }
 }

@@ -39,49 +39,58 @@ namespace Calendar
         public Events(SQLiteConnection connection = null, bool isnewDb = false)
         {
             _connection = connection;
-
-            if (connection != null && isnewDb)
-            {
-            }
-
         }
 
         // ====================================================================
         // Add Event
         // ====================================================================
-        private void Add(Event exp)
-        {
-            _Events.Add(exp);
-        }
-
         public void Add(DateTime date, int category, Double duration, String details)
         {
-            int new_id = 1;
+            //Id and CategoryId?
+            
+           SQLiteCommand cmd = new SQLiteCommand("INSERT INTO events (CategoryId, StartDateTime, Details, DurationInMinutes) " +
+               "VALUES (@category, @startDate, @details, @duration);", Connection);
 
-            // if we already have Events, set ID to max
-            if (_Events.Count > 0)
-            {
-                new_id = (from e in _Events select e.Id).Max();
-                new_id++;
-            }
+            cmd.Parameters.AddWithValue("@startDate", date.ToString());
+            cmd.Parameters.AddWithValue("@category", category);
+            cmd.Parameters.AddWithValue("@duration", duration);
+            cmd.Parameters.AddWithValue("@details", details);
 
-            _Events.Add(new Event(new_id, date, category, duration, details));
+            cmd.ExecuteNonQuery();
+        }
 
+        // ====================================================================
+        // Update Event
+        // ====================================================================
+        public void UpdateProperties(int id, DateTime date, int category, Double duration, String details)
+        {
+            SQLiteCommand cmd = new SQLiteCommand(
+                "UPDATE events SET " +
+                "CategoryId = @categoryId, " +
+                "StartDateTime = @startDate, " +
+                "Details = @details, " +
+                "DurationInMinutes = @duration " +
+                "WHERE Id = @id;", Connection);
+
+
+            cmd.Parameters.AddWithValue("@categoryId", category);
+            cmd.Parameters.AddWithValue("@startDate", date.ToString());
+            cmd.Parameters.AddWithValue("@duration", duration);
+            cmd.Parameters.AddWithValue("@details", details);
+            cmd.Parameters.AddWithValue("@id", id);
+
+            cmd.ExecuteNonQuery();
         }
 
         // ====================================================================
         // Delete Event
         // ====================================================================
-        public void Delete(int Id)
+        public void Delete(int id)
         {
-            foreach (Event e in _Events) 
-            { 
-                if (e.Id == Id)
-                {
-                    _Events.Remove(e);
-                    break;
-                }
-            }
+            SQLiteCommand cmd = new SQLiteCommand($"DELETE FROM events WHERE Id = @id;", Connection);
+            cmd.Parameters.AddWithValue("@id", id);
+
+            cmd.ExecuteNonQuery();
         }
 
         // ====================================================================
@@ -91,12 +100,23 @@ namespace Calendar
         // ====================================================================
         public List<Event> List()
         {
-            List<Event> newList = new List<Event>();
-            foreach (Event Event in _Events)
+            List<Event> eventList = new List<Event>();
+
+            SQLiteCommand cmd = new SQLiteCommand("SELECT Id, StartDateTime, CategoryId, DurationInMinutes, Details FROM events;", Connection);
+            SQLiteDataReader results = cmd.ExecuteReader();
+
+            while (results.Read())
             {
-                newList.Add(new Event(Event));
+                int id = results.GetInt32(0);
+                DateTime date = DateTime.Parse(results.GetString(1)); // results.GetDateTime(1
+                int category = results.GetInt32(2);
+                double duration = results.GetDouble(3);
+                string details = results.GetString(4);
+
+                eventList.Add(new Event(id, date, category, duration, details));
             }
-            return newList;
+
+            return eventList;
         }
 
     }

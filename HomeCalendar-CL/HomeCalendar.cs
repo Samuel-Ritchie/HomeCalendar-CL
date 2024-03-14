@@ -79,7 +79,6 @@ namespace Calendar
 
             // create the _events course
             _events = new Events();
-            _events.ReadFromFile(eventsXMLFile);
         }
 
 
