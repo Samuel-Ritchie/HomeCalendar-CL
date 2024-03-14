@@ -51,7 +51,7 @@ namespace Calendar
            SQLiteCommand cmd = new SQLiteCommand("INSERT INTO events (CategoryId, StartDateTime, Details, DurationInMinutes) " +
                "VALUES (@category, @startDate, @details, @duration);", Connection);
 
-            cmd.Parameters.AddWithValue("@startDate", date.ToString());
+            cmd.Parameters.AddWithValue("@startDate", date.ToString("yyyy-MM-dd HH:mm:ss"));
             cmd.Parameters.AddWithValue("@category", category);
             cmd.Parameters.AddWithValue("@duration", duration);
             cmd.Parameters.AddWithValue("@details", details);
@@ -74,7 +74,7 @@ namespace Calendar
 
 
             cmd.Parameters.AddWithValue("@categoryId", category);
-            cmd.Parameters.AddWithValue("@startDate", date.ToString());
+            cmd.Parameters.AddWithValue("@startDate", date.ToString("yyyy-MM-dd HH:mm:ss"));
             cmd.Parameters.AddWithValue("@duration", duration);
             cmd.Parameters.AddWithValue("@details", details);
             cmd.Parameters.AddWithValue("@id", id);
