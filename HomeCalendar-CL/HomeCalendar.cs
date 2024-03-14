@@ -302,19 +302,31 @@ namespace Calendar
             // return joined list within time frame
             // ------------------------------------------------------------------------
 
-            Start = Start ?? new DateTime(1900, 1, 1);
-            End = End ?? new DateTime(2500, 1, 1);
+            DateTime realStart = Start ?? new DateTime(1900, 1, 1);
+            DateTime realEnd = End ?? new DateTime(2500, 1, 1);
+
 
             SQLiteCommand categoryCmd = new SQLiteCommand(
-                //         0           1            2              3
-                $"SELECT E.Id, E.StartDateTime, E.Details, E.DurationInMinutes, E.CategoryId, C.Id, C.Description, C.TypeId " + 
-                    "FROM events as E INNER JOIN categories as C ON E.CategoryId == C.Id " +
-                    "WHERE e.StartDateTime >= Start && e.StartDateTime;");
+                $"SELECT E.Id, E.StartDateTime, E.Details, E.DurationInMinutes, C.Id, C.Description, C.TypeId " + 
+                    $"FROM events as E INNER JOIN categories as C ON E.CategoryId == C.Id " +
+                    $"WHERE E.StartDateTime >= {realStart} && E.StartDateTime <= {realEnd};");
+
             SQLiteDataReader categoryResult = categoryCmd.ExecuteReader();
 
             // Create list to hold all rows.
             List<CalendarItem> items = new List<CalendarItem>();
             Double totalBusyTime = 0;
+
+            /*
+            // Event ID:                 0
+            // Event StartDateTime:      1
+            // Event Details:            2
+            // Event DurationInMinutes:  3
+
+            // Category ID:              4
+            // Category Description:     5
+            // Category TypeID:          6
+            */
 
             while (categoryResult.Read())
             {
@@ -326,12 +338,12 @@ namespace Calendar
                 totalBusyTime = totalBusyTime + categoryResult.GetDouble(3);
                 items.Add(new CalendarItem
                 {
-                    CategoryID = categoryResult.GetInt32(5),
+                    CategoryID = categoryResult.GetInt32(4),
                     EventID = categoryResult.GetInt32(0),
                     ShortDescription = categoryResult.GetString(2),
                     StartDateTime = categoryResult.GetDateTime(1),
                     DurationInMinutes = categoryResult.GetDouble(3),
-                    Category = categoryResult.GetString(6),
+                    Category = categoryResult.GetString(5),
                     BusyTime = totalBusyTime
                 });
             }
