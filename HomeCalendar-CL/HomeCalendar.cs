@@ -305,11 +305,10 @@ namespace Calendar
             DateTime realStart = Start ?? new DateTime(1900, 1, 1);
             DateTime realEnd = End ?? new DateTime(2500, 1, 1);
 
-
             SQLiteCommand categoryCmd = new SQLiteCommand(
                 $"SELECT E.Id, E.StartDateTime, E.Details, E.DurationInMinutes, C.Id, C.Description, C.TypeId " + 
                     $"FROM events as E INNER JOIN categories as C ON E.CategoryId == C.Id " +
-                    $"WHERE E.StartDateTime >= {realStart} && E.StartDateTime <= {realEnd};");
+                    $"WHERE E.StartDateTime >= '{realStart}' AND E.StartDateTime <= '{realEnd}';", Database.dbConnection);
 
             SQLiteDataReader categoryResult = categoryCmd.ExecuteReader();
 
