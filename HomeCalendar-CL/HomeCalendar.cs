@@ -129,10 +129,6 @@ namespace Calendar
         /// </example>
         public List<CalendarItem> GetCalendarItems(DateTime? Start, DateTime? End, bool FilterFlag, int CategoryID)
         {
-            // =(=)=(=)=(=)=(=)=(=)=(=)=(=)=(=)=(=)=(=)=(=)=(=)=(=)=(=)=(=)=(=)=(=)=(=)=
-            // New Database code
-            // Get Events and join in Category columns where Event.CategoryId = an id in the categories table.
-
             // ------------------------------------------------------------------------
             // return joined list within time frame
             // ------------------------------------------------------------------------
@@ -183,55 +179,6 @@ namespace Calendar
             }
 
             return items;
-
-            // =(=)=(=)=(=)=(=)=(=)=(=)=(=)=(=)=(=)=(=)=(=)=(=)=(=)=(=)=(=)=(=)=(=)=(=)=
-            // Old xml code
-
-            /*
-            // ------------------------------------------------------------------------
-            // return joined list within time frame
-            // ------------------------------------------------------------------------
-            
-            Start = Start ?? new DateTime(1900, 1, 1);
-            End = End ?? new DateTime(2500, 1, 1);
-            
-            var query =  from c in _categories.List()
-                        join e in _events.List() on c.Id equals e.Category
-                        where e.StartDateTime >= Start && e.StartDateTime <= End
-                        select new { CatId = c.Id, EventId = e.Id, e.StartDateTime, Category = c.Description, e.Details, e.DurationInMinutes };
-
-            // ------------------------------------------------------------------------
-            // create a CalendarItem list with totals,
-            // ------------------------------------------------------------------------
-
-            List<CalendarItem> items = new List<CalendarItem>();
-            Double totalBusyTime = 0;
-            
-
-            foreach (var e in query.OrderBy(q => q.StartDateTime))
-            {
-                // filter out unwanted categories if filter flag is on
-                if (FilterFlag && CategoryID != e.CatId)
-                {
-                    continue;
-                }
-
-                // keep track of running totals
-                totalBusyTime = totalBusyTime + e.DurationInMinutes;
-                items.Add(new CalendarItem
-                {
-                    CategoryID = e.CatId,
-                    EventID = e.EventId,
-                    ShortDescription = e.Details,
-                    StartDateTime = e.StartDateTime,
-                    DurationInMinutes = e.DurationInMinutes,
-                    Category = e.Category,
-                    BusyTime = totalBusyTime
-                });
-            }
-
-            return items;
-            */
         }
 
         // ============================================================================
@@ -342,8 +289,6 @@ namespace Calendar
             return summary;
         }
 
-
-
         // ============================================================================
         // Group all events by category and Month
         // creates a list of Dictionary objects with:
@@ -451,10 +396,6 @@ namespace Calendar
             return summary;
         }
 
-
-
-
         #endregion GetList
-
     }
 }
