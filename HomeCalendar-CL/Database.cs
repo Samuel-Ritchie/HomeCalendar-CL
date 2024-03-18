@@ -59,7 +59,7 @@ namespace Calendar
             // Category Types
             // ====================================================================
             cmd.CommandText =
-                "CREATE TABLE IF NOT EXISTS categoryTypes(" +
+                "CREATE TABLE categoryTypes(" +
                     "Id INTEGER PRIMARY KEY, " +
                     "Description TEXT); ";
 
@@ -69,7 +69,7 @@ namespace Calendar
             // Events
             // ====================================================================
             cmd.CommandText =
-                "CREATE TABLE IF NOT EXISTS events(" +
+                "CREATE TABLE events(" +
                     "Id INTEGER PRIMARY KEY, "+
                     "StartDateTime TEXT, "+
                     "Details TEXT, "+
@@ -83,7 +83,7 @@ namespace Calendar
             // Categories
             // ====================================================================
             cmd.CommandText =
-                "CREATE TABLE IF NOT EXISTS categories(" +
+                "CREATE TABLE categories(" +
                     "Id INTEGER PRIMARY KEY AUTOINCREMENT," +
                     "Description TEXT," +
                     "TypeId INTEGER," +

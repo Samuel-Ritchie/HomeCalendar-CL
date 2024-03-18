@@ -17,7 +17,6 @@ namespace Calendar
     // CLASS: HomeCalendar
     //        - Combines a Categories Class and an Events Class
     //        - One File defines Category and Events File
-    //        - etc
     // ========================================================================
     /// <summary>
     /// Holds Categories and Events Objects created by default or loaded from a Calendar File.
@@ -35,34 +34,6 @@ namespace Calendar
         // ====================================================================
         // Properties
         // ===================================================================
-
-        // Properties (location of files etc)
-        /// <summary>
-        /// Gets name of Calendar File.
-        /// </summary>
-        public String? FileName { get { return _FileName; } }
-        /// <summary>
-        /// Gets name of directory where the Calendar file is located.
-        /// </summary>
-        public String? DirName { get { return _DirName; } }
-        /// <summary>
-        /// Gets the full path of Calendar file.
-        /// If name of calendar file or directory is null, returns null; otherwise, the full path of the file.
-        /// </summary>
-        public String? PathName
-        {
-            get
-            {
-                if (_FileName != null && _DirName != null)
-                {
-                    return Path.GetFullPath(_DirName + "\\" + _FileName);
-                }
-                else
-                {
-                    return null;
-                }
-            }
-        }
 
         // Properties (categories and events object)
         /// <summary>
@@ -113,142 +84,6 @@ namespace Calendar
             _events = new Events();
         }
 
-        #region OpenNewAndSave
-        // ---------------------------------------------------------------
-        // Read
-        // Throws Exception if any problem reading this file
-        // ---------------------------------------------------------------
-        /// <summary>
-        /// Set the Categories and Events data from a loaded Calendar files specified paths.
-        /// Checks if the Calendar file exists, throwing an exception if not.
-        /// Reads the two lines from an existing Calendar file, further obtaining the names of the Categories and Events files.
-        /// Calls the read functions on the respective Categories and Events classes on the two retrieved file names respectively.
-        /// Sets the data of Categories and Events objects inside the containing HomeCalendar object.
-        /// </summary>
-        /// <param name="calendarFileName">The name of the calendar file to load. Leads to the paths of the Categories and Events file names.</param>
-        /// <exception cref="System.IO.FileNotFoundException">If Calendar file path does not exist.</exception>
-        /// <example>
-        /// For all examples below, assume the calendar file contains the
-        /// following elements:
-        /// 
-        /// <code>
-        /// Cat_ID  Event_ID  StartDateTime           Details                 DurationInMinutes
-        ///    3       1      1/10/2018 10:00:00 AM   App Dev Homework             40
-        ///    9       2      1/9/2020 12:00:00 AM    Honolulu		        1440
-        ///    9       3      1/10/2020 12:00:00 AM   Honolulu                   1440
-        ///    7       4      1/20/2020 11:00:00 AM   On call security            180
-        ///    2       5      1/11/2018 7:30:00 PM    staff meeting                15
-        ///    8       6      1/1/2020 12:00:00 AM    New Year's                 1440
-        ///   11       7      1/12/2020 12:00:00 AM   Wendy's birthday           1440
-        ///    2       8      1/11/2018 10:15:00 AM   Sprint retrospective         60
-        /// </code>
-        ///
-        /// <b>Getting a list of ALL calendar items.</b>
-        /// 
-        /// <code>
-        /// <![CDATA[
-        ///  HomeCalendar calendar = new HomeCalendar();
-        ///  calendar.ReadFromFile(filename);
-        /// 
-        ///   List <CalendarItem> calendarItems = calendar.GetCalendarItems(null, null, false, 0);
-        ///             
-        ///   // print important information
-        ///   foreach (var ci in calendarItems)
-        ///   {
-        ///     Console.WriteLine(
-        ///        String.Format("{0} {1,-20}  {2,8} {3,12}",
-        ///            ci.StartDateTime.ToString("yyyy/MMM/dd/HH/mm"),
-        ///            ci.ShortDescription,
-        ///            ci.DurationInMinutes, ci.BusyTime)
-        ///      ); ;
-        ///   }
-        ///
-        ///
-        /// ]]>
-        /// </code>
-        /// The busy time for each object is displayed on the right, and it is added up to the far right.
-        /// The List is sorted By date, from when the list was created by the GetItemListFunction.
-        /// Sample output:
-        /// <code>
-        /// 2018/Jan/10/10/00 App Dev Homework            40           40
-        /// 2018/Jan/11/10/15 Sprint retrospective        60          100
-        /// 2018/Jan/11/19/30 staff meeting               15          115
-        /// 2020/Jan/01/00/00 New Year's                1440         1555
-        /// 2020/Jan/09/00/00 Honolulu                  1440         2995
-        /// 2020/Jan/10/00/00 Honolulu                  1440         4435
-        /// 2020/Jan/12/00/00 Wendy's birthday          1440         5875
-        /// 2020/Jan/20/11/00 On call security           180         6055
-        /// </code>
-        /// </example>
-
-        // ====================================================================
-        // save to a file
-        // saves the following files:
-        //  filepath_events.evts  # events file
-        //  filepath_categories.cats # categories files
-        //  filepath # a file containing the names of the events and categories files.
-        //  Throws exception if we cannot write to that file (ex: invalid dir, wrong permissions)
-        // ====================================================================
-        /// <summary>
-        /// Creates/Updates HomeCalendar, Categories, and Events files from corresponding Objects generated or loaded and changed in runtime.
-        /// Checks if HomeCalendar file path is valid, throwing an exception if not.
-        /// Generates names for Categories and Events files, saving object data to them afterwards.
-        /// Resets file path for the HomeCalendar object in runtime.
-        /// </summary>
-        /// <param name="filepath">The save file path in the system.</param>
-        /// <exception cref="Exception">If file isn't accessible, or if directory was not found.</exception>
-        /// /// <example>
-        /// For all examples below, assume the run time stack contains the
-        /// following objects:
-        /// 
-        /// <code>
-        /// /// 2018/Jan/10/10/00 App Dev Homework            40           40
-        /// 2018/Jan/11/10/15 Sprint retrospective        60          100
-        /// 2018/Jan/11/19/30 staff meeting               15          115
-        /// 2020/Jan/01/00/00 New Year's                1440         1555
-        /// 2020/Jan/09/00/00 Honolulu                  1440         2995
-        /// 2020/Jan/10/00/00 Honolulu                  1440         4435
-        /// 2020/Jan/12/00/00 Wendy's birthday          1440         5875
-        /// 2020/Jan/20/11/00 On call security           180         6055
-        /// </code>
-        /// 
-        /// <code>
-        /// <![CDATA[
-        ///  HomeCalendar calendar = new HomeCalendar();
-        ///  calendar.ReadFromFile(filename);
-        /// 
-        ///   List <CalendarItem> calendarItems = calendar.GetCalendarItems(null, null, false, 0);
-        ///             
-        ///   // print important information
-        ///   foreach (var ci in calendarItems)
-        ///   {
-        ///     Console.WriteLine(
-        ///        String.Format("{0} {1,-20}  {2,8} {3,12}",
-        ///            ci.StartDateTime.ToString("yyyy/MMM/dd/HH/mm"),
-        ///            ci.ShortDescription,
-        ///            ci.DurationInMinutes, ci.BusyTime)
-        ///      ); ;
-        ///   }
-        ///
-        ///
-        /// ]]>
-        /// </code>
-        /// The busy time for each object is displayed on the right, and it is added up to the far right.
-        /// The List is sorted By date, from when the list was created by the GetItemListFunction.
-        /// Sample output:
-        /// <code>
-        /// Cat_ID Event_ID  StartDateTime Details                 DurationInMinutes
-        ///    3       1      1/10/2018 10:00:00 AM   App Dev Homework             40
-        ///    9       2      1/9/2020 12:00:00 AM    Honolulu		        1440
-        ///    9       3      1/10/2020 12:00:00 AM   Honolulu                   1440
-        ///    7       4      1/20/2020 11:00:00 AM   On call security            180
-        ///    2       5      1/11/2018 7:30:00 PM    staff meeting                15
-        ///    8       6      1/1/2020 12:00:00 AM    New Year's                 1440
-        ///   11       7      1/12/2020 12:00:00 AM   Wendy's birthday           1440
-        ///    2       8      1/11/2018 10:15:00 AM   Sprint retrospective         60
-        /// </code>
-        /// </example>
-        #endregion OpenNewAndSave
 
         #region GetList
 
