@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.SQLite;
 using System.IO;
 using System.Linq;
+using System.Reflection.Metadata.Ecma335;
 
 // ============================================================================
 // (c) Sandy Bultena 2018
@@ -59,7 +61,7 @@ namespace Calendar
         /// <value>
         /// (HomeCalendar) new Object. Object data fields set to default.
         /// </value>
-        public HomeCalendar(String databaseFile, String eventsXMLFile, bool newDB = false)
+        public HomeCalendar(String databaseFile, bool newDB = false)
         {
             // if database exists, and user doesn't want a new database, open existing DB
             if (!newDB && File.Exists(databaseFile))
@@ -78,7 +80,8 @@ namespace Calendar
             _categories = new Categories(Database.dbConnection, newDB);
 
             // create the _events course
-            _events = new Events();
+            // _events = new Events(Database.dbConnection, newDB);
+            _events = new Events(Database.dbConnection, newDB);
         }
 
 
@@ -129,38 +132,48 @@ namespace Calendar
             // ------------------------------------------------------------------------
             // return joined list within time frame
             // ------------------------------------------------------------------------
-            Start = Start ?? new DateTime(1900, 1, 1);
-            End = End ?? new DateTime(2500, 1, 1);
 
-            var query =  from c in _categories.List()
-                        join e in _events.List() on c.Id equals e.Category
-                        where e.StartDateTime >= Start && e.StartDateTime <= End
-                        select new { CatId = c.Id, EventId = e.Id, e.StartDateTime, Category = c.Description, e.Details, e.DurationInMinutes };
+            DateTime realStart = Start ?? new DateTime(1900, 1, 1);
+            DateTime realEnd = End ?? new DateTime(2500, 1, 1);
 
-            // ------------------------------------------------------------------------
-            // create a CalendarItem list with totals,
-            // ------------------------------------------------------------------------
+            SQLiteCommand categoryCmd = new SQLiteCommand(
+                $"SELECT E.Id, E.StartDateTime, E.Details, E.DurationInMinutes, C.Id, C.Description, C.TypeId " + 
+                    $"FROM events as E INNER JOIN categories as C ON E.CategoryId == C.Id " +
+                    $"WHERE E.StartDateTime >= '{realStart}' AND E.StartDateTime <= '{realEnd}';", Database.dbConnection);
+
+            SQLiteDataReader categoryResult = categoryCmd.ExecuteReader();
+
+            // Create list to hold all rows.
             List<CalendarItem> items = new List<CalendarItem>();
             Double totalBusyTime = 0;
 
-            foreach (var e in query.OrderBy(q => q.StartDateTime))
+            /*
+            // Event ID:                 0
+            // Event StartDateTime:      1
+            // Event Details:            2
+            // Event DurationInMinutes:  3
+
+            // Category ID:              4
+            // Category Description:     5
+            // Category TypeID:          6
+            */
+
+            while (categoryResult.Read())
             {
-                // filter out unwanted categories if filter flag is on
-                if (FilterFlag && CategoryID != e.CatId)
+                if (FilterFlag && CategoryID != categoryResult.GetInt32(4))
                 {
                     continue;
                 }
 
-                // keep track of running totals
-                totalBusyTime = totalBusyTime + e.DurationInMinutes;
+                totalBusyTime = totalBusyTime + categoryResult.GetDouble(3);
                 items.Add(new CalendarItem
                 {
-                    CategoryID = e.CatId,
-                    EventID = e.EventId,
-                    ShortDescription = e.Details,
-                    StartDateTime = e.StartDateTime,
-                    DurationInMinutes = e.DurationInMinutes,
-                    Category = e.Category,
+                    CategoryID = categoryResult.GetInt32(4),
+                    EventID = categoryResult.GetInt32(0),
+                    ShortDescription = categoryResult.GetString(2),
+                    StartDateTime = categoryResult.GetDateTime(1),
+                    DurationInMinutes = categoryResult.GetDouble(3),
+                    Category = categoryResult.GetString(5),
                     BusyTime = totalBusyTime
                 });
             }
@@ -276,8 +289,6 @@ namespace Calendar
             return summary;
         }
 
-
-
         // ============================================================================
         // Group all events by category and Month
         // creates a list of Dictionary objects with:
@@ -308,7 +319,7 @@ namespace Calendar
         /// <param name="CategoryID"></param>
         /// <returns>A list of dictionaries, each corresponding to a month, and Categories, and the Items of that Category.</returns>
         /// <exception cref="ArgumentNullException">If no Start DateTime is passed to function.</exception>
-        public List<Dictionary<string,object>> GetCalendarDictionaryByCategoryAndMonth(DateTime? Start, DateTime? End, bool FilterFlag, int CategoryID)
+        public List<Dictionary<string, object>> GetCalendarDictionaryByCategoryAndMonth(DateTime? Start, DateTime? End, bool FilterFlag, int CategoryID)
         {
             // -----------------------------------------------------------------------
             // get all items by month 
@@ -385,10 +396,6 @@ namespace Calendar
             return summary;
         }
 
-
-
-
         #endregion GetList
-
     }
 }
