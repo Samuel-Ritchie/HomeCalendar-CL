@@ -252,76 +252,94 @@ namespace Calendar
         /// <exception cref="ArgumentNullException">If no Start DateTime is passed to function.</exception>
         public List<CalendarItemsByCategory> GetCalendarItemsByCategory(DateTime? Start, DateTime? End, bool FilterFlag, int CategoryID)
         {
+            
             // set dates to default if null
             DateTime realStart = Start ?? new DateTime(1900, 1, 1);
             DateTime realEnd = End ?? new DateTime(2500, 1, 1);
+            // testing formatting
+            string startDateFormatted = realStart.ToString("yyyy-MM-dd HH:MM:SS");
+            string endDateFormatted = realEnd.ToString("yyyy-MM-dd HH:MM:SS");
 
-            // general query if filterfalg is false
+
+            //used to track busytime
+            Double totalBusyTime = 0;
+
+            //initializing list to be returned with proper data
+            List<CalendarItemsByCategory> rowsPerCategory = new List<CalendarItemsByCategory>();
+
+
             if (!FilterFlag)
             {
-                SQLiteCommand categoryCmd = new SQLiteCommand($"select e.*, c.Description from events" +
-                    $" e left join categories c " +
-                    $"where e.CategoryId = c.Id group by c.Description;", Database.dbConnection);
+                SQLiteCommand command = new SQLiteCommand($"SELECT e.Id, e.StartDateTime, e.Details, e.DurationInMinutes, c.Id, c.Description " +
+                    $"FROM events e " +
+                    $"LEFT JOIN categories c ON e.CategoryId = c.Id " +
+                    $"WHERE e.CategoryId = c.Id AND e.StartDateTime >= @startDate AND e.StartDateTime <= @endDate " +
+                    $"GROUP BY c.Id " +
+                    $"ORDER BY c.Description;", Database.dbConnection);
 
-                var calendarItemGroupedByCategory = new List<CalendarItemsByCategory>();
-                SQLiteDataReader results = categoryCmd.ExecuteReader();
-                List<CalendarItemsByCategory> calendarItemsByCategories = new List<CalendarItemsByCategory>();
-                Double totalBusyTime = 0;
+                command.Parameters.AddWithValue("@startDate", startDateFormatted);
+                command.Parameters.AddWithValue("@endDate", endDateFormatted);
 
+                SQLiteDataReader results = command.ExecuteReader();
 
+                //NOTE: shortDescription = e.Details || category = c.Description
                 while (results.Read())
                 {
-                    if (FilterFlag && CategoryID != results.GetInt32(4))
-                    {
-                        continue;
-                    }
-                    List<CalendarItem> calendarItem = new List<CalendarItem>();
-                    totalBusyTime = totalBusyTime + results.GetDouble(3);
-                    calendarItemsByCategories.Add(new CalendarItemsByCategory
-                    {
-                        //calendarItem.Add()
-                        //CategoryID = results.GetInt32(4),
-                        //EventID = results.GetInt32(0),
-                        //ShortDescription = results.GetString(2),
-                        //StartDateTime = results.GetDateTime(1),
-                        //DurationInMinutes = results.GetDouble(3),
-                        Category = results.GetString(5),
-                        TotalBusyTime = totalBusyTime
-                    }) ;;
+                    List<CalendarItem> items = new List<CalendarItem>();
+
+                    int eventId = results.GetInt32(0);
+                    int categoryId = results.GetInt32(4);
+                    DateTime startDate = DateTime.Parse(results.GetString(1)); 
+                    string category = results.GetString(5);
+                    string shortDescription = results.GetString(2);
+                    double duration = results.GetDouble(3);
+
+                    totalBusyTime = totalBusyTime + duration;
+
+                    items.Add(new CalendarItem { EventID = eventId, CategoryID = categoryId, StartDateTime = startDate, Category = category, ShortDescription = shortDescription, DurationInMinutes = duration });
+                    rowsPerCategory.Add(new CalendarItemsByCategory { Category = category, Items = items, TotalBusyTime = totalBusyTime });
                 }
 
-
-                /* SQLiteDataReader results = cmd.ExecuteReader();
-
-            while (results.Read())
-            {
-                int id = results.GetInt32(0);
-                DateTime date = DateTime.Parse(results.GetString(1)); // results.GetDateTime(1
-                int category = results.GetInt32(2);
-                double duration = results.GetDouble(3);
-                string details = results.GetString(4);
-
-                eventList.Add(new Event(id, date, category, duration, details));
-            } */
-
+                return rowsPerCategory; 
             }
-            // filter flag is true, so this query will incorporate it
+            // filter flag is true, so this query will incorporate it by selecting only Events that have matching CategoryIDs
             else
             {
-                SQLiteCommand categoryCmd = new SQLiteCommand($"SELECT E.Id, E.StartDateTime, E.Details, E.DurationInMinutes, C.Id, C.Description, C.TypeId " +
-                    $"FROM events as E INNER JOIN categories as C ON E.CategoryId == C.Id " +
-                    $"WHERE E.StartDateTime >= '{realStart}' AND E.StartDateTime <= '{realEnd}' AND E.CategoryId == {CategoryID}" +
-                    $"GROUP BY E.CategoryId;", Database.dbConnection);
+                SQLiteCommand command = new SQLiteCommand($"SELECT e.Id, e.StartDateTime, e.Details, e.DurationInMinutes, c.Id, c.Description " +
+                    $"FROM events e " +
+                    $"LEFT JOIN categories c ON e.CategoryId = c.Id " +
+                    $"WHERE e.CategoryId = c.Id AND e.StartDateTime >= @startDate AND e.StartDateTime <= @endDate AND e.CategoryId = @categoryIdFlag " +
+                    $"GROUP BY c.Id " +
+                    $"ORDER BY c.Description;", Database.dbConnection);
 
-                var calendarItemGroupedByCategoryAndFlag = new List<CalendarItemsByCategory>();
-                SQLiteDataReader results = categoryCmd.ExecuteReader();
+                command.Parameters.AddWithValue("@startDate", startDateFormatted);
+                command.Parameters.AddWithValue("@endDate", endDateFormatted);
+                command.Parameters.AddWithValue("@categoryIdFlag", CategoryID);
 
+                SQLiteDataReader results = command.ExecuteReader();
+
+                //NOTE: shortDescription = e.Details || category = c.Description
                 while (results.Read())
                 {
+                    List<CalendarItem> items = new List<CalendarItem>();
 
-                    //calendarItemGroupedByCategoryAndFlag.Add()
+                    int eventId = results.GetInt32(0);
+                    int categoryId = results.GetInt32(4);
+                    DateTime startDate = DateTime.Parse(results.GetString(1));
+                    string category = results.GetString(5);
+                    string shortDescription = results.GetString(2);
+                    double duration = results.GetDouble(3);
+
+                    totalBusyTime = totalBusyTime + duration;
+
+                    items.Add(new CalendarItem { EventID = eventId, CategoryID = categoryId, StartDateTime = startDate, Category = category, ShortDescription = shortDescription, DurationInMinutes = duration });
+                    rowsPerCategory.Add(new CalendarItemsByCategory { Category = category, Items = items, TotalBusyTime = totalBusyTime });
                 }
+
+                return rowsPerCategory;
             }
+
+
 
 
         }
