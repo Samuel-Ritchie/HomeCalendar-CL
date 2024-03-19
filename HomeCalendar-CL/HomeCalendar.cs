@@ -238,18 +238,13 @@ namespace Calendar
         // Group all events by category (ordered by category name)
         // ============================================================================
         /// <summary>
-        /// Returns a list of CalendarItemsByCategory Objects.
-        /// Uses GetCalendarItems() to get a list of the items in the filtered time frame and Category if specified.
-        /// Divides the retrieved list by Category, putting each grouped list into a CalendarItemsByCategory Object.
-        /// Also stores the name of the Category and the lists total busy time according to each item list in the Object.
-        /// Creates a list that holds all of the CalendarItemsByCategory Objects and returns it.
+        /// Retrieves a list of calendar items grouped by category, optionally filtered by date range and category ID.
         /// </summary>
-        /// <param name="Start">(DateTime) The date where items start being included in the base items list.</param>
-        /// <param name="End">(DateTime) The date where items stop being included in the base items list.</param>
-        /// <param name="FilterFlag">(Bool) If true, items are included by CategoryID; Otherwise, items of any CategoryID are included in the list.</param>
-        /// <param name="CategoryID">(Int) The only CategoryID that is included in the list if the FilterFlag is set to true.</param>
-        /// <returns>A list of CalendarItemsByCategory Objects.</returns>
-        /// <exception cref="ArgumentNullException">If no Start DateTime is passed to function.</exception>
+        /// <param name="Start">The start date of the date range to filter calendar items. If null, defaults to January 1, 1900.</param>
+        /// <param name="End">The end date of the date range to filter calendar items. If null, defaults to January 1, 2500.</param>
+        /// <param name="FilterFlag">A boolean flag indicating whether to filter calendar items by the specified category ID.</param>
+        /// <param name="CategoryID">The category ID to filter calendar items by. Only used if FilterFlag is true.</param>
+        /// <returns>A list of CalendarItemsByCategory objects, each representing a category with its associated calendar items and total busy time.</returns>
         public List<CalendarItemsByCategory> GetCalendarItemsByCategory(DateTime? Start, DateTime? End, bool FilterFlag, int CategoryID)
         {
             
