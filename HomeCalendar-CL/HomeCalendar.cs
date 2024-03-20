@@ -181,11 +181,6 @@ namespace Calendar
             return items;
         }
 
-        // ============================================================================
-        // Group all events month by month (sorted by year/month)
-        // returns a list of CalendarItemsByMonth which is 
-        // "year/month", list of calendar items, and totalBusyTime for that month
-        // ============================================================================
         /// <summary>
         /// Returns a list of Calendar Items. The list has the option to be filtered by Category, and which time the Items takes place.
         /// </summary>
@@ -194,16 +189,13 @@ namespace Calendar
         /// <param name="FilterFlag">(Bool) If true, items are included by CategoryID; Otherwise, items of any CategoryID are included in the list.</param>
         /// <param name="CategoryID">(Int) The only CategoryID that is included in the list if the FilterFlag is set to true.</param>
         /// <returns>A list of Calendar Items.</returns>
-        /// <exception cref="ArgumentNullException">If no Start DateTime is passed to function.</exception>
         public List<CalendarItemsByMonth> GetCalendarItemsByMonth(DateTime? Start, DateTime? End, bool FilterFlag, int CategoryID)
         {
-            // ------------------------------------------------------------------------
-            // return joined list within time frame
-            // ------------------------------------------------------------------------
-
+            // Default times if null
             DateTime realStart = Start ?? new DateTime(1900, 1, 1);
             DateTime realEnd = End ?? new DateTime(2500, 1, 1);
 
+            // Filtering if needed in query
             SQLiteCommand cmd = (FilterFlag) ? 
                 new SQLiteCommand(
                     $"SELECT E.Id, E.StartDateTime, E.Details, E.DurationInMinutes, C.Id, C.Description, C.TypeId " +
@@ -237,24 +229,30 @@ namespace Calendar
             // Category TypeID:          6
             */
             CalendarItemsByMonth month = new CalendarItemsByMonth();
+            const int MONTH_INDEX = 7;
             bool isFirstRow = true;
 
+            // Reading all rows
             while (result.Read())
             {
-                if (month.Month != result.GetString(1).Substring(0, 7).Replace("-", "/") || isFirstRow)
+                // Changing CalendarItemsByMonth object if different month and year
+                if (month.Month != result.GetString(1).Substring(0, MONTH_INDEX) || isFirstRow)
                 {
                     if (!isFirstRow) items.Add(month);
 
                     month = new CalendarItemsByMonth
                     {
-                        Month = result.GetString(1).Substring(0, 7).Replace("-", "/"),
+                        Month = result.GetString(1).Substring(0, MONTH_INDEX),
                         Items = new List<CalendarItem>(),
                         TotalBusyTime = 0
                     };
                     isFirstRow = false;
                 }
 
+                // Adding to total busy time
                 month.TotalBusyTime += result.GetDouble(3);
+
+                // Adding to list of CalendarItems in CalendarItemsByMonth
                 month.Items.Add(new CalendarItem
                 {
                     CategoryID = result.GetInt32(4),
@@ -266,15 +264,14 @@ namespace Calendar
                 });
 
             }
+
+            // Adding last CalendarItemsByMonth if any rows were read
             if (!isFirstRow)
                 items.Add(month);
 
             return items;
         }
 
-        // ============================================================================
-        // Group all events by category (ordered by category name)
-        // ============================================================================
         /// <summary>
         /// Retrieves a list of calendar items grouped by category, optionally filtered by date range and category ID.
         /// </summary>
@@ -285,13 +282,11 @@ namespace Calendar
         /// <returns>A list of CalendarItemsByCategory objects, each representing a category with its associated calendar items and total busy time.</returns>
         public List<CalendarItemsByCategory> GetCalendarItemsByCategory(DateTime? Start, DateTime? End, bool FilterFlag, int CategoryID)
         {
-            // ------------------------------------------------------------------------
-            // return joined list within time frame
-            // ------------------------------------------------------------------------
-
+            // Default times if null
             DateTime realStart = Start ?? new DateTime(1900, 1, 1);
             DateTime realEnd = End ?? new DateTime(2500, 1, 1);
 
+            // Filtering if needed in query
             SQLiteCommand cmd = (FilterFlag) ?
                 new SQLiteCommand(
                     $"SELECT E.Id, E.StartDateTime, E.Details, E.DurationInMinutes, C.Id, C.Description, C.TypeId " +
@@ -329,6 +324,7 @@ namespace Calendar
 
             while (result.Read())
             {
+                // Changing CalendarItemsByCategory object if different month and year
                 if (category.Category != result.GetString(5) || isFirstRow)
                 {
                     if (!isFirstRow) items.Add(category);
@@ -342,7 +338,10 @@ namespace Calendar
                     isFirstRow = false;
                 }
 
+                // Adding to total busy time
                 category.TotalBusyTime += result.GetDouble(3);
+
+                // Adding to list of CalendarItems in CalendarItemsByCategory
                 category.Items.Add(new CalendarItem
                 {
                     CategoryID = result.GetInt32(4),
@@ -355,6 +354,7 @@ namespace Calendar
 
             }
 
+            // Adding last CalendarItemsByCategory if any rows were read
             if (!isFirstRow)
                 items.Add(category);
 
