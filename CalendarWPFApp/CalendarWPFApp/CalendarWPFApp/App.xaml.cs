@@ -2,7 +2,7 @@
 using System.Data;
 using System.Windows;
 
-namespace CalendarMVP
+namespace CalendarWPFApp
 {
     /// <summary>
     /// Interaction logic for App.xaml

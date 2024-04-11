@@ -8,8 +8,9 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Calendar;
 
-namespace CalendarMVP
+namespace CalendarWPFApp
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
@@ -19,6 +20,8 @@ namespace CalendarMVP
         public MainWindow()
         {
             InitializeComponent();
+
+
         }
     }
 }
