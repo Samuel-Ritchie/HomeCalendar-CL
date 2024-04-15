@@ -41,5 +41,12 @@ namespace CalendarWPFApp
                 //did not pick a file
             }
         }
+
+        private void openEventCreationPage_Click(object sender, RoutedEventArgs e)
+        {
+            createPromptWindow secondWindow = new createPromptWindow();
+            this.Visibility = Visibility.Hidden;
+            secondWindow.Show();
+        }
     }
 }

@@ -32,6 +32,8 @@
             <TextBox Name="chosenDirectoryName" Margin="13" Padding="5" Grid.Column="1" Grid.Row="1" VerticalAlignment="Top" HorizontalAlignment="Center"></TextBox>
             <TextBlock Grid.Column="1" Grid.Row="1" VerticalAlignment="Top" HorizontalAlignment="Center">Directory Path</TextBlock>
 
+            <Button Name="loadCreateEventPage" Height="50" Width="75" Grid.Column="1" Grid.Row="2">Find!</Button>
+
         </Grid>
     </Grid>
 </Window>   
