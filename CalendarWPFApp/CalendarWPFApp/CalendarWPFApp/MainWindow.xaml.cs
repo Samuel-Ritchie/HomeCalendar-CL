@@ -38,6 +38,8 @@ namespace CalendarWPFApp
             {
                 //did not pick a file
             }
+
+            HomeCalendar
         }
     }
 }
