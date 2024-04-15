@@ -34,12 +34,21 @@ namespace CalendarWPFApp
                 //user picked a file
                 string fullPath = fileDialog.FileName;
                 string fileName = fileDialog.SafeFileName;
+                chosenFileName.Text = fileName;
+                chosenDirectoryName.Text = fullPath;
             } else
             {
                 //did not pick a file
             }
 
             HomeCalendar
+        }
+
+        private void openEventCreationPage_Click(object sender, RoutedEventArgs e)
+        {
+            createPromptWindow secondWindow = new createPromptWindow();
+            this.Visibility = Visibility.Hidden;
+            secondWindow.Show();
         }
     }
 }
