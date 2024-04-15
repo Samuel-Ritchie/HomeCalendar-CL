@@ -26,12 +26,16 @@ namespace CalendarWPFApp
 
         private void CreateEventButton_Click(object sender, RoutedEventArgs e)
         {
-
+            CreateEventWindow secondWindow = new CreateEventWindow();
+            this.Visibility = Visibility.Hidden;
+            secondWindow.Show();
         }
 
         private void CreateCategoryButton_Click(object sender, RoutedEventArgs e)
         {
-
+            CreateCategoryWindow secondWindow = new CreateCategoryWindow();
+            this.Visibility = Visibility.Hidden;
+            secondWindow.Show();
         }
     }
 }

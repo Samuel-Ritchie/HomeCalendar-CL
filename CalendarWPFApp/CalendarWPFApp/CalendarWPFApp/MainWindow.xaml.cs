@@ -8,6 +8,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.IO;
 using Calendar;
 using Microsoft.Win32;
 
@@ -18,6 +19,9 @@ namespace CalendarWPFApp
     /// </summary>
     public partial class MainWindow : Window
     {
+
+        private string _filePath;
+
         public MainWindow()
         {
             InitializeComponent();
@@ -32,6 +36,9 @@ namespace CalendarWPFApp
             if(choseFile == true)
             {
                 //user picked a file
+                _filePath = fileDialog.FileName;
+
+                // Change view
                 string fullPath = fileDialog.FileName;
                 string fileName = fileDialog.SafeFileName;
                 chosenFileName.Text = fileName;
@@ -44,9 +51,23 @@ namespace CalendarWPFApp
 
         private void openEventCreationPage_Click(object sender, RoutedEventArgs e)
         {
-            createPromptWindow secondWindow = new createPromptWindow();
-            this.Visibility = Visibility.Hidden;
-            secondWindow.Show();
+            // If database file does not exist, pop out dsclaimer window that asks user if they want to create a new database file.
+            if (_filePath != null && File.Exists(_filePath))
+            {
+                createPromptWindow secondWindow = new createPromptWindow();
+                this.Visibility = Visibility.Hidden;
+                secondWindow.Show();
+            }
+            else if (_filePath != null)
+            {
+                // display file not chosen
+            }
+            else if (!File.Exists(_filePath))
+            {
+                // Display file does not exist.
+                // Pop up Disclaimer window. Ask user if they want to create new database file with that name.
+                // If not, close pop up and stay on file picker window.
+            }
         }
     }
 }
