@@ -40,8 +40,6 @@ namespace CalendarWPFApp
             {
                 //did not pick a file
             }
-
-            HomeCalendar
         }
 
         private void openEventCreationPage_Click(object sender, RoutedEventArgs e)
