@@ -9,6 +9,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Calendar;
+using Microsoft.Win32;
 
 namespace CalendarWPFApp
 {
@@ -20,8 +21,23 @@ namespace CalendarWPFApp
         public MainWindow()
         {
             InitializeComponent();
+        }
 
+        private void fileExplorer_Click(object sender, RoutedEventArgs e)
+        {
+            OpenFileDialog fileDialog = new OpenFileDialog();
+            fileDialog.Multiselect = false; //cant select many files
+            bool? choseFile = fileDialog.ShowDialog();
 
+            if(choseFile == true)
+            {
+                //user picked a file
+                string fullPath = fileDialog.FileName;
+                string fileName = fileDialog.SafeFileName;
+            } else
+            {
+                //did not pick a file
+            }
         }
     }
 }
