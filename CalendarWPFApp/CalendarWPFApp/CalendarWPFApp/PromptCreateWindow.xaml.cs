@@ -16,11 +16,11 @@ using System.Windows.Shapes;
 namespace CalendarWPFApp
 {
     /// <summary>
-    /// Interaction logic for CreateEventWindow.xaml
+    /// Interaction logic for PromptCreateWindow.xaml
     /// </summary>
-    public partial class CreateEventWindow : Window, IcreateEventWindow
+    public partial class PromptCreateWindow : Window, IpromptCreateWindow
     {
-        public CreateEventWindow()
+        public PromptCreateWindow()
         {
             InitializeComponent();
         }

@@ -13,13 +13,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="dlls\" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Reference Include="HomeCalendar">
-      <HintPath>dlls\HomeCalendar.dll</HintPath>
-    </Reference>
+    <ProjectReference Include="..\PresenterCode\PresenterCode.csproj" />
   </ItemGroup>
 
   <ItemGroup>

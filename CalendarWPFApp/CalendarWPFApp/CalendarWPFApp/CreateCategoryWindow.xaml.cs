@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PresenterCode;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -17,7 +18,7 @@ namespace CalendarWPFApp
     /// <summary>
     /// Interaction logic for CreateCategoryWindow.xaml
     /// </summary>
-    public partial class CreateCategoryWindow : Window
+    public partial class CreateCategoryWindow : Window, IcreateCategoryWindow
     {
         public CreateCategoryWindow()
         {
