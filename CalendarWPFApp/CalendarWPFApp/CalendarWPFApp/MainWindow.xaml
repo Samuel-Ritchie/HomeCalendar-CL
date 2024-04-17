@@ -32,6 +32,7 @@
             <TextBox Name="chosenDirectoryName" Margin="13" Padding="5" Grid.Column="1" Grid.Row="1" VerticalAlignment="Top" HorizontalAlignment="Center"></TextBox>
             <TextBlock Grid.Column="1" Grid.Row="1" VerticalAlignment="Top" HorizontalAlignment="Center">Directory Path</TextBlock>
 
+            
             <Button  x:Name="FindBtn" Click="OpenWindow_Click" Margin="30" Height="35" Width="60" Grid.Column="1" Grid.Row="2">Find</Button>
             <Button HorizontalAlignment="Left" x:Name="swapBtnState" Click="swapBtnState_Click" Margin="5" Height="30" Width="90" Grid.Column="1" Grid.Row="2">Change Search</Button>
 

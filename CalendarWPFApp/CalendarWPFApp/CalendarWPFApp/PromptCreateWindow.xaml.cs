@@ -20,9 +20,24 @@ namespace CalendarWPFApp
     /// </summary>
     public partial class PromptCreateWindow : Window, IpromptCreateWindow
     {
-        public PromptCreateWindow()
+        // Main window reference.
+        private ImainWindow _mainWindow;
+
+        public PromptCreateWindow(ImainWindow mainWindow)
         {
             InitializeComponent();
+
+            _mainWindow = mainWindow;
+        }
+
+        private void CreateCategoryButton_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void CreateEventButton_Click(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }

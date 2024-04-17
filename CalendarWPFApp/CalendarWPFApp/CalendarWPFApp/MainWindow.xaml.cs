@@ -25,14 +25,15 @@ namespace CalendarWPFApp
         private CreateCategoryWindow _createCategoryWindow;
 
         private string _filePath;
+        private bool _openExistentDatabase;
 
         public MainWindow()
         {
             InitializeComponent();
 
-            _promptCreateWindow = new PromptCreateWindow();
-            _createEventWindow = new CreateEventWindow();
-            _createCategoryWindow = new CreateCategoryWindow();
+            _promptCreateWindow = new PromptCreateWindow(this);
+            _createEventWindow = new CreateEventWindow(this);
+            _createCategoryWindow = new CreateCategoryWindow(this);
 
             _presenter = new presenter(this, _promptCreateWindow, _createEventWindow, _createCategoryWindow);
 
@@ -57,10 +58,11 @@ namespace CalendarWPFApp
                 string fileName = fileDialog.SafeFileName;
                 chosenFileName.Text = fileName;
                 chosenDirectoryName.Text = fullPath;
+                _filePath = fullPath;
 
             } else
             {
-                chosenFileName.Text = "Please select a valid file.";
+                chosenFileName.Text = "Please select a valid db file.";
             }
         }
 
@@ -74,37 +76,53 @@ namespace CalendarWPFApp
                 ErrorFind.Text = "Please select a valid file before searching.";
             }else
             {
-                //prompt next window
-                
+                // File name is valid.
+                if (FindBtn.Content.ToString() == "Create calendar")
+                {
+                    // Initialize HomeCalendar in model with existing file.
+                    _presenter.InitializeHomeCalendar(_filePath, true);
+                }
+                else if (FindBtn.Content.ToString() == "Find calendar")
+                {
+                    // Initialize HomeCalendar in model with existing file.
+                    _presenter.InitializeHomeCalendar(_filePath , false);
+                }
             }
-
-            
-
         }
 
         private void swapBtnState_Click(object sender, RoutedEventArgs e)
         {
-            string createCalendar = "Create calendar";
-            string findCalendar = "Find calendar";
+            const string CREATE_CALENDAR_STRING = "Create calendar";
+            const string FIND_CALENDAR_STRING = "Find calendar";
        
-                if (FindBtn.Content.ToString() == "Find" || FindBtn.Content.ToString() == findCalendar)
+                if (FindBtn.Content.ToString() == "Find" || FindBtn.Content.ToString() == FIND_CALENDAR_STRING)
                 {
-                    FindBtn.Content = createCalendar;
+                    FindBtn.Content = CREATE_CALENDAR_STRING;
 
                 }
-                else if (FindBtn.Content.ToString() == createCalendar)
+                else if (FindBtn.Content.ToString() == CREATE_CALENDAR_STRING)
                 {
-                    FindBtn.Content = findCalendar;
+                    FindBtn.Content = FIND_CALENDAR_STRING;
                 }
-           
         }
 
-        //method for opening Sam's window (window name not up to date)
-        //private void openEventCreationPage_Click(object sender, RoutedEventArgs e)
-        //{
-        //    createPromptWindow secondWindow = new createPromptWindow();
-        //    this.Visibility = Visibility.Hidden;
-        //    secondWindow.Show();
-        //}
+        //method for opening Sam's window
+        private void openEventCreationPage_Click(object sender, RoutedEventArgs e)
+        {
+
+
+            this.Visibility = Visibility.Hidden;
+            _promptCreateWindow.Show();
+        }
+
+        //==============================================
+        //  Interface Methods
+        //==============================================
+
+        public void OpenPromptCreateWindow()
+        {
+            this.Visibility = Visibility.Hidden;
+            _promptCreateWindow.Show();
+        }
     }
 }

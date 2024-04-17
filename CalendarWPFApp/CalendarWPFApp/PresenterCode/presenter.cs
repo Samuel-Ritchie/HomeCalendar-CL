@@ -11,7 +11,7 @@ namespace PresenterCode
     {
         // Model instance
         // Can only be initialized once user chooses database file.
-        HomeCalendar _model = null;
+        HomeCalendar _Model = null;
 
         // Interface references
         private ImainWindow _mainWindow;
@@ -29,16 +29,19 @@ namespace PresenterCode
         }
 
         //==============================================
+        //  Presenter Methods
+        //==============================================
+
+        //==============================================
+        //  Presenter to Model Methods
+        //==============================================
+
+        //==============================================
         //  MainWindow / Choose Calendar File Methods
         //==============================================
-        public void CreateNewDatabase()
+        public void InitializeHomeCalendar(string filePath, bool isNewDatabase)
         {
-            // Initialize new HomeCalendar.
-        }
-
-        public void OpenExistingDatabase()
-        {
-            // Initialize new HomeCalendar.
+            _Model = new HomeCalendar(filePath, isNewDatabase);
         }
 
         //==============================================

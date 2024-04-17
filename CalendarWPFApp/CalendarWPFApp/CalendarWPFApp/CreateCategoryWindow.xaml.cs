@@ -20,9 +20,14 @@ namespace CalendarWPFApp
     /// </summary>
     public partial class CreateCategoryWindow : Window, IcreateCategoryWindow
     {
-        public CreateCategoryWindow()
+        // Main window reference.
+        private ImainWindow _mainWindow;
+
+        public CreateCategoryWindow(ImainWindow mainWindow)
         {
             InitializeComponent();
+
+            _mainWindow = mainWindow;
         }
     }
 }
