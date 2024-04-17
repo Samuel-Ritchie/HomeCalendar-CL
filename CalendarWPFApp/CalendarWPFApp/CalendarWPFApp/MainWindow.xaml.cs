@@ -45,6 +45,8 @@ namespace CalendarWPFApp
             fileDialog.Multiselect = false; //cant select many files
             bool? choseFile = fileDialog.ShowDialog();
 
+            
+
             if(choseFile == true)
             {
                 //user picked a file
@@ -55,32 +57,54 @@ namespace CalendarWPFApp
                 string fileName = fileDialog.SafeFileName;
                 chosenFileName.Text = fileName;
                 chosenDirectoryName.Text = fullPath;
+
             } else
             {
-                //did not pick a file
+                chosenFileName.Text = "Please select a valid file.";
             }
         }
 
-        private void openEventCreationPage_Click(object sender, RoutedEventArgs e)
+        private void OpenWindow_Click(object sender, RoutedEventArgs e)
         {
-            // If database file does not exist, pop out dsclaimer window that asks user if they want to create a new database file.
-            if (_filePath != null && File.Exists(_filePath))
-            {
-                this.Visibility = Visibility.Hidden;
-                _promptCreateWindow.Show();
-            }
-            else if (_filePath != null)
-            {
-                // display file not chosen
-            }
-            else if (!File.Exists(_filePath))
-            {
-                // Display file does not exist.
-                // Pop up Disclaimer window. Ask user if they want to create new database file with that name.
-                // If not, close pop up and stay on file picker window.
 
 
+            //validate selected file before finding?
+            if (chosenFileName.Text == "Please select a valid file.")
+            {
+                ErrorFind.Text = "Please select a valid file before searching.";
+            }else
+            {
+                //prompt next window
+                
             }
+
+            
+
         }
+
+        private void swapBtnState_Click(object sender, RoutedEventArgs e)
+        {
+            string createCalendar = "Create calendar";
+            string findCalendar = "Find calendar";
+       
+                if (FindBtn.Content.ToString() == "Find" || FindBtn.Content.ToString() == findCalendar)
+                {
+                    FindBtn.Content = createCalendar;
+
+                }
+                else if (FindBtn.Content.ToString() == createCalendar)
+                {
+                    FindBtn.Content = findCalendar;
+                }
+           
+        }
+
+        //method for opening Sam's window (window name not up to date)
+        //private void openEventCreationPage_Click(object sender, RoutedEventArgs e)
+        //{
+        //    createPromptWindow secondWindow = new createPromptWindow();
+        //    this.Visibility = Visibility.Hidden;
+        //    secondWindow.Show();
+        //}
     }
 }
