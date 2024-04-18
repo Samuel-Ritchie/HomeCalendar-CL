@@ -24,5 +24,15 @@ namespace CalendarWPFApp
         {
             InitializeComponent();
         }
+
+        private void doneDescBtn(object sender, RoutedEventArgs e)
+        {
+            MyTextBox.IsEnabled = false;
+        }
     }
+    //category = Id, Description, CategoryType
+
+   
+
+
 }
