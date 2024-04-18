@@ -21,78 +21,7 @@ namespace CalendarWPFApp
         public MainWindow()
         {
             InitializeComponent();
-        }
-
-        private void fileExplorer_Click(object sender, RoutedEventArgs e)
-        {
-            OpenFileDialog fileDialog = new OpenFileDialog();
-            fileDialog.Multiselect = false; //cant select many files
-            bool? choseFile = fileDialog.ShowDialog();
-
-
-
-            if (choseFile == true)
-            {
-                //user picked a file
-                string fullPath = fileDialog.FileName;
-                string fileName = fileDialog.SafeFileName;
-                chosenFileName.Text = fileName;
-                chosenDirectoryName.Text = fullPath;
-
-            }
-            else
-            {
-                chosenFileName.Text = "Please select a valid file.";
-            }
-        }
-
-        private void OpenWindow_Click(object sender, RoutedEventArgs e)
-        {
-
-
-            //validate selected file before finding?
-            if (chosenFileName.Text == "Please select a valid file.")
-            {
-                ErrorFind.Text = "Please select a valid file before searching.";
-            }
-            else
-            {
-                //prompt next window
-
-            }
-
-
-
-        }
-
-        private bool isSearch = false;
-        private void swapBtnState_Click(object sender, RoutedEventArgs e)
-        {
-            if (!isSearch)
-            {
-                CreateFileBtn.Background = new BrushConverter().ConvertFrom("#555555") as SolidColorBrush;
-                TextBlock text = CreateFileBtn.Child as TextBlock;
-                text.Foreground = new BrushConverter().ConvertFrom("#BBBBBB") as SolidColorBrush;
-
-                SearchFileBtn.Background = new BrushConverter().ConvertFrom("#5e9146") as SolidColorBrush;
-                text = SearchFileBtn.Child as TextBlock;
-                text.Foreground = new BrushConverter().ConvertFrom("#FFFFFF") as SolidColorBrush;
-
-                isSearch = true;
-            }
-            else
-            {
-                CreateFileBtn.Background = new BrushConverter().ConvertFrom("#5e9146") as SolidColorBrush;
-                TextBlock text = CreateFileBtn.Child as TextBlock;
-                text.Foreground = new BrushConverter().ConvertFrom("#FFFFFF") as SolidColorBrush;
-
-                SearchFileBtn.Background = new BrushConverter().ConvertFrom("#555555") as SolidColorBrush;
-                text = SearchFileBtn.Child as TextBlock;
-                text.Foreground = new BrushConverter().ConvertFrom("#BBBBBB") as SolidColorBrush;
-
-                isSearch = false;
-            }
-
+            main.Content = new SelectDB();
         }
 
         //method for opening Sam's window (window name not up to date)
