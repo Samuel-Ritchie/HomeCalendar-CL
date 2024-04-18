@@ -25,20 +25,28 @@ namespace CalendarWPFApp
         private CreateCategoryWindow _createCategoryWindow;
 
         private string _filePath;
-        private bool _openExistentDatabase;
+        private string _fileName;
+        private bool _databaseAlreadyExists;
 
         public MainWindow()
         {
             InitializeComponent();
 
+            /*
             _promptCreateWindow = new PromptCreateWindow(this);
             _createEventWindow = new CreateEventWindow(this);
             _createCategoryWindow = new CreateCategoryWindow(this);
+            */
 
-            _presenter = new presenter(this, _promptCreateWindow, _createEventWindow, _createCategoryWindow);
+            _presenter = new presenter(this/*, _promptCreateWindow, _createEventWindow, _createCategoryWindow*/);
 
             _filePath = "";
+            _fileName = "";
         }
+
+        //==============================================
+        //  Event Handlers
+        //==============================================
 
         private void fileExplorer_Click(object sender, RoutedEventArgs e)
         {
@@ -46,23 +54,18 @@ namespace CalendarWPFApp
             fileDialog.Multiselect = false; //cant select many files
             bool? choseFile = fileDialog.ShowDialog();
 
-            
-
             if(choseFile == true)
             {
                 //user picked a file
                 _filePath = fileDialog.FileName;
+                _fileName = fileDialog.FileName;
 
                 // Change view
-                string fullPath = fileDialog.FileName;
-                string fileName = fileDialog.SafeFileName;
-                chosenFileName.Text = fileName;
-                chosenDirectoryName.Text = fullPath;
-                _filePath = fullPath;
+                ChangeDatabaseNameAndPathDisplay(_fileName, _filePath);
 
             } else
             {
-                chosenFileName.Text = "Please select a valid db file.";
+                ShowError("Please select a valid db file.");
             }
         }
 
@@ -73,19 +76,21 @@ namespace CalendarWPFApp
             //validate selected file before finding?
             if (chosenFileName.Text == "Please select a valid file.")
             {
-                ErrorFind.Text = "Please select a valid file before searching.";
+                ShowError("Please select a valid file before searching.");
             }else
             {
                 // File name is valid.
                 if (FindBtn.Content.ToString() == "Create calendar")
                 {
                     // Initialize HomeCalendar in model with existing file.
-                    _presenter.InitializeHomeCalendar(_filePath, true);
+                    _databaseAlreadyExists = true;
+                    _presenter.InitializeHomeCalendar(_fileName, _filePath, _databaseAlreadyExists);
                 }
                 else if (FindBtn.Content.ToString() == "Find calendar")
                 {
                     // Initialize HomeCalendar in model with existing file.
-                    _presenter.InitializeHomeCalendar(_filePath , false);
+                    _databaseAlreadyExists = false;
+                    _presenter.InitializeHomeCalendar(_fileName, _filePath , _databaseAlreadyExists);
                 }
             }
         }
@@ -93,36 +98,41 @@ namespace CalendarWPFApp
         private void swapBtnState_Click(object sender, RoutedEventArgs e)
         {
             const string CREATE_CALENDAR_STRING = "Create calendar";
-            const string FIND_CALENDAR_STRING = "Find calendar";
+            const string OPEN_CALENDAR_STRING = "Open calendar";
        
-                if (FindBtn.Content.ToString() == "Find" || FindBtn.Content.ToString() == FIND_CALENDAR_STRING)
+                if (FindBtn.Content.ToString() == OPEN_CALENDAR_STRING)
                 {
                     FindBtn.Content = CREATE_CALENDAR_STRING;
 
                 }
                 else if (FindBtn.Content.ToString() == CREATE_CALENDAR_STRING)
                 {
-                    FindBtn.Content = FIND_CALENDAR_STRING;
+                    FindBtn.Content = OPEN_CALENDAR_STRING;
                 }
-        }
-
-        //method for opening Sam's window
-        private void openEventCreationPage_Click(object sender, RoutedEventArgs e)
-        {
-
-
-            this.Visibility = Visibility.Hidden;
-            _promptCreateWindow.Show();
         }
 
         //==============================================
         //  Interface Methods
         //==============================================
-
         public void OpenPromptCreateWindow()
         {
             this.Visibility = Visibility.Hidden;
             _promptCreateWindow.Show();
+        }
+
+        public void ShowError(string errorMsg)
+        {
+            ErrorFind.Text = errorMsg;
+        }
+
+        //==============================================
+        //  Specific Methods
+        //==============================================
+        public void ChangeDatabaseNameAndPathDisplay(string name, string path)
+        {
+
+            chosenFileName.Text = name;
+            chosenDirectoryName.Text = path;
         }
     }
 }

@@ -30,6 +30,9 @@ namespace CalendarWPFApp
             _mainWindow = mainWindow;
         }
 
+        //==============================================
+        //  Event Handlers
+        //==============================================
         private void CreateCategoryButton_Click(object sender, RoutedEventArgs e)
         {
 
@@ -38,6 +41,14 @@ namespace CalendarWPFApp
         private void CreateEventButton_Click(object sender, RoutedEventArgs e)
         {
 
+        }
+
+        //==============================================
+        //  Interface Methods
+        //==============================================
+        public void ChangeDisplayInfo(string databaseName)
+        {
+            DatabaseNameDisplay.Text = databaseName;
         }
     }
 }

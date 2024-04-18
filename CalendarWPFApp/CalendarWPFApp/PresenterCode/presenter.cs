@@ -15,17 +15,12 @@ namespace PresenterCode
 
         // Interface references
         private ImainWindow _mainWindow;
-        private IpromptCreateWindow _promptCreateWindow;
-        private IcreateEventWindow _createEventWindow;
-        private IcreateCategoryWindow _createCategoryWindow;
+        private IWindow window;
 
-        public presenter(ImainWindow mainWindow, IpromptCreateWindow promptCreateWindow, IcreateEventWindow createEventWindow, IcreateCategoryWindow createCategoryWindow) 
+        public presenter(ImainWindow mainWindow) 
         {
             // Initialize all existing windows.
             _mainWindow = mainWindow;
-            _promptCreateWindow = promptCreateWindow;
-            _createEventWindow = createEventWindow;
-            _createCategoryWindow = createCategoryWindow;
         }
 
         //==============================================
@@ -39,9 +34,29 @@ namespace PresenterCode
         //==============================================
         //  MainWindow / Choose Calendar File Methods
         //==============================================
-        public void InitializeHomeCalendar(string filePath, bool isNewDatabase)
+        public void InitializeHomeCalendar(string databaseName, string filePath, bool isNewDatabase)
         {
-            _Model = new HomeCalendar(filePath, isNewDatabase);
+            if (isNewDatabase && !File.Exists(filePath)) 
+            {
+                // Create new database
+                _Model = new HomeCalendar(filePath, isNewDatabase);
+            }
+            else if (isNewDatabase && File.Exists(filePath))
+            {
+                // Show already exists error.
+                _mainWindow.ShowError("Error: database file already exists.");
+            }
+            else
+            {
+                // 
+                _Model = new HomeCalendar(filePath, isNewDatabase);
+            }
+
+            // Prepare prompt window.
+            _promptCreateWindow.ChangeDisplayInfo(filePath);
+
+            // Open new window with view function.
+            _mainWindow.OpenPromptCreateWindow();
         }
 
         //==============================================

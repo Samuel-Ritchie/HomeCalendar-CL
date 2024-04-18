@@ -8,5 +8,6 @@ namespace PresenterCode
 {
     public interface IpromptCreateWindow
     {
+        public void ChangeDisplayInfo(string databaseName);
     }
 }

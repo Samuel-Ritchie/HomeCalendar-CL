@@ -8,9 +8,8 @@ namespace PresenterCode
 {
     public interface ImainWindow
     {
-        public void OpenPromptCreateWindow()
-        {
-            
-        }
+        public void OpenPromptCreateWindow();
+
+        public void ShowError(string errorMsg);
     }
 }
