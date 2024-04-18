@@ -8,7 +8,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using Calendar;
+using PresenterCode;
+using System.IO;
 using Microsoft.Win32;
 
 namespace CalendarWPFApp
@@ -21,15 +22,8 @@ namespace CalendarWPFApp
         public MainWindow()
         {
             InitializeComponent();
+
             main.Content = new SelectDB();
         }
-
-        //method for opening Sam's window (window name not up to date)
-        //private void openEventCreationPage_Click(object sender, RoutedEventArgs e)
-        //{
-        //    createPromptWindow secondWindow = new createPromptWindow();
-        //    this.Visibility = Visibility.Hidden;
-        //    secondWindow.Show();
-        //}
     }
 }

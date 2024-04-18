@@ -1,0 +1,27 @@
+﻿<Window x:Class="CalendarWPFApp.PromptCreateWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:CalendarWPFApp"
+        mc:Ignorable="d"
+        Title="PromptCreateWindow" Height="450" Width="800">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="1*"></RowDefinition>
+            <RowDefinition Height="3*"></RowDefinition>
+            <RowDefinition Height="1*"></RowDefinition>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="1*"></ColumnDefinition>
+            <ColumnDefinition Width="1*"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+
+        <TextBlock x:Name="DatabaseNameDisplay" Grid.Row="0" Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="25" FontSize="30">db Name</TextBlock>
+        
+        <Image Grid.Row="1" Grid.Column="1" Source="assets/motivation.jpg" HorizontalAlignment="Right" VerticalAlignment="Center" MaxHeight="300" Margin="10,20"></Image>
+        
+        <Button x:Name="CreateEventButton" Click="CreateEventButton_Click"  Grid.Row="2" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" Padding="20,10">Create Event</Button>
+        <Button x:Name="CreateCategoryButton" Click="CreateCategoryButton_Click"  Grid.Row="2" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" Padding="20,10">Create Category</Button>
+    </Grid>
+</Window>

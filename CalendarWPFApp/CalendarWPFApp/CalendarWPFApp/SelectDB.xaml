@@ -5,12 +5,13 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:CalendarWPFApp"
       mc:Ignorable="d" 
-      d:DesignHeight="250" d:DesignWidth="800"
+      d:DesignHeight="300" d:DesignWidth="800"
       Title="SelectDB">
 
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="200"></RowDefinition>
+            <RowDefinition></RowDefinition>
             <RowDefinition></RowDefinition>
         </Grid.RowDefinitions>
 
@@ -99,6 +100,9 @@
                 <Button x:Name="FindBtn" Click="FindBtn_Click"
                         Background="Transparent" BorderBrush="Transparent" Foreground="White" FontWeight="DemiBold" FontSize="20">Search File</Button>
             </Border>
+        </Grid>
+        <Grid Grid.Row="2">
+            <TextBlock x:Name="ErrorFind" VerticalAlignment="Bottom" Padding="2" Margin="5" Grid.Column="1" Grid.Row="2" Foreground="White"></TextBlock>
         </Grid>
     </Grid>
 </Page>
