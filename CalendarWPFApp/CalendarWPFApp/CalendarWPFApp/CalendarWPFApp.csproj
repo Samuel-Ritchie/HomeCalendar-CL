@@ -13,6 +13,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\PresenterInterfaceClasses\PresenterInterfaceClasses.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Reference Include="HomeCalendar">
       <HintPath>dlls\HomeCalendar.dll</HintPath>
     </Reference>
