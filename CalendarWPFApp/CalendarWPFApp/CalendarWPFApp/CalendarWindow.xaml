@@ -1,0 +1,47 @@
+﻿<Window x:Class="CalendarWPFApp.CalendarWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:CalendarWPFApp"
+        mc:Ignorable="d"
+        Title="CalendarWindow" Height="450" Width="800">
+
+    <Grid Background="#222222">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="50"></RowDefinition>
+            <RowDefinition Height="50"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+        </Grid.RowDefinitions>
+
+        <Grid x:Name="Header" Grid.Row="0" Background="#e88833">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="auto"></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <TextBlock Grid.Column="0" FontSize="35" FontWeight="bold" Foreground="White" Margin="10 0">Corner Lurkers Calendar</TextBlock>
+            <TextBlock Grid.Column="1" HorizontalAlignment="Right" FontSize="35" Foreground="White">📅</TextBlock>
+        </Grid>
+
+        <Grid Grid.Row="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="1*"></RowDefinition>
+                <RowDefinition Height="3*"></RowDefinition>
+                <RowDefinition Height="1*"></RowDefinition>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1*"></ColumnDefinition>
+                <ColumnDefinition Width="1*"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+
+            <Button x:Name="CreateEventButton" Click="CreateEventButton_Click_1" Grid.Row="1" Grid.Column="0">Create Event</Button>
+            <Button x:Name="CreateCategoryButton" Click="CreateCategoryButton_Click_1" Grid.Row="1" Grid.Column="1">Create Category</Button>
+        </Grid>
+
+
+        <Image Grid.Row="2" Source="assets/motivation.jpg" HorizontalAlignment="Right" VerticalAlignment="Center" MaxHeight="300" Margin="10,20"></Image>
+        <Frame Grid.Row="2" x:Name="main" NavigationUIVisibility="Hidden">
+
+        </Frame>
+    </Grid>
+</Window>

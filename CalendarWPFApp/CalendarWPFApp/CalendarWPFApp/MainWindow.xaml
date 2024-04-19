@@ -6,34 +6,123 @@
         xmlns:local="clr-namespace:CalendarWPFApp"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
-    <Grid>
-        <Grid ShowGridLines="True">
-            <!--Define the columns -->
+    <Grid Background="#222222">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="50"></RowDefinition>
+            <RowDefinition></RowDefinition>
+        </Grid.RowDefinitions>
+
+        <Grid x:Name="Header" Grid.Row="0" Background="#5e9146">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"></ColumnDefinition>
-                <ColumnDefinition Width="*"></ColumnDefinition>
-                <ColumnDefinition Width="*"></ColumnDefinition>
+                <ColumnDefinition Width="auto"></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
             </Grid.ColumnDefinitions>
+            <TextBlock Grid.Column="0" FontSize="35" FontWeight="bold" Foreground="White" Margin="10 0">Corner Lurkers Calendar</TextBlock>
+            <TextBlock Grid.Column="1" HorizontalAlignment="Right" FontSize="35" Foreground="White">📅</TextBlock>
+        </Grid>
 
-            <!--Define the rows -->
+        <Grid Grid.Row="1">
             <Grid.RowDefinitions>
-                <RowDefinition Height="*"></RowDefinition>
-                <RowDefinition Height="*"></RowDefinition>
-                <RowDefinition Height="*"></RowDefinition>
+                <RowDefinition Height="200"></RowDefinition>
+                <RowDefinition></RowDefinition>
+                <RowDefinition></RowDefinition>
             </Grid.RowDefinitions>
+            
+            <Grid.Background>
+                <ImageBrush ImageSource="assets/WAh.jpg" Stretch="UniformToFill"></ImageBrush>
+            </Grid.Background>
 
-            <TextBlock Grid.Column="0" Grid.Row="0" Name="Logo" Height="40" Width="40">LOGO</TextBlock>
-            <Button Grid.Column="2" Grid.Row="1" Height="25" Width="70" Name="fileExplorer" Click="fileExplorer_Click"
-                    HorizontalAlignment="Center" VerticalAlignment="Center">File Explorer</Button>
+            <Border Grid.Row="0" Grid.RowSpan="3" Background="#665e9146"></Border>
 
-            <TextBlock Grid.Column="1" Grid.Row="1" VerticalAlignment="Bottom" HorizontalAlignment="Center">File Name</TextBlock>
-            <TextBox Name="chosenFileName" Margin="13" Padding="5" Grid.Column="1" Grid.Row="1" VerticalAlignment="Bottom" HorizontalAlignment="Center"></TextBox>
+            <Border Grid.Row="0" BorderBrush="White" BorderThickness="2" Margin="10"  CornerRadius="20">
+                <Border Margin="10" Background="White" CornerRadius="10">
+                    <Grid Margin="10">
+                        <Grid.RowDefinitions>
+                            <RowDefinition></RowDefinition>
+                            <RowDefinition></RowDefinition>
+                            <RowDefinition></RowDefinition>
+                        </Grid.RowDefinitions>
 
-            <TextBox Name="chosenDirectoryName" Margin="13" Padding="5" Grid.Column="1" Grid.Row="1" VerticalAlignment="Top" HorizontalAlignment="Center"></TextBox>
-            <TextBlock Grid.Column="1" Grid.Row="1" VerticalAlignment="Top" HorizontalAlignment="Center">Directory Path</TextBlock>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="8*"></ColumnDefinition>
+                            <ColumnDefinition></ColumnDefinition>
+                        </Grid.ColumnDefinitions>
 
-            <Button Name="loadCreateEventPage" Height="50" Width="75" Grid.Column="1" Grid.Row="2">Find!</Button>
+                        <Border Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2">
+                            <TextBlock HorizontalAlignment="Center" Foreground="#222222" FontWeight="DemiBold" FontSize="30">Choose a database file</TextBlock>
+                        </Border>
 
+                        <Border Margin="5" Grid.Row="1" Background="#222222" CornerRadius="8">
+                            <Grid Grid.Row="0">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"></ColumnDefinition>
+                                    <ColumnDefinition Width="3*"></ColumnDefinition>
+                                </Grid.ColumnDefinitions>
+
+                                <Border Grid.Column="0" Margin="3" Background="#5e9146" CornerRadius="5">
+                                    <TextBlock Foreground="White" TextAlignment="Center" FontWeight="DemiBold" FontSize="15">Directory Path:</TextBlock>
+                                </Border>
+
+                                <TextBox Grid.Column="1" Name="chosenDirectoryName" Background="Transparent" BorderBrush="Transparent" Foreground="White" FontSize="15"></TextBox>
+                            </Grid>
+                        </Border>
+
+                        <Border Margin="5" Grid.Row="2" Background="#222222" CornerRadius="8">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"></ColumnDefinition>
+                                    <ColumnDefinition Width="3*"></ColumnDefinition>
+                                </Grid.ColumnDefinitions>
+
+                                <Border Grid.Column="0" Margin="3" Background="#5e9146" CornerRadius="5">
+                                    <TextBlock Foreground="White" TextAlignment="Center" FontWeight="DemiBold" FontSize="15">File Name:</TextBlock>
+                                </Border>
+
+                                <TextBox Name="chosenFileName" Grid.Column="1" Background="Transparent" BorderBrush="Transparent" Foreground="White" FontSize="15"></TextBox>
+                            </Grid>
+                        </Border>
+
+                        <Border Grid.Row="1" Grid.RowSpan="2" Grid.Column="1" Margin="10" Background="#5e9146" CornerRadius="5" BorderThickness="3" BorderBrush="#222222">
+                            <Button Name="fileExplorer" Click="fileExplorer_Click" 
+                                Background="Transparent" BorderBrush="Transparent" Foreground="#222222" FontWeight="DemiBold" FontSize="30">📁</Button>
+                        </Border>
+                    </Grid>
+                </Border>
+            </Border>
+
+            <Grid Grid.Row="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition></ColumnDefinition>
+                    <ColumnDefinition></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+
+                <Button x:Name="swapBtnState" Click="swapBtnState_Click" Background="Transparent" BorderBrush="Transparent" HorizontalContentAlignment="Stretch" Margin="10 0">
+                    <Border Background="White" CornerRadius="5">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition></ColumnDefinition>
+                                <ColumnDefinition></ColumnDefinition>
+                            </Grid.ColumnDefinitions>
+
+                            <Border x:Name="CreateFileBtn" Grid.Column="0" Background="#5e9146" CornerRadius="5" BorderThickness="3" BorderBrush="#222222" Margin="2">
+                                <TextBlock Background="Transparent" Foreground="White" FontWeight="DemiBold" FontSize="20" HorizontalAlignment="Center">Create</TextBlock>
+                            </Border>
+
+                            <Border x:Name="SearchFileBtn" Grid.Column="1" Background="#555555" CornerRadius="5" BorderThickness="3" BorderBrush="#222222" Margin="2">
+                                <TextBlock Background="Transparent" Foreground="#BBBBBB" FontWeight="DemiBold" FontSize="20" HorizontalAlignment="Center">Search</TextBlock>
+                            </Border>
+                        </Grid>
+                    </Border>
+                </Button>
+
+                <Border Grid.Column="1" Background="#5e9146" CornerRadius="5" BorderThickness="3" BorderBrush="#222222" Margin="10 0">
+                    <Button x:Name="FindBtn" Click="FindBtn_Click"
+                        Background="Transparent" BorderBrush="Transparent" Foreground="White" FontWeight="DemiBold" FontSize="20">Search File</Button>
+                </Border>
+            </Grid>
+            <Grid Grid.Row="2">
+                <TextBlock x:Name="ErrorFind" VerticalAlignment="Bottom" Padding="2" Margin="5" Grid.Column="1" Grid.Row="2" Foreground="White"></TextBlock>
+            </Grid>
         </Grid>
     </Grid>
 </Window>   

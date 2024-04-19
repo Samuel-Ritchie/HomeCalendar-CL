@@ -9,13 +9,21 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="dlls\" />
+    <None Remove="assets\Category.jpg" />
+    <None Remove="assets\Event.jpg" />
+    <None Remove="assets\motivation.jpg" />
+    <None Remove="assets\WAh.jpg" />
   </ItemGroup>
 
   <ItemGroup>
-    <Reference Include="HomeCalendar">
-      <HintPath>dlls\HomeCalendar.dll</HintPath>
-    </Reference>
+    <PackageReference Include="System.Data.SQLite" Version="1.0.118" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="assets\Category.jpg" />
+    <Resource Include="assets\Event.jpg" />
+    <Resource Include="assets\motivation.jpg" />
+    <Resource Include="assets\WAh.jpg" />
   </ItemGroup>
 
 </Project>
