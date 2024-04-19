@@ -11,23 +11,21 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
 using System.Windows.Shapes;
 
 namespace CalendarWPFApp
 {
     /// <summary>
-    /// Interaction logic for CreateCategoryWindow.xaml
+    /// Interaction logic for CreateCategory.xaml
     /// </summary>
-    public partial class CreateCategoryWindow : Window, IcreateCategoryWindow
+    public partial class CreateCategory : Page
     {
         // Main window reference.
-        private ImainWindow _mainWindow;
 
-        public CreateCategoryWindow(ImainWindow mainWindow)
+        public CreateCategory()
         {
             InitializeComponent();
-
-            _mainWindow = mainWindow;
         }
 
         private void doneDescBtn(object sender, RoutedEventArgs e)
@@ -36,8 +34,5 @@ namespace CalendarWPFApp
         }
     }
     //category = Id, Description, CategoryType
-
-   
-
 
 }

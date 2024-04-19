@@ -9,6 +9,8 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="assets\Category.jpg" />
+    <None Remove="assets\Event.jpg" />
     <None Remove="assets\motivation.jpg" />
     <None Remove="assets\WAh.jpg" />
   </ItemGroup>
@@ -22,6 +24,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Resource Include="assets\Category.jpg" />
+    <Resource Include="assets\Event.jpg" />
     <Resource Include="assets\motivation.jpg" />
     <Resource Include="assets\WAh.jpg" />
   </ItemGroup>

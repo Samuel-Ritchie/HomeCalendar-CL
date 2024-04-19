@@ -16,18 +16,13 @@ using System.Windows.Shapes;
 namespace CalendarWPFApp
 {
     /// <summary>
-    /// Interaction logic for PromptCreateWindow.xaml
+    /// Interaction logic for CalendarWindow.xaml
     /// </summary>
-    public partial class PromptCreateWindow : Window, IpromptCreateWindow
+    public partial class CalendarWindow : Window
     {
-        // Main window reference.
-        private ImainWindow _mainWindow;
-
-        public PromptCreateWindow(ImainWindow mainWindow)
+        public CalendarWindow()
         {
             InitializeComponent();
-
-            _mainWindow = mainWindow;
         }
 
         //==============================================
@@ -48,7 +43,19 @@ namespace CalendarWPFApp
         //==============================================
         public void ChangeDisplayInfo(string databaseName)
         {
-            DatabaseNameDisplay.Text = databaseName;
+            //DatabaseNameDisplay.Text = databaseName;
+        }
+
+        private void CreateEventButton_Click_1(object sender, RoutedEventArgs e)
+        {
+            main.Content = new CreateEvent();
+            Header.Background = new BrushConverter().ConvertFrom("#2b498a") as SolidColorBrush;
+        }
+
+        private void CreateCategoryButton_Click_1(object sender, RoutedEventArgs e)
+        {
+            main.Content = new CreateCategory();
+            Header.Background = new BrushConverter().ConvertFrom("#de771d") as SolidColorBrush;
         }
     }
 }

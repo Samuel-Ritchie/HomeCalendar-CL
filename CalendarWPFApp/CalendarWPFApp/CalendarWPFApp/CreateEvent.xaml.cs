@@ -1,5 +1,4 @@
-﻿using PresenterCode;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,23 +10,19 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
 using System.Windows.Shapes;
 
 namespace CalendarWPFApp
 {
     /// <summary>
-    /// Interaction logic for CreateEventWindow.xaml
+    /// Interaction logic for CreateEvent.xaml
     /// </summary>
-    public partial class CreateEventWindow : Window, IcreateEventWindow
+    public partial class CreateEvent : Page
     {
-        // Main window reference.
-        private ImainWindow _mainWindow;
-
-        public CreateEventWindow(ImainWindow mainWindow)
+        public CreateEvent()
         {
             InitializeComponent();
-
-            _mainWindow = mainWindow;
         }
     }
 }
