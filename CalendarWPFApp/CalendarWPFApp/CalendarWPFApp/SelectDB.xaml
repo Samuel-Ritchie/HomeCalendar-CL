@@ -14,7 +14,12 @@
             <RowDefinition></RowDefinition>
             <RowDefinition></RowDefinition>
         </Grid.RowDefinitions>
+        <Grid.Background>
+            <ImageBrush ImageSource="assets/WAh.jpg" Stretch="UniformToFill"></ImageBrush>
+        </Grid.Background>
 
+        <Border Grid.Row="0" Grid.RowSpan="3" Background="#665e9146"></Border>
+        
         <Border Grid.Row="0" BorderBrush="White" BorderThickness="2" Margin="10"  CornerRadius="20">
             <Border Margin="10" Background="White" CornerRadius="10">
                 <Grid Margin="10">
