@@ -14,7 +14,7 @@
             <RowDefinition Height="*"></RowDefinition>
         </Grid.RowDefinitions>
 
-        <Grid x:Name="Header" Grid.Row="0" Background="#5e9146">
+        <Grid x:Name="Header" Grid.Row="0" Background="#e88833">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="auto"></ColumnDefinition>
                 <ColumnDefinition></ColumnDefinition>

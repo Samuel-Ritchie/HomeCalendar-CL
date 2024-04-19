@@ -49,13 +49,11 @@ namespace CalendarWPFApp
         private void CreateEventButton_Click_1(object sender, RoutedEventArgs e)
         {
             main.Content = new CreateEvent();
-            Header.Background = new BrushConverter().ConvertFrom("#2b498a") as SolidColorBrush;
         }
 
         private void CreateCategoryButton_Click_1(object sender, RoutedEventArgs e)
         {
             main.Content = new CreateCategory();
-            Header.Background = new BrushConverter().ConvertFrom("#de771d") as SolidColorBrush;
         }
     }
 }
