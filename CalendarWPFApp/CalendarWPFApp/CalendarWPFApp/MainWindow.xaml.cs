@@ -23,6 +23,7 @@ namespace CalendarWPFApp
         {
             InitializeComponent();
         }
+
         private void fileExplorer_Click(object sender, RoutedEventArgs e)
         {
             OpenFileDialog fileDialog = new OpenFileDialog();
