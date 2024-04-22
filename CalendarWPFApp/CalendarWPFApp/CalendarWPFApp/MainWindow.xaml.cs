@@ -10,19 +10,23 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.IO;
 using Microsoft.Win32;
+using PresenterInterfaceClasses;
 
 namespace CalendarWPFApp
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class MainWindow : Window, IMainView
     {
         private bool _isSearchingFile = false;
         private bool _usingStandardTheme = true;
+        private Presenter _presenter;
         public MainWindow()
         {
             InitializeComponent();
+
+            _presenter = new Presenter(this);
         }
 
         private void fileExplorer_Click(object sender, RoutedEventArgs e)
@@ -101,10 +105,28 @@ namespace CalendarWPFApp
             }
             else
             {
-                Window w = new CalendarWindow();
+                Window w = new CalendarWindow(_presenter);
                 w.Show();
                 this.Close();
             }
+        }
+        public void ShowMainError(string errMsg)
+        {
+            ErrorFind.Text = errMsg;
+        }
+
+        public void ShowCalendarInteractivity()
+        {
+            Window w = new CalendarWindow(_presenter);
+            w.Show();
+            this.Close();
+        }
+
+        public void ShowLocationPicker(string currentSaveLocation)
+        {
+            // Make user pick save location first.
+            LocationPicker locationPickerWindow = new LocationPicker(this, _presenter, currentSaveLocation);
+            locationPickerWindow.Show();
         }
     }
 }

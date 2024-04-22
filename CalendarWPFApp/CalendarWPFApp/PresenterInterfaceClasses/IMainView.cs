@@ -8,9 +8,11 @@ namespace PresenterInterfaceClasses
 {
     public interface IMainView
     {
-            public void ShowMainError(string errMsg);
+        public void ShowMainError(string errMsg);
 
-            // Switch to Prompt Window.
-            public void ShowCalendarInteractivity();
+        // Switch to Prompt Window.
+        public void ShowCalendarInteractivity();
+
+        public void ShowLocationPicker(string saveToFile);
     }
 }

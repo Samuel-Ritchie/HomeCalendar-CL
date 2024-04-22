@@ -14,7 +14,9 @@ namespace PresenterInterfaceClasses
         // Switch to CategoryFormView.
         public void ShowCreateCategoryForm();
 
-        // Pop up window asking user if they are sure they want to close their calendar and the app itself.
-        public void DoubleCheckCloseApplication();
+        // Presenter calls method to ask user if they really want to quit. (the Closing event handler is called when red X button is pressed)
+        public void AskToSaveOrDiscardPromptCreate(bool changesMade);
+
+        
     }
 }

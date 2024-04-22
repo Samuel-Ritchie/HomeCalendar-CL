@@ -22,9 +22,9 @@
         <TextBlock Grid.Row="0" Grid.Column="0" FontSize="20" HorizontalAlignment="Center" VerticalAlignment="Top" FontWeight="DemiBold" Text="Create an event"></TextBlock>
 
         <TextBlock Margin="0,30,0,0" Grid.Row="0" Grid.Column="0" FontSize="14" HorizontalAlignment="Center" VerticalAlignment="Top" Text="Event Details"></TextBlock>
-        <TextBox Grid.Row="0" Grid.Column="0" Height="90" Width="200" Margin="0,0,0,230"></TextBox>
+        <TextBox x:Name="DetailsBox"  Grid.Row="0" Grid.Column="0" Height="90" Width="200" Margin="0,0,0,230"></TextBox>
 
-        <DatePicker Margin="0,0,0,60" VerticalAlignment="Center" Grid.Row="0" Grid.Column="0" Width="200" Height="25"></DatePicker>
+        <DatePicker x:Name="datePickerInput" Margin="0,0,0,60" VerticalAlignment="Center" Grid.Row="0" Grid.Column="0" Width="200" Height="25"></DatePicker>
 
         <TextBlock Margin="0,0,0,200" Grid.Row="0" Grid.Column="0" FontSize="14" HorizontalAlignment="Center" VerticalAlignment="Bottom" Text="Select a time to start your event:"></TextBlock>
 
@@ -44,16 +44,16 @@
             <TextBlock Text="Minutes" Grid.Row="0" Grid.Column="1"></TextBlock>
             <TextBlock Text="AM/PM" Grid.Row="0" Grid.Column="3"></TextBlock>
 
-            <ComboBox Grid.Row="0" Grid.Column="0" Width="40" Height="40" Name="Hours" ItemsSource="{Binding MyDataSource}"/>
-            <ComboBox Grid.Row="0" Grid.Column="1" Width="40" Height="40" Name="Minutes" ItemsSource="{Binding MyDataSource}"/>
-            <ComboBox Grid.Row="1" Grid.Column="2" Width="40" Height="40" Name="AMPM">
+            <ComboBox Grid.Row="0" Grid.Column="0" Width="40" Height="40" Name="HoursComboBox" ItemsSource="{Binding MyDataSource}"/>
+            <ComboBox Grid.Row="0" Grid.Column="1" Width="40" Height="40" Name="MinutesComboBox" ItemsSource="{Binding MyDataSource}"/>
+            <ComboBox Grid.Row="1" Grid.Column="2" Width="40" Height="40" Name="AMPMComboBox">
                 <ComboBoxItem Content="AM"></ComboBoxItem>
                 <ComboBoxItem Content="PM"></ComboBoxItem>
             </ComboBox>
         </Grid>
 
         <TextBlock Margin="0,0,0,115" Grid.Row="0" Grid.Column="0" VerticalAlignment="Bottom" HorizontalAlignment="Center" Text="Duration in Minutes"></TextBlock>
-        <TextBox Margin="0,0,0,90" VerticalAlignment="Bottom" HorizontalAlignment="Center" Grid.Row="0" Grid.Column="0" Height="20" Width="140"></TextBox>
+        <TextBox x:Name="DurationBox" Margin="0,0,0,90" VerticalAlignment="Bottom" HorizontalAlignment="Center" Grid.Row="0" Grid.Column="0" Height="20" Width="140"></TextBox>
 
         <Grid Margin="0,0,0,5" VerticalAlignment="Bottom" HorizontalAlignment="Center" Grid.Row="0" Grid.Column="0" ShowGridLines="False">
             <Grid.ColumnDefinitions>

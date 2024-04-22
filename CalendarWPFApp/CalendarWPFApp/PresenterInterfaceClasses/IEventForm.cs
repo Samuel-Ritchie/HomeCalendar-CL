@@ -18,9 +18,12 @@ namespace PresenterInterfaceClasses
         public void ShowEventCreated();
 
         // Pop up an error message window that tells the user that they submitted the form wrong.
-        public void ShowEventCreationError();
+        public void ShowEventCreationError(string errMessage);
 
         // Switch to CategoryCreationView while in EventCreationView
         public void ShowCreateCategoryFormFromEventForm();
+
+        // Used to get list of categories to select from
+        public void GiveListOfCategories(List<string> categories);
     }
 }

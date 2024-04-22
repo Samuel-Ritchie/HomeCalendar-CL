@@ -1,18 +1,26 @@
-﻿using System.Windows.Controls;
+﻿using System.Windows;
+using System.Windows.Controls;
+using PresenterInterfaceClasses;
 
 namespace CalendarWPFApp.Pages
 {
     /// <summary>
     /// Interaction logic for CreateEventPage.xaml
     /// </summary>
-    public partial class CreateEventPage : Page
+    public partial class CreateEventPage : Page, IEventForm
     {
-        public CreateEventPage()
+        CalendarWindow _calendarWindow;
+        Presenter _presenter;
+
+        public CreateEventPage(Presenter presenter, CalendarWindow CalendarWindow)
         {
             InitializeComponent();
 
-            Hours.ItemsSource = GetIntRange(1, 12);
-            Minutes.ItemsSource = GetIntRange(0, 59);
+            _presenter = presenter;
+            _calendarWindow = CalendarWindow;
+
+            HoursComboBox.ItemsSource = GetIntRange(1, 12);
+            MinutesComboBox.ItemsSource = GetIntRange(0, 59);
         }
 
         private List<string> GetIntRange(int start, int end)
@@ -23,6 +31,148 @@ namespace CalendarWPFApp.Pages
                 items.Add(i.ToString());
 
             return items;
+        }
+
+        //==============================================
+        //  Event Handlers
+        //==============================================
+        private void Categories_DropDownOpened(object sender, EventArgs e)
+        {
+            _presenter.GetListOfCategories(this);
+        }
+
+        private void CancelTheEvent_Click(object sender, RoutedEventArgs e)
+        {
+            _calendarWindow.SwitchForms(CalendarWindow.Interfaces.ChooseToCreate, null);
+        }
+
+        private void CreateTheEvent_Click(object sender, RoutedEventArgs e)
+        {
+            /*
+           DetailsBox
+           datePickerInput
+           HoursComboBox
+           MinutesComboBox
+           SecondsComboBox
+           AMPMComboBox
+           DurationBox
+           Categories
+           */
+
+            string theDetails;
+            DateTime theDateTime;
+            int theHours;
+            int theMinutes;
+            int theSeconds;
+            string theAmPm;
+            int theDurationInMinutes;
+            string category;
+
+            if (DetailsBox.Text != "")
+            {
+                theDetails = (string)DetailsBox.Text;
+                if (datePickerInput.SelectedDate is not null)
+                {
+                    theDateTime = (DateTime)datePickerInput.SelectedDate;
+                    if ((ComboBoxItem)HoursComboBox.SelectedValue is not null && int.TryParse(((ComboBoxItem)HoursComboBox.SelectedValue).Content.ToString(), out theHours))
+                    {
+                        if (((ComboBoxItem)AMPMComboBox.SelectedValue).Content.ToString() == "PM")
+                        {
+                            theHours = theHours + 12;
+                        }
+                        if ((ComboBoxItem)MinutesComboBox.SelectedValue is not null && int.TryParse(((ComboBoxItem)MinutesComboBox.SelectedValue).Content.ToString(), out theMinutes))
+                        {
+                            int duration;
+                            if (DurationBox.Text.ToString() != "" &&
+                                int.TryParse(DurationBox.Text.ToString(), out theDurationInMinutes))
+                            {
+                                if ((ComboBoxItem)Categories.SelectedValue is not null)
+                                {
+                                    category = ((ComboBoxItem)Categories.SelectedValue).Content.ToString();
+
+                                    _presenter.processEventForm(
+                                        this,
+                                        theDetails,
+                                        theDateTime,
+                                        theHours,
+                                        theMinutes,
+                                        theDurationInMinutes,
+                                        category
+                                        );
+                                }
+                                else
+                                {
+                                    ShowEventCreationError("Category not chosen.");
+                                }
+                            }
+                            else
+                            {
+                                ShowEventCreationError("Duration invalid.");
+                            }
+                        }
+                        else
+                        {
+                            ShowEventCreationError("Minutes not chosen.");
+                        }
+                    }
+                    else
+                    {
+                        ShowEventCreationError("Hours not chosen.");
+                    }
+                }
+                else
+                {
+                    ShowEventCreationError("Date not chosen.");
+                }
+            }
+            else
+            {
+                ShowEventCreationError("Details not given.");
+            }
+        }
+
+        //==============================================
+        //  Interface methods
+        //==============================================
+        public void GiveListOfCategories(List<string> categories)
+        {
+            Categories.Items.Clear();
+            foreach (string category in categories)
+            {
+                ComboBoxItem categoryComboBoxItem = new ComboBoxItem();
+
+                categoryComboBoxItem.Content = category;
+
+                Categories.Items.Add(categoryComboBoxItem);
+            }
+        }
+
+        public void ClearEventForm()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void DoubleCheckCloseEventForm()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void ShowCreateCategoryFormFromEventForm()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void ShowEventCreated()
+        {
+            MessageBoxResult userChoice = MessageBox.Show("Event has been created.", "Error", MessageBoxButton.OK, MessageBoxImage.Information);
+
+            _calendarWindow.SwitchForms(CalendarWindow.Interfaces.ChooseToCreate, null);
+        }
+
+        public void ShowEventCreationError(string errMessage)
+        {
+            // Display Error to do with Event Creation user using Message Box.
+            MessageBoxResult userChoice = MessageBox.Show(errMessage, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
         }
     }
 }
