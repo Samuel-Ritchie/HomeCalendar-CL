@@ -13,25 +13,16 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace CalendarWPFApp
+namespace CalendarWPFApp.Pages
 {
     /// <summary>
-    /// Interaction logic for CreateCategory.xaml
+    /// Interaction logic for HomePage.xaml
     /// </summary>
-    public partial class CreateCategory : Page
+    public partial class HomePage : Page
     {
-        // Main window reference.
-
-        public CreateCategory()
+        public HomePage()
         {
             InitializeComponent();
         }
-
-        private void doneDescBtn(object sender, RoutedEventArgs e)
-        {
-            MyTextBox.IsEnabled = false;
-        }
     }
-    //category = Id, Description, CategoryType
-
 }

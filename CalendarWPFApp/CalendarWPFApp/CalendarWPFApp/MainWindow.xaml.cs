@@ -19,6 +19,7 @@ namespace CalendarWPFApp
     public partial class MainWindow : Window
     {
         private bool _isSearchingFile = false;
+        private bool _usingStandardTheme = true;
         public MainWindow()
         {
             InitializeComponent();
@@ -71,6 +72,24 @@ namespace CalendarWPFApp
                 _isSearchingFile = false;
             }
 
+        }
+        private void Header_Grab(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            this.DragMove();
+        }
+        private void CloseButton_Click(object sender, RoutedEventArgs e)
+        {
+            Application.Current.Shutdown();
+        }
+        private void Swap_Theme_Click(object sender, RoutedEventArgs e)
+        {
+            _usingStandardTheme = (_usingStandardTheme) ? false : true;
+
+            SolidColorBrush BG_VISIBLE = new BrushConverter().ConvertFrom("#665e9146") as SolidColorBrush;
+            SolidColorBrush BG_HIDDEN = new BrushConverter().ConvertFrom("#222222") as SolidColorBrush;
+
+            MainBG.Visibility = (_usingStandardTheme) ? Visibility.Visible : Visibility.Hidden;
+            ColorBG.Background = (_usingStandardTheme) ? BG_VISIBLE : BG_HIDDEN;
         }
         private void FindBtn_Click(object sender, RoutedEventArgs e)
         {

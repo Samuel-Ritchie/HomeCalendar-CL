@@ -13,16 +13,20 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace CalendarWPFApp
+namespace CalendarWPFApp.Pages
 {
     /// <summary>
-    /// Interaction logic for CreateEvent.xaml
+    /// Interaction logic for CreateCategoryPage.xaml
     /// </summary>
-    public partial class CreateEvent : Page
+    public partial class CreateCategoryPage : Page
     {
-        public CreateEvent()
+        public CreateCategoryPage()
         {
             InitializeComponent();
+        }
+        private void doneDescBtn(object sender, RoutedEventArgs e)
+        {
+            MyTextBox.IsEnabled = false;
         }
     }
 }
