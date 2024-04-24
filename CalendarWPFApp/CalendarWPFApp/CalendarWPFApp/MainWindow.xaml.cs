@@ -32,6 +32,9 @@ namespace CalendarWPFApp
             _presenter = new Presenter(this);
         }
 
+        //==============================================
+        //  Event Handlers
+        //==============================================
         private void fileExplorer_Click(object sender, RoutedEventArgs e)
         {
             OpenFileDialog fileDialog = new OpenFileDialog();
@@ -81,10 +84,6 @@ namespace CalendarWPFApp
                 _isSearchingFile = false;
             }
         }
-        private void Header_Grab(object sender, System.Windows.Input.MouseButtonEventArgs e)
-        {
-            this.DragMove();
-        }
         private void CloseButton_Click(object sender, RoutedEventArgs e)
         {
             Application.Current.Shutdown();
@@ -113,6 +112,11 @@ namespace CalendarWPFApp
                 ErrorFind.Text = "Please select a valid file before searching.";
             }
         }
+        private void Header_Grab(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            this.DragMove();
+        }
+
         public void ShowMainError(string errMsg)
         {
             ErrorFind.Text = errMsg;
@@ -123,13 +127,6 @@ namespace CalendarWPFApp
             Window w = new CalendarWindow(_presenter);
             w.Show();
             this.Close();
-        }
-
-        public void ShowLocationPicker(string currentSaveLocation)
-        {
-            // Make user pick save location first.
-            LocationPicker locationPickerWindow = new LocationPicker(this, _presenter, currentSaveLocation);
-            locationPickerWindow.Show();
         }
     }
 }
