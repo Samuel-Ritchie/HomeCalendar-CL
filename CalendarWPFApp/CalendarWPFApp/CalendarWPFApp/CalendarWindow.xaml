@@ -7,7 +7,7 @@
         mc:Ignorable="d"
         ResizeMode="NoResize"
         WindowStyle="None"
-        Title="CalendarWindow" Height="600" Width="1000">
+        Title="CalendarWindow" Height="800" Width="1200">
 
     <Grid Background="#222222">
         <Grid.RowDefinitions>

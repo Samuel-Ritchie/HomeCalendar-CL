@@ -103,10 +103,12 @@ namespace CalendarWPFApp
         {
             ErrorFind.Text = "";
             //validate selected file before finding?
-            if (_choiceIsValid)
+            if (true)
             {
                 // Pass ! _isSearchingFile so it is recieved as isNewDatabase. _isSearchingFile True == isNewDatabase False
-                _presenter.ProcessDatabaseFile(chosenFileName.Text, chosenDirectoryName.Text, !_isSearchingFile);
+                Window w = new CalendarWindow(_presenter);
+                w.Show();
+                this.Close();
             }
             else
             {

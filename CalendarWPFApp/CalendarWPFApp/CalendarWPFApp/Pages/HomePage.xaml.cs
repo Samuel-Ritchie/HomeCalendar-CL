@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Calendar;
 
 namespace CalendarWPFApp.Pages
 {
@@ -24,7 +25,16 @@ namespace CalendarWPFApp.Pages
         {
             InitializeComponent();
 
-            Motivation.Source = new BitmapImage(new Uri("../assets/motivation.jpg", UriKind.Relative));
+            CalendarItemsTable.ItemsSource = GetTestData();
+        }
+        private List<Event> GetTestData()
+        {
+            return new List<Event>()
+            {
+                new Event(DateTime.Now, 1, 3.0, "Wah"),
+                new Event(DateTime.Now, 3, 6.0, "TEST"),
+                new Event(DateTime.Now, 3, 6.0, "Real")
+            };
         }
     }
 }
