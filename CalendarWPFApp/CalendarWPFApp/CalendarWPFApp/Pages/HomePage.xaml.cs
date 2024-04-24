@@ -23,6 +23,8 @@ namespace CalendarWPFApp.Pages
         public HomePage()
         {
             InitializeComponent();
+
+            Motivation.Source = new BitmapImage(new Uri("../assets/motivation.jpg", UriKind.Relative));
         }
     }
 }

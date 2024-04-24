@@ -11,7 +11,7 @@
     <Grid ShowGridLines="False">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"></ColumnDefinition>
-            <ColumnDefinition Width="*"></ColumnDefinition>
+            <ColumnDefinition Width="2*"></ColumnDefinition>
             <ColumnDefinition Width="*"></ColumnDefinition>
         </Grid.ColumnDefinitions>
 
@@ -24,19 +24,17 @@
 
         <TextBlock Grid.Row="0" Grid.Column="1" HorizontalAlignment="Center" FontWeight="Bold" FontSize="18" Text="Create Category!"></TextBlock>
 
-        <TextBlock Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Center" FontWeight="Bold" FontSize="14" Text="Select a Category Type for your category"></TextBlock>
-        <ComboBox x:Name="CategoryTypeComboBox" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Height="30" Width="180" Margin="0,0,0,60" SelectedIndex="0">
+        <TextBlock Grid.Row="1" Grid.Column="1" HorizontalAlignment="Center" FontWeight="Bold" FontSize="14" Text="Select a Category Type for your category"></TextBlock>
+        <ComboBox x:Name="CategoryTypeComboBox" Grid.Row="1" Grid.Column="1" Height="30" Width="180" Margin="0,0,0,60" SelectedIndex="0">
             <ComboBoxItem Content="Event"></ComboBoxItem>
             <ComboBoxItem Content="Availibility"></ComboBoxItem>
             <ComboBoxItem Content="All Day Event"></ComboBoxItem>
             <ComboBoxItem Content="Holiday"></ComboBoxItem>
         </ComboBox>
 
-        <TextBlock Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Center" FontWeight="Bold" FontSize="14" Text="Please enter a description for your category."></TextBlock>
-        <TextBox x:Name="DescriptionBox" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" Margin="5,5,5,40" Text="" Height="50" Width="200"/>
+        <TextBlock Grid.Row="2" Grid.Column="1" HorizontalAlignment="Center" FontWeight="Bold" FontSize="14" Text="Please enter a description for your category."></TextBlock>
+        <TextBox x:Name="DescriptionBox" Grid.Row="2" Grid.Column="1" Margin="5,5,5,40" Text="" Height="50" Width="200"/>
 
-        <Button Name="done" Click="doneDescBtn" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" Height="20" Width="40" Margin="00,40,0,0">Done</Button>
-
-        <Button Name="createCategory" Grid.Row="1" Grid.Column="2" Height="40" Width="110">Create Category</Button>
+        <Button Name="done" Click="doneDescBtn" Grid.Row="2" Grid.Column="1" Height="20" Width="40" Margin="00,40,0,0">Done</Button>
     </Grid>
 </Page>

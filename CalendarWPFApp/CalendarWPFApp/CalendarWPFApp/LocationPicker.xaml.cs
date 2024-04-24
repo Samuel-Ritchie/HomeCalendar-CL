@@ -23,11 +23,15 @@ namespace CalendarWPFApp
         private Presenter _presenter;
         private IMainView _mainView;
 
+        private string _currentPath;
+
         public LocationPicker(IMainView mainView, Presenter presenter, string currentPath)
         {
             InitializeComponent();
 
-            CurrentLocation.Text = currentPath;
+            _currentPath = currentPath;
+
+            CurrentLocation.Text = _currentPath;
 
             _presenter = presenter;
 
@@ -42,19 +46,20 @@ namespace CalendarWPFApp
 
         private void Cancel_Click(object sender, RoutedEventArgs e)
         {
-            _mainView.ShowCalendarInteractivity();
+            _presenter.ProcessLocation(_mainView, this, _currentPath);
             this.Close();
         }
 
         private void Okay_Click(object sender, RoutedEventArgs e)
         {
-            _presenter.ProcessLocation(_mainView, this, NewLocationBox.Text.ToString());
+            _currentPath = NewLocationBox.Text.ToString();
+            CurrentLocation.Text = _currentPath;
+            _presenter.ProcessLocation(_mainView, this, _currentPath);
         }
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            // Not sure...
-            // Continue execution with default location.
+            //_presenter.ProcessLocation(_mainView, this, _currentPath);
         }
     }
 

@@ -19,9 +19,12 @@ namespace CalendarWPFApp
     /// </summary>
     public partial class MainWindow : Window, IMainView
     {
+        private Presenter _presenter;
+
+        private bool _choiceIsValid = false;
         private bool _isSearchingFile = false;
         private bool _usingStandardTheme = true;
-        private Presenter _presenter;
+       
         public MainWindow()
         {
             InitializeComponent();
@@ -42,15 +45,17 @@ namespace CalendarWPFApp
                 string fileName = fileDialog.SafeFileName;
                 chosenFileName.Text = fileName;
                 chosenDirectoryName.Text = fullPath;
-
+                _choiceIsValid = true;
             }
             else
             {
                 chosenFileName.Text = "Please select a valid file.";
+                _choiceIsValid = false;
             }
         }
         private void swapBtnState_Click(object sender, RoutedEventArgs e)
         {
+            ErrorFind.Text = "";
             if (!_isSearchingFile)
             {
                 CreateFileBtn.Background = new BrushConverter().ConvertFrom("#555555") as SolidColorBrush;
@@ -75,7 +80,6 @@ namespace CalendarWPFApp
 
                 _isSearchingFile = false;
             }
-
         }
         private void Header_Grab(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
@@ -97,17 +101,16 @@ namespace CalendarWPFApp
         }
         private void FindBtn_Click(object sender, RoutedEventArgs e)
         {
-
+            ErrorFind.Text = "";
             //validate selected file before finding?
-            if (chosenFileName.Text == "Please select a valid file.")
+            if (_choiceIsValid)
             {
-                //ErrorFind.Text = "Please select a valid file before searching.";
+                // Pass ! _isSearchingFile so it is recieved as isNewDatabase. _isSearchingFile True == isNewDatabase False
+                _presenter.ProcessDatabaseFile(chosenFileName.Text, chosenDirectoryName.Text, !_isSearchingFile);
             }
             else
             {
-                Window w = new CalendarWindow(_presenter);
-                w.Show();
-                this.Close();
+                ErrorFind.Text = "Please select a valid file before searching.";
             }
         }
         public void ShowMainError(string errMsg)

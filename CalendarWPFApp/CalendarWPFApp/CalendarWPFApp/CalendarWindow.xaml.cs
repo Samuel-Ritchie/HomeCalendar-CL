@@ -19,7 +19,8 @@ namespace CalendarWPFApp
         {
             ChooseToCreate = 1,
             CreateEvent = 2,
-            CreateCategory = 3
+            CreateCategory = 3,
+            CalendarView = 4,
         }
 
         private bool _usingStandardTheme = true;
@@ -31,7 +32,8 @@ namespace CalendarWPFApp
             InitializeComponent();
 
             _presenter = presenter;
-            _currentAppState = Interfaces.ChooseToCreate;
+            _currentAppState = Interfaces.CalendarView;
+            SwitchForms(Interfaces.CalendarView, null);
         }
         private void SetPageButtonColor(Button button, bool clicked)
         {
@@ -45,7 +47,6 @@ namespace CalendarWPFApp
 
             TextBlock textBlock = border.Child as TextBlock;
             textBlock.Foreground = (clicked) ? PRESSED_FG : UNPRESSED_FG;
-
         }
 
         //==============================================
@@ -53,16 +54,9 @@ namespace CalendarWPFApp
         //==============================================
         private void HomeButton_Click(object sender, RoutedEventArgs e)
         {
-            main.Content = new HomePage();
-            PageBG.Source = new BitmapImage(new Uri("../assets/Home.jpg", UriKind.Relative));
-
-            foreach (Button b in PageBar.Children)
-            {
-                if (b == HomeButton)
-                    SetPageButtonColor(b, true);
-                else
-                    SetPageButtonColor(b, false);
-            }
+            _currentAppState = Interfaces.CalendarView;
+            
+            SwitchForms(Interfaces.CalendarView, null);
         }
 
         #region EVENT
@@ -186,6 +180,21 @@ namespace CalendarWPFApp
             {
                 main.Content = null;
             }
+            else if (switchTo == Interfaces.CalendarView && existingEventForm is null)
+            {
+                // Set the content of the frame to the calendar view.
+
+                main.Content = new HomePage();
+                PageBG.Source = new BitmapImage(new Uri("../assets/Home.jpg", UriKind.Relative));
+
+                foreach (Button b in PageBar.Children)
+                {
+                    if (b == HomeButton)
+                        SetPageButtonColor(b, true);
+                    else
+                        SetPageButtonColor(b, false);
+                }
+            }
             else if (switchTo == Interfaces.CreateEvent)
             {
                 main.Content = new CreateEventPage(_presenter, this);
@@ -200,6 +209,7 @@ namespace CalendarWPFApp
                 // Set the content of the frame to the xaml of the create Category form.
                 main.Content = new CreateCategoryPage(_presenter, this, null);
             }
+           
         }
     }
 }

@@ -17,5 +17,7 @@
         <Viewbox Margin="20">
             <Calendar></Calendar>
         </Viewbox>
+        <Image Grid.Column="1" Margin="20" x:Name="Motivation"></Image>
+        
     </Grid>
 </Page>

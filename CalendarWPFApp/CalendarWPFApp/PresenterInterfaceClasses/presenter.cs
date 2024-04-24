@@ -214,7 +214,7 @@ namespace PresenterInterfaceClasses
         //==============================================
 
         public void ProcessLocation(IMainView MainView, ILocationPicker View, string location)
-        {
+       {
             if (Directory.Exists(location))
             {
                 _saveToPath = location;

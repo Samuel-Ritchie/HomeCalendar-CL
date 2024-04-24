@@ -102,7 +102,7 @@ namespace CalendarWPFApp.Pages
 
             if (_initializedFromCalendarWindow)
             {
-                _calendarWindow.SwitchForms(CalendarWindow.Interfaces.ChooseToCreate, null);
+                _calendarWindow.SwitchForms(CalendarWindow.Interfaces.CalendarView, null);
             }
             else if (!_initializedFromCalendarWindow)
             {

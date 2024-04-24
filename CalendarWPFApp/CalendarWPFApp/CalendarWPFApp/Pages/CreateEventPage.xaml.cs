@@ -63,7 +63,6 @@ namespace CalendarWPFApp.Pages
             DateTime theDateTime;
             int theHours;
             int theMinutes;
-            int theSeconds;
             string theAmPm;
             int theDurationInMinutes;
             string category;
@@ -74,13 +73,13 @@ namespace CalendarWPFApp.Pages
                 if (datePickerInput.SelectedDate is not null)
                 {
                     theDateTime = (DateTime)datePickerInput.SelectedDate;
-                    if ((ComboBoxItem)HoursComboBox.SelectedValue is not null && int.TryParse(((ComboBoxItem)HoursComboBox.SelectedValue).Content.ToString(), out theHours))
+                    if (HoursComboBox.SelectedValue is not null && int.TryParse(HoursComboBox.SelectedValue.ToString(), out theHours))
                     {
-                        if (((ComboBoxItem)AMPMComboBox.SelectedValue).Content.ToString() == "PM")
+                        if (AMPMComboBox.SelectedValue is not null && AMPMComboBox.SelectedValue.ToString() == "PM")
                         {
                             theHours = theHours + 12;
                         }
-                        if ((ComboBoxItem)MinutesComboBox.SelectedValue is not null && int.TryParse(((ComboBoxItem)MinutesComboBox.SelectedValue).Content.ToString(), out theMinutes))
+                        if (MinutesComboBox.SelectedValue is not null && int.TryParse(MinutesComboBox.SelectedValue.ToString(), out theMinutes))
                         {
                             int duration;
                             if (DurationBox.Text.ToString() != "" &&
@@ -166,7 +165,7 @@ namespace CalendarWPFApp.Pages
         {
             MessageBoxResult userChoice = MessageBox.Show("Event has been created.", "Error", MessageBoxButton.OK, MessageBoxImage.Information);
 
-            _calendarWindow.SwitchForms(CalendarWindow.Interfaces.ChooseToCreate, null);
+            _calendarWindow.SwitchForms(CalendarWindow.Interfaces.CalendarView, null);
         }
 
         public void ShowEventCreationError(string errMessage)
