@@ -1,0 +1,31 @@
+﻿<Window x:Class="CalendarWPFApp.LocationPicker"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:CalendarWPFApp"
+        mc:Ignorable="d"
+        Closing="Window_Closing"
+        Title="LocationPicker" Height="450" Width="800">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="1*"></RowDefinition>
+            <RowDefinition Height=".75*"></RowDefinition>
+            <RowDefinition Height=".75*"></RowDefinition>
+            <RowDefinition Height="1.5*"></RowDefinition>
+            <RowDefinition Height="1*"></RowDefinition>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="1*"></ColumnDefinition>
+            <ColumnDefinition Width="4*"></ColumnDefinition>
+            <ColumnDefinition Width="1*"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+
+        <TextBlock Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="30">Choose save directory</TextBlock>
+        <TextBlock Grid.Row="1" Grid.Column="1" VerticalAlignment="Top" HorizontalAlignment="Center" FontSize="15" Margin="20">Current Location:</TextBlock>
+        <TextBlock x:Name="CurrentLocation" Grid.Row="2" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="15" Margin="20">...</TextBlock>
+        <TextBox x:Name="NewLocationBox" Grid.Row="3" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center" MinWidth="300"></TextBox>
+        <Button x:Name="Cancel" Click="Cancel_Click" Grid.Row="4" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="100,0">Keep Currrent</Button>
+        <Button x:Name="Okay" Click="Okay_Click" Grid.Row="4" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="100,0">Choose new</Button>
+    </Grid>
+</Window>

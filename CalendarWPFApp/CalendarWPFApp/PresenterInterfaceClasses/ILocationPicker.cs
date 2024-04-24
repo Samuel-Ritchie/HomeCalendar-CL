@@ -4,9 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PresenterCode
+namespace PresenterInterfaceClasses
 {
-    public interface IcreateCategoryWindow
+    public interface ILocationPicker
     {
+        public void ShowErrorLocationPicker(string message);
     }
 }

@@ -13,16 +13,18 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace CalendarWPFApp
+namespace CalendarWPFApp.Pages
 {
     /// <summary>
-    /// Interaction logic for CreateEvent.xaml
+    /// Interaction logic for HomePage.xaml
     /// </summary>
-    public partial class CreateEvent : Page
+    public partial class HomePage : Page
     {
-        public CreateEvent()
+        public HomePage()
         {
             InitializeComponent();
+
+            Motivation.Source = new BitmapImage(new Uri("../assets/motivation.jpg", UriKind.Relative));
         }
     }
 }

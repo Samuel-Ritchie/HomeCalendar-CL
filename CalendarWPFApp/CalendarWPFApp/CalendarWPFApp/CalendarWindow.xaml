@@ -5,7 +5,9 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:CalendarWPFApp"
         mc:Ignorable="d"
-        Title="CalendarWindow" Height="450" Width="800">
+        ResizeMode="NoResize"
+        WindowStyle="None"
+        Title="CalendarWindow" Height="600" Width="1000">
 
     <Grid Background="#222222">
         <Grid.RowDefinitions>
@@ -14,34 +16,62 @@
             <RowDefinition Height="*"></RowDefinition>
         </Grid.RowDefinitions>
 
-        <Grid x:Name="Header" Grid.Row="0" Background="#e88833">
+        <Grid x:Name="Header" MouseDown="Header_Grab" Grid.Row="0" Background="#e88833">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="auto"></ColumnDefinition>
                 <ColumnDefinition></ColumnDefinition>
             </Grid.ColumnDefinitions>
-            <TextBlock Grid.Column="0" FontSize="35" FontWeight="bold" Foreground="White" Margin="10 0">Corner Lurkers Calendar</TextBlock>
-            <TextBlock Grid.Column="1" HorizontalAlignment="Right" FontSize="35" Foreground="White">📅</TextBlock>
+            <TextBlock Grid.Column="0" FontSize="35" FontWeight="bold" Foreground="White" Margin="10 0">📅 Corner Lurkers Calendar</TextBlock>
+            <Grid HorizontalAlignment="Right" Grid.Column="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition></ColumnDefinition>
+                    <ColumnDefinition></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+
+                <Button Grid.Column="0" Click="Swap_Theme_Click" Background="White" Width="50" BorderBrush="Transparent">
+                    <TextBlock Foreground="#e88833" FontSize="30" VerticalAlignment="Center">⚙️</TextBlock>
+                </Button>
+                <Button Grid.Column="1" Click="CloseButton_Click" Background="White" Width="50" BorderBrush="Transparent">
+                    <TextBlock Foreground="#e88833" FontSize="35" VerticalAlignment="Center">X</TextBlock>
+                </Button>
+            </Grid>
         </Grid>
 
-        <Grid Grid.Row="1">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="1*"></RowDefinition>
-                <RowDefinition Height="3*"></RowDefinition>
-                <RowDefinition Height="1*"></RowDefinition>
-            </Grid.RowDefinitions>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="1*"></ColumnDefinition>
-                <ColumnDefinition Width="1*"></ColumnDefinition>
-            </Grid.ColumnDefinitions>
+        <Border Grid.Row="1" Margin="10 10 10 0" Background="White" CornerRadius="10">
+            <Grid x:Name="PageBar" Margin="2">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition></ColumnDefinition>
+                    <ColumnDefinition></ColumnDefinition>
+                    <ColumnDefinition></ColumnDefinition>
+                </Grid.ColumnDefinitions>
 
-            <Button x:Name="CreateEventButton" Click="CreateEventButton_Click_1" Grid.Row="1" Grid.Column="0">Create Event</Button>
-            <Button x:Name="CreateCategoryButton" Click="CreateCategoryButton_Click_1" Grid.Row="1" Grid.Column="1">Create Category</Button>
+                <Button x:Name="HomeButton" Click="HomeButton_Click" Grid.Row="1" Grid.Column="0" BorderBrush="Transparent"
+                        Background="Transparent" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch">
+                    <Border Background="#e88833" CornerRadius="7">
+                        <TextBlock FontSize="20" Foreground="White" FontWeight="SemiBold" HorizontalAlignment="Center" VerticalAlignment="Center">HOME 🏠</TextBlock>
+                    </Border>
+                </Button>
+                <Button x:Name="CreateEventButton" Click="CreateEventButton_Click" Grid.Row="1" Grid.Column="1" BorderBrush="Transparent"
+                        Background="Transparent" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch">
+                    <Border Background="#555555" CornerRadius="7">
+                        <TextBlock FontSize="20" Foreground="#BBBBBB" FontWeight="SemiBold" HorizontalAlignment="Center" VerticalAlignment="Center">Create Event 📆</TextBlock>
+                    </Border>
+                </Button>
+                <Button x:Name="CreateCategoryButton" Click="CreateCategoryButton_Click" Grid.Row="1" Grid.Column="2" BorderBrush="Transparent"
+                        Background="Transparent" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch">
+                    <Border Background="#555555" CornerRadius="7">
+                        <TextBlock FontSize="20" Foreground="#BBBBBB" FontWeight="SemiBold" HorizontalAlignment="Center" VerticalAlignment="Center">Create Category 🏷️</TextBlock>
+                    </Border>
+                </Button>
+            </Grid>
+        </Border>
+
+        <Grid Grid.Row="2" >
+            <Image x:Name="PageBG" Source="Assets/Home.jpg" Stretch="UniformToFill" Margin="8"></Image>
+
+            <Border x:Name="mainBorder" BorderBrush="#222222" BorderThickness="10" CornerRadius="20" Background="#66e88833">
+                <Frame x:Name="main" NavigationUIVisibility="Hidden"></Frame>
+            </Border>
         </Grid>
-
-
-        <Image Grid.Row="2" Source="assets/motivation.jpg" HorizontalAlignment="Right" VerticalAlignment="Center" MaxHeight="300" Margin="10,20"></Image>
-        <Frame Grid.Row="2" x:Name="main" NavigationUIVisibility="Hidden">
-
-        </Frame>
     </Grid>
 </Window>

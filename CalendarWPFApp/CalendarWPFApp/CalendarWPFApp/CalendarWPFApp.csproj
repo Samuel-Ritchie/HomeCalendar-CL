@@ -11,6 +11,7 @@
   <ItemGroup>
     <None Remove="assets\Category.jpg" />
     <None Remove="assets\Event.jpg" />
+    <None Remove="assets\Home.jpg" />
     <None Remove="assets\motivation.jpg" />
     <None Remove="assets\WAh.jpg" />
   </ItemGroup>
@@ -20,8 +21,16 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\PresenterInterfaceClasses\PresenterInterfaceClasses.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="HomeCalendar">
+      <HintPath>dlls\HomeCalendar.dll</HintPath>
+    </Reference>
     <Resource Include="assets\Category.jpg" />
     <Resource Include="assets\Event.jpg" />
+    <Resource Include="assets\Home.jpg" />
     <Resource Include="assets\motivation.jpg" />
     <Resource Include="assets\WAh.jpg" />
   </ItemGroup>

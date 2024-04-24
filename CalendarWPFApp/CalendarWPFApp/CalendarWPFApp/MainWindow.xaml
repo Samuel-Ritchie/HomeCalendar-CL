@@ -5,37 +5,49 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:CalendarWPFApp"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        WindowStyle="None"
+        ResizeMode="NoResize"
+        Title="MainWindow" Height="500" Width="1200">
     <Grid Background="#222222">
         <Grid.RowDefinitions>
             <RowDefinition Height="50"></RowDefinition>
             <RowDefinition></RowDefinition>
         </Grid.RowDefinitions>
 
-        <Grid x:Name="Header" Grid.Row="0" Background="#5e9146">
+        <Grid x:Name="Header" MouseDown="Header_Grab" Grid.Row="0" Background="#5e9146">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="auto"></ColumnDefinition>
                 <ColumnDefinition></ColumnDefinition>
             </Grid.ColumnDefinitions>
-            <TextBlock Grid.Column="0" FontSize="35" FontWeight="bold" Foreground="White" Margin="10 0">Corner Lurkers Calendar</TextBlock>
-            <TextBlock Grid.Column="1" HorizontalAlignment="Right" FontSize="35" Foreground="White">📅</TextBlock>
+            <TextBlock Grid.Column="0" FontSize="35" FontWeight="bold" Foreground="White" Margin="10 0">📅 Corner Lurkers Calendar</TextBlock>
+            <Grid HorizontalAlignment="Right" Grid.Column="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition></ColumnDefinition>
+                    <ColumnDefinition></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+
+                <Button Grid.Column="0" Click="Swap_Theme_Click" Background="White" Width="50" BorderBrush="Transparent">
+                    <TextBlock Foreground="#5e9146" FontSize="30" VerticalAlignment="Center">⚙️</TextBlock>
+                </Button>
+                <Button Grid.Column="1" Click="CloseButton_Click" Background="White" Width="50" BorderBrush="Transparent">
+                    <TextBlock Foreground="#5e9146" FontSize="35" VerticalAlignment="Center">X</TextBlock>
+                </Button>
+            </Grid>
         </Grid>
 
-        <Grid Grid.Row="1">
+        <Grid Grid.Row="1" x:Name="main">
             <Grid.RowDefinitions>
                 <RowDefinition Height="200"></RowDefinition>
                 <RowDefinition></RowDefinition>
                 <RowDefinition></RowDefinition>
             </Grid.RowDefinitions>
+
+            <Image x:Name="MainBG" Source="Assets/Wah.jpg" Stretch="UniformToFill" Grid.RowSpan="3"></Image>
             
-            <Grid.Background>
-                <ImageBrush ImageSource="assets/WAh.jpg" Stretch="UniformToFill"></ImageBrush>
-            </Grid.Background>
+            <Border x:Name="ColorBG" Grid.RowSpan="3" Background="#665e9146"></Border>
 
-            <Border Grid.Row="0" Grid.RowSpan="3" Background="#665e9146"></Border>
-
-            <Border Grid.Row="0" BorderBrush="White" BorderThickness="2" Margin="10"  CornerRadius="20">
-                <Border Margin="10" Background="White" CornerRadius="10">
+            <Border Grid.Row="0" BorderBrush="White" BorderThickness="5" Margin="10"  CornerRadius="20">
+                <Border Margin="10" Background="#CCFFFFFF" CornerRadius="10">
                     <Grid Margin="10">
                         <Grid.RowDefinitions>
                             <RowDefinition></RowDefinition>
@@ -49,21 +61,22 @@
                         </Grid.ColumnDefinitions>
 
                         <Border Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2">
-                            <TextBlock HorizontalAlignment="Center" Foreground="#222222" FontWeight="DemiBold" FontSize="30">Choose a database file</TextBlock>
+                            <TextBlock HorizontalAlignment="Center" Foreground="#222222" FontWeight="DemiBold" FontSize="30">CHOOSE A CALENDAR FILE</TextBlock>
                         </Border>
 
                         <Border Margin="5" Grid.Row="1" Background="#222222" CornerRadius="8">
                             <Grid Grid.Row="0">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="*"></ColumnDefinition>
-                                    <ColumnDefinition Width="3*"></ColumnDefinition>
+                                    <ColumnDefinition Width="4*"></ColumnDefinition>
                                 </Grid.ColumnDefinitions>
 
                                 <Border Grid.Column="0" Margin="3" Background="#5e9146" CornerRadius="5">
-                                    <TextBlock Foreground="White" TextAlignment="Center" FontWeight="DemiBold" FontSize="15">Directory Path:</TextBlock>
+                                    <TextBlock Foreground="White" TextAlignment="Center" FontWeight="DemiBold" FontSize="15" VerticalAlignment="Center">DIRECTORY PATH</TextBlock>
                                 </Border>
 
-                                <TextBox Grid.Column="1" Name="chosenDirectoryName" Background="Transparent" BorderBrush="Transparent" Foreground="White" FontSize="15"></TextBox>
+                                <TextBox Grid.Column="1" Name="chosenDirectoryName" Background="Transparent" BorderBrush="Transparent" 
+                                         VerticalAlignment="Center" Foreground="White" FontSize="15"></TextBox>
                             </Grid>
                         </Border>
 
@@ -71,14 +84,15 @@
                             <Grid>
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="*"></ColumnDefinition>
-                                    <ColumnDefinition Width="3*"></ColumnDefinition>
+                                    <ColumnDefinition Width="4*"></ColumnDefinition>
                                 </Grid.ColumnDefinitions>
 
                                 <Border Grid.Column="0" Margin="3" Background="#5e9146" CornerRadius="5">
-                                    <TextBlock Foreground="White" TextAlignment="Center" FontWeight="DemiBold" FontSize="15">File Name:</TextBlock>
+                                    <TextBlock Foreground="White" TextAlignment="Center" FontWeight="DemiBold" FontSize="15" VerticalAlignment="Center">FILE NAME</TextBlock>
                                 </Border>
 
-                                <TextBox Name="chosenFileName" Grid.Column="1" Background="Transparent" BorderBrush="Transparent" Foreground="White" FontSize="15"></TextBox>
+                                <TextBox Name="chosenFileName" Grid.Column="1" Background="Transparent" BorderBrush="Transparent" 
+                                         VerticalAlignment="Center" Foreground="White" FontSize="15"></TextBox>
                             </Grid>
                         </Border>
 
@@ -96,28 +110,31 @@
                     <ColumnDefinition></ColumnDefinition>
                 </Grid.ColumnDefinitions>
 
-                <Button x:Name="swapBtnState" Click="swapBtnState_Click" Background="Transparent" BorderBrush="Transparent" HorizontalContentAlignment="Stretch" Margin="10 0">
-                    <Border Background="White" CornerRadius="5">
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition></ColumnDefinition>
-                                <ColumnDefinition></ColumnDefinition>
-                            </Grid.ColumnDefinitions>
+                <Button x:Name="swapBtnState" Click="swapBtnState_Click" Background="Transparent" BorderBrush="Transparent" 
+                        VerticalContentAlignment="Stretch" HorizontalContentAlignment="Stretch" Margin="10 0">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition></ColumnDefinition>
+                            <ColumnDefinition Width="5"></ColumnDefinition>
+                            <ColumnDefinition></ColumnDefinition>
+                        </Grid.ColumnDefinitions>
 
-                            <Border x:Name="CreateFileBtn" Grid.Column="0" Background="#5e9146" CornerRadius="5" BorderThickness="3" BorderBrush="#222222" Margin="2">
-                                <TextBlock Background="Transparent" Foreground="White" FontWeight="DemiBold" FontSize="20" HorizontalAlignment="Center">Create</TextBlock>
-                            </Border>
+                        <Border x:Name="CreateFileBtn" Grid.Column="0" Background="#5e9146" CornerRadius="10" BorderThickness="5" BorderBrush="White">
+                            <TextBlock Background="Transparent" Foreground="White" FontWeight="DemiBold" FontSize="20" VerticalAlignment="Center" HorizontalAlignment="Center">CREATE CALENDAR</TextBlock>
+                        </Border>
 
-                            <Border x:Name="SearchFileBtn" Grid.Column="1" Background="#555555" CornerRadius="5" BorderThickness="3" BorderBrush="#222222" Margin="2">
-                                <TextBlock Background="Transparent" Foreground="#BBBBBB" FontWeight="DemiBold" FontSize="20" HorizontalAlignment="Center">Search</TextBlock>
-                            </Border>
-                        </Grid>
-                    </Border>
+                        <Border x:Name="SearchFileBtn" Grid.Column="2" Background="#555555" CornerRadius="10" BorderThickness="5" BorderBrush="White">
+                            <TextBlock Background="Transparent" Foreground="#BBBBBB" FontWeight="DemiBold" FontSize="20" VerticalAlignment="Center" HorizontalAlignment="Center">USE EXISTING CALENDAR</TextBlock>
+                        </Border>
+                    </Grid>
                 </Button>
 
-                <Border Grid.Column="1" Background="#5e9146" CornerRadius="5" BorderThickness="3" BorderBrush="#222222" Margin="10 0">
+                <Border Grid.Column="1" Background="#5e9146" CornerRadius="10" BorderThickness="5" BorderBrush="White" Margin="10 0">
                     <Button x:Name="FindBtn" Click="FindBtn_Click"
-                        Background="Transparent" BorderBrush="Transparent" Foreground="White" FontWeight="DemiBold" FontSize="20">Search File</Button>
+                        Background="Transparent" BorderBrush="Transparent" Foreground="White" FontWeight="DemiBold" FontSize="20">SEARCH</Button>
                 </Border>
             </Grid>
             <Grid Grid.Row="2">

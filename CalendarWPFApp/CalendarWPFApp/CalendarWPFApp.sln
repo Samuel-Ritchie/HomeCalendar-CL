@@ -5,6 +5,8 @@ VisualStudioVersion = 17.9.34728.123
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CalendarWPFApp", "CalendarWPFApp\CalendarWPFApp.csproj", "{39895276-BD15-4DDB-93A0-9A83446ED81D}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PresenterInterfaceClasses", "PresenterInterfaceClasses\PresenterInterfaceClasses.csproj", "{A95EF647-18C4-4111-BC25-01BBB8BC15E5}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{39895276-BD15-4DDB-93A0-9A83446ED81D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{39895276-BD15-4DDB-93A0-9A83446ED81D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{39895276-BD15-4DDB-93A0-9A83446ED81D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A95EF647-18C4-4111-BC25-01BBB8BC15E5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A95EF647-18C4-4111-BC25-01BBB8BC15E5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A95EF647-18C4-4111-BC25-01BBB8BC15E5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A95EF647-18C4-4111-BC25-01BBB8BC15E5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
