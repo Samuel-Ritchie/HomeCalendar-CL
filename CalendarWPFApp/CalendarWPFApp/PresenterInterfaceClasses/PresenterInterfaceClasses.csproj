@@ -10,9 +10,6 @@
     <Reference Include="HomeCalendar">
       <HintPath>dlls\HomeCalendar.dll</HintPath>
     </Reference>
-    <Reference Include="TicTacToe">
-      <HintPath>..\..\..\..\TicTacToeGame\PresenterModel\DLLs\TicTacToeModel\TicTacToe.dll</HintPath>
-    </Reference>
   </ItemGroup>
 
 </Project>
