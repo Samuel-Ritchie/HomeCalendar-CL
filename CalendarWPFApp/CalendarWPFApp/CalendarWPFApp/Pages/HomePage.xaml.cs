@@ -26,6 +26,7 @@ namespace CalendarWPFApp.Pages
             InitializeComponent();
 
             CalendarItemsTable.ItemsSource = GetTestData();
+
         }
         private List<Event> GetTestData()
         {
