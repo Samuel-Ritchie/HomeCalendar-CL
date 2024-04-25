@@ -11,16 +11,54 @@
     <Page.Resources>
         <!-- DataGrid style -->
         <Style x:Key="DataGridStyle1" TargetType="{x:Type DataGrid}">
-            <Setter Property="ColumnHeaderStyle" Value="{DynamicResource ColumnHeaderStyle1}"/>
+            <Setter Property="ColumnHeaderStyle" Value="{DynamicResource ColumnHeaderStyle}"/>
+            <Setter Property="RowStyle" Value="{DynamicResource RowStyle}"/>
+            <Setter Property="HorizontalGridLinesBrush" Value="#00000000"/>
+            <Setter Property="VerticalGridLinesBrush" Value="#00000000"/>
         </Style>
         <!-- DataGridColumnHeader style -->
-        <Style x:Key="ColumnHeaderStyle1" TargetType="DataGridColumnHeader">
-            <Setter Property="Height" Value="30"/>
-            <Setter Property="Background" Value="LightBlue"/>
-            <Setter Property="Foreground" Value="Blue"/>
+        <Style x:Key="ColumnHeaderStyle" TargetType="DataGridColumnHeader">
+            <Setter Property="Height" Value="40"/>
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Foreground" Value="#222222"/>
             <Setter Property="FontSize" Value="18"/>
-            <Setter Property="Padding" Value="5 0"/>
-            <Setter Property="Margin" Value="0 10"/>
+            <Setter Property="FontWeight" Value="DemiBold"/>
+            <Setter Property="Padding" Value="0 5 50 0"/>
+            <Setter Property="Margin" Value="0 0 0 5"/>
+            <Setter Property="BorderThickness" Value="2"/>
+        </Style>
+        <Style x:Key="RowStyle" TargetType="DataGridRow">
+            <Setter Property="Background" Value="#CCFFFFFF"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="FontSize" Value="18"/>
+            <Setter Property="Height" Value="30"/>
+            <Setter Property="Margin" Value="0 2"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type DataGridRow}">
+                        <Border x:Name="DGR_Border" BorderBrush="{TemplateBinding BorderBrush}" 
+                                        BorderThickness="{TemplateBinding BorderThickness}" 
+                                        Background="{TemplateBinding Background}" 
+                                        SnapsToDevicePixels="True"
+                                        CornerRadius="3">
+                            <SelectiveScrollingGrid>
+                                <SelectiveScrollingGrid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                </SelectiveScrollingGrid.ColumnDefinitions>
+                                <SelectiveScrollingGrid.RowDefinitions>
+                                    <RowDefinition Height="*"/>
+                                    <RowDefinition Height="Auto"/>
+                                </SelectiveScrollingGrid.RowDefinitions>
+                                
+                                <DataGridCellsPresenter VerticalAlignment="Center" Grid.Column="1" ItemsPanel="{TemplateBinding ItemsPanel}" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
+                                <DataGridDetailsPresenter Grid.Column="1" Grid.Row="1" SelectiveScrollingGrid.SelectiveScrollingOrientation="{Binding AreRowDetailsFrozen, ConverterParameter={x:Static SelectiveScrollingOrientation.Vertical}, Converter={x:Static DataGrid.RowDetailsScrollingConverter}, RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}}" Visibility="{TemplateBinding DetailsVisibility}"/>
+                                <DataGridRowHeader Grid.RowSpan="2" SelectiveScrollingGrid.SelectiveScrollingOrientation="Vertical" Visibility="{Binding HeadersVisibility, ConverterParameter={x:Static DataGridHeadersVisibility.Row}, Converter={x:Static DataGrid.HeadersVisibilityConverter}, RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}}"/>
+                            </SelectiveScrollingGrid>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
         </Style>
         </Page.Resources>
 
@@ -103,26 +141,43 @@
             <Border Grid.Row="3" BorderBrush="White" BorderThickness="2" Margin="10"  CornerRadius="20">
                 <Border CornerRadius="10" Margin="10" Background="#CCFFFFFF">
                     <Viewbox>
-                        <Calendar x:Name="calendar" Background="Transparent" BorderBrush="Transparent" BorderThickness="0"></Calendar>
+                        <Calendar x:Name="calendar" Background="Transparent" BorderBrush="Transparent" BorderThickness="0"/>
                     </Viewbox>
                 </Border>
             </Border>
         </Grid>
 
-        <Grid Grid.Column="1" Margin="10">
-            <DataGrid x:Name="CalendarItemsTable" ItemsSource="{Binding}" Background="Transparent" 
+        <Border Grid.Column="1" BorderBrush="White" BorderThickness="2" Margin="10"  CornerRadius="20">
+            <Grid Grid.Column="1" Margin="10">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="45"/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+
+                <Grid Grid.Row="0" Margin="0 0 0 5">
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+
+                    <Border Grid.Row="0" Grid.RowSpan="2" Background="White" CornerRadius="15"/>
+                    <Border Grid.Row="1" Background="White" CornerRadius="3"/>
+                </Grid>
+
+                <DataGrid x:Name="CalendarItemsTable" Grid.Row="0" Grid.RowSpan="3" ItemsSource="{Binding}" Background="Transparent" HeadersVisibility="Column" 
                       BorderThickness="0" Style="{DynamicResource DataGridStyle1}">
-                <DataGrid.Columns>
-                    <DataGridTemplateColumn>
-                        <DataGridTemplateColumn.CellTemplate>
-                            <DataTemplate>
-                                <TextBlock Background="#CCFFFFFF"></TextBlock>
-                            </DataTemplate>
-                        </DataGridTemplateColumn.CellTemplate>
-                    </DataGridTemplateColumn>
-                </DataGrid.Columns>
-            </DataGrid>
-        </Grid>
-        
+                    <DataGrid.Columns>
+                        <DataGridTemplateColumn>
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock Background="#CCFFFFFF"></TextBlock>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                    </DataGrid.Columns>
+                </DataGrid>
+            </Grid>
+        </Border>
+
     </Grid>
 </Page>
