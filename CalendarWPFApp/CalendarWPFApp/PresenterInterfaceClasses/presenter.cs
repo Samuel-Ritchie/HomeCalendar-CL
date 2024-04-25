@@ -39,7 +39,10 @@ namespace PresenterInterfaceClasses
             _Model = new HomeCalendar(_filePath, isNewDatabase);
 
             // Open new window with view function.
-            _mainWindow.ShowLocationPicker(_saveToPath);
+
+            // --------------------------------------------
+            // _mainWindow.ShowLocationPicker(_saveToPath);
+            // --------------------------------------------
 
             // _mainWindow will close after this.
         }
