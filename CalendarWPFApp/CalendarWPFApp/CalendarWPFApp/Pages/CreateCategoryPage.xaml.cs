@@ -98,7 +98,7 @@ namespace CalendarWPFApp.Pages
 
         public void ShowCategoryCreated()
         {
-            MessageBoxResult userChoice = MessageBox.Show("Category has been created.", "Error", MessageBoxButton.OK, MessageBoxImage.Information);
+            MessageBoxResult userChoice = System.Windows.MessageBox.Show("Category has been created.", "Error", MessageBoxButton.OK, MessageBoxImage.Information);
 
             if (_initializedFromCalendarWindow)
             {
@@ -113,7 +113,7 @@ namespace CalendarWPFApp.Pages
         public void ShowCategoryCreationError(string errMessage)
         {
             // Display Error to do with Category Creation to user using Message Box.
-            MessageBoxResult userChoice = MessageBox.Show(errMessage, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            MessageBoxResult userChoice = System.Windows.MessageBox.Show(errMessage, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
         }
     }
 }

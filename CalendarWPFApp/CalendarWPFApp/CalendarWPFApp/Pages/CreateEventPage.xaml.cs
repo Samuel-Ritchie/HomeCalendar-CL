@@ -163,7 +163,7 @@ namespace CalendarWPFApp.Pages
 
         public void ShowEventCreated()
         {
-            MessageBoxResult userChoice = MessageBox.Show("Event has been created.", "Error", MessageBoxButton.OK, MessageBoxImage.Information);
+            MessageBoxResult userChoice = System.Windows.MessageBox.Show("Event has been created.", "Error", MessageBoxButton.OK, MessageBoxImage.Information);
 
             _calendarWindow.SwitchForms(CalendarWindow.Interfaces.CalendarView, null);
         }
@@ -171,7 +171,7 @@ namespace CalendarWPFApp.Pages
         public void ShowEventCreationError(string errMessage)
         {
             // Display Error to do with Event Creation user using Message Box.
-            MessageBoxResult userChoice = MessageBox.Show(errMessage, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            MessageBoxResult userChoice = System.Windows.MessageBox.Show(errMessage, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
         }
     }
 }

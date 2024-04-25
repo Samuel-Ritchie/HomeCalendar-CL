@@ -35,7 +35,7 @@ namespace CalendarWPFApp
             _currentAppState = Interfaces.CalendarView;
             SwitchForms(Interfaces.CalendarView, null);
         }
-        private void SetPageButtonColor(Button button, bool clicked)
+        private void SetPageButtonColor(System.Windows.Controls.Button button, bool clicked)
         {
             SolidColorBrush UNPRESSED_BG = new BrushConverter().ConvertFrom("#555555") as SolidColorBrush;
             SolidColorBrush UNPRESSED_FG = new BrushConverter().ConvertFrom("#BBBBBB") as SolidColorBrush;
@@ -70,7 +70,7 @@ namespace CalendarWPFApp
 
             PageBG.Source = new BitmapImage(new Uri("../assets/Event.jpg", UriKind.Relative));
 
-            foreach (Button b in PageBar.Children)
+            foreach (System.Windows.Controls.Button b in PageBar.Children)
             {
                 if (b == CreateEventButton)
                     SetPageButtonColor(b, true);
@@ -93,7 +93,7 @@ namespace CalendarWPFApp
 
             PageBG.Source = new BitmapImage(new Uri("../assets/Category.jpg", UriKind.Relative));
 
-            foreach (Button b in PageBar.Children)
+            foreach (System.Windows.Controls.Button b in PageBar.Children)
             {
                 if (b == CreateCategoryButton)
                     SetPageButtonColor(b, true);
@@ -134,13 +134,13 @@ namespace CalendarWPFApp
             if (!_cancelClose)
             {
                 // Closes opperation.
-                Application.Current.Shutdown();
+                System.Windows.Application.Current.Shutdown();
             }
         }
         public void AskToSaveOrDiscardPromptCreate(bool changesMade)
         {
             // Get whether or not user want's to save changes.
-            MessageBoxResult userChoice = MessageBox.Show("You are about to quit and your changes may not be saved.", "SAVE ME!", MessageBoxButton.OKCancel, MessageBoxImage.Question);
+            MessageBoxResult userChoice = System.Windows.MessageBox.Show("You are about to quit and your changes may not be saved.", "SAVE ME!", MessageBoxButton.OKCancel, MessageBoxImage.Question);
 
             if (userChoice == MessageBoxResult.OK)
             {
@@ -187,7 +187,7 @@ namespace CalendarWPFApp
                 main.Content = new HomePage();
                 PageBG.Source = new BitmapImage(new Uri("../assets/Home.jpg", UriKind.Relative));
 
-                foreach (Button b in PageBar.Children)
+                foreach (System.Windows.Controls.Button b in PageBar.Children)
                 {
                     if (b == HomeButton)
                         SetPageButtonColor(b, true);
