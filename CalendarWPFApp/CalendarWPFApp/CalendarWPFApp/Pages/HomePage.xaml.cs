@@ -37,5 +37,31 @@ namespace CalendarWPFApp.Pages
                 new Event(DateTime.Now, 3, 6.0, "Real")
             };
         }
+
+        private void GetFilteringCriteria()
+        {
+            //getting selected dates
+            DateTime? startDate = startDateChosen.SelectedDate;
+            DateTime? endDate = endDateChosen.SelectedDate;
+
+            //filter by a category
+            bool? isFilterByCategoryChecked = filterCategoryCheckbox.IsChecked;
+
+            int selectedCategoryId = -1; //placeholder
+            //parse from filterCategory.SelectedValue (object) --> string --> int
+            bool parseResult = int.TryParse(filterCategory.SelectedValue.ToString(), out selectedCategoryId);
+
+
+            //call specific byMonth byCategory .. or both ?
+            bool? isByMonthChecked = byMonthCheck.IsChecked;
+            bool? isByCategoryChecked = byCategoryCheck.IsChecked;
+
+            SortEvents(startDate, endDate, isFilterByCategoryChecked, selectedCategoryId);
+        }
+
+        private void SortEvents(DateTime? startDate, DateTime? endDate, bool? FilterFlag, int CategoryID)
+        {
+
+        }
     }
 }
