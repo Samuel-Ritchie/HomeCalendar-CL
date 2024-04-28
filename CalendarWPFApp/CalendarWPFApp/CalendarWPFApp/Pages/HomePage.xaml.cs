@@ -88,7 +88,7 @@ namespace CalendarWPFApp.Pages
             DateTime? endDate = endDateChosen.SelectedDate;
 
             //filter by a category
-            bool? isFilterByCategoryChecked = filterCategoryCheckbox.IsChecked;
+            bool isFilterByCategoryChecked = filterCategoryCheckbox.IsChecked == true;
 
             int selectedCategoryId = -1; //placeholder
             //parse from filterCategory.SelectedValue (object) --> string --> int

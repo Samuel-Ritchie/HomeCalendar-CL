@@ -16,6 +16,7 @@ namespace PresenterInterfaceClasses
         // Interface references
         private IMainView _mainWindow;
         private IPromptCreationWindow? _promptCreationWindow;
+        private IHomePage _homePage;
 
         // State of application fields
         private string _filePath = "";
@@ -32,9 +33,26 @@ namespace PresenterInterfaceClasses
         //==============================================
         //  Filtering and Sorting methods
         //==============================================
-        public void SortEvents(DateTime? startDate, DateTime? endDate, bool? FilterFlag, int CategoryID, bool? isByMonthCheck, bool? isByCategoryCheck)
+        public void SortEvents(IHomePage homePage, DateTime? startDate, DateTime? endDate, bool FilterFlag, int CategoryID, bool? isByMonthCheck, bool? isByCategoryCheck)
         {
+            if (isByMonthCheck == false && isByCategoryCheck == false)
+            {
+                List<CalendarItem> calendarItems = _Model.GetCalendarItems(startDate, endDate, FilterFlag, CategoryID);
+                homePage.UpdateEventsGetCalendarItems(calendarItems);
 
+            } else if (isByMonthCheck == false && isByCategoryCheck == true)
+            {
+                List<CalendarItemsByCategory> calendarItemsByCategory = _Model.GetCalendarItemsByCategory(startDate, endDate, FilterFlag, CategoryID);
+                homePage.UpdateEventsGetCalendarItemsByCategory(calendarItemsByCategory);
+            } else if (isByMonthCheck == true && isByCategoryCheck == false)
+            {
+                List<CalendarItemsByMonth> calendarItemsByMonth = _Model.GetCalendarItemsByMonth(startDate, endDate, FilterFlag, CategoryID);
+                homePage.UpdateEventsGetCalendarItemsByMonth(calendarItemsByMonth);
+            } else
+            {
+                List<Dictionary<string, object>> calendarItemsByCategoryAndMonth = _Model.GetCalendarDictionaryByCategoryAndMonth(startDate, endDate, FilterFlag, CategoryID);
+                homePage.UpdateEventsGetCalendarItemsByCategoryAndMonth(calendarItemsByCategoryAndMonth);
+            }
         }
 
         //==============================================
