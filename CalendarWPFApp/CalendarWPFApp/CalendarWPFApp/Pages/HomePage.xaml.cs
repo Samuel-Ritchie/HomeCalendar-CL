@@ -15,15 +15,17 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Calendar;
 using PresenterInterfaceClasses;
+using static CalendarWPFApp.CalendarWindow;
 
 namespace CalendarWPFApp.Pages
 {
     /// <summary>
     /// Interaction logic for HomePage.xaml
     /// </summary>
-    public partial class HomePage : Page
+    public partial class HomePage : Page, IHomePage
     {
         private Presenter _presenter;
+        private IHomePage _homePageInterface;
 
         public HomePage(Presenter p)
         {
@@ -98,7 +100,7 @@ namespace CalendarWPFApp.Pages
             bool? isCategoryChecked = byCategoryCheck.IsChecked;
 
             //update the sorted list of events each time there is a trigger
-            _presenter.SortEvents(startDate, endDate, isFilterByCategoryChecked, selectedCategoryId, isMonthChecked, isCategoryChecked);
+            _presenter.SortEvents(_homePageInterface, startDate, endDate, isFilterByCategoryChecked, selectedCategoryId, isMonthChecked, isCategoryChecked);
         }
     }
 }
