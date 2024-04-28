@@ -30,6 +30,14 @@ namespace PresenterInterfaceClasses
         }
 
         //==============================================
+        //  Filtering and Sorting methods
+        //==============================================
+        public void SortEvents(DateTime? startDate, DateTime? endDate, bool? FilterFlag, int CategoryID, bool? isByMonthCheck, bool? isByCategoryCheck)
+        {
+
+        }
+
+        //==============================================
         //  Presenter to Model Methods
         //==============================================
         public void InitializeHomeCalendar(string databaseName, string filePath, bool isNewDatabase)

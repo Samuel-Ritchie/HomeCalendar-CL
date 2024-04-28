@@ -116,7 +116,7 @@
                                 <RowDefinition Height="Auto"/>
                             </Grid.RowDefinitions>
 
-                            <CheckBox x:Name="filterCategoryCheckbox">Filter By Category?</CheckBox>
+                            <CheckBox Click="filterCategoryCheckbox_Click" x:Name="filterCategoryCheckbox">Filter By Category?</CheckBox>
                             <ComboBox x:Name="filterCategory"  Grid.Row="1">
                                 <ComboBoxItem>1</ComboBoxItem>
                                 <ComboBoxItem>2</ComboBoxItem>
