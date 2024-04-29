@@ -70,9 +70,9 @@ namespace CalendarWPFApp.Pages
         //TODO: Make all the other elements (startdate, end, bymonth, bycategory) funnel to this method
         private void getUserInput_Click(object sender, RoutedEventArgs e)
         {
-            //getting selected dates
-            DateTime? startDate = startDateChosen.SelectedDate;
-            DateTime? endDate = endDateChosen.SelectedDate;
+            //getting selected dates, if null set to start =  yesterday, end = today
+            DateTime? startDate = startDateChosen.SelectedDate == null ? DateTime.Today.AddDays(-1) : startDateChosen.SelectedDate;
+            DateTime? endDate = endDateChosen.SelectedDate == null ? DateTime.Today : endDateChosen.SelectedDate;
 
             //filter by a category
             bool isFilterByCategoryChecked = filterCategoryCheckbox.IsChecked == true;
