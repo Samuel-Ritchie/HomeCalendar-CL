@@ -123,11 +123,11 @@
                         </Grid.ColumnDefinitions>
 
                         <Border x:Name="CreateFileBtn" Grid.Column="0" Background="#5e9146" CornerRadius="10" BorderThickness="5" BorderBrush="White">
-                            <TextBlock Background="Transparent" Foreground="White" FontWeight="DemiBold" FontSize="20" VerticalAlignment="Center" HorizontalAlignment="Center">CREATE CALENDAR</TextBlock>
+                            <TextBlock Background="Transparent" Foreground="White" FontWeight="DemiBold" FontSize="20" VerticalAlignment="Center" HorizontalAlignment="Center">Create</TextBlock>
                         </Border>
 
                         <Border x:Name="SearchFileBtn" Grid.Column="2" Background="#555555" CornerRadius="10" BorderThickness="5" BorderBrush="White">
-                            <TextBlock Background="Transparent" Foreground="#BBBBBB" FontWeight="DemiBold" FontSize="20" VerticalAlignment="Center" HorizontalAlignment="Center">USE EXISTING CALENDAR</TextBlock>
+                            <TextBlock Background="Transparent" Foreground="#BBBBBB" FontWeight="DemiBold" FontSize="20" VerticalAlignment="Center" HorizontalAlignment="Center">Open</TextBlock>
                         </Border>
                     </Grid>
                 </Button>

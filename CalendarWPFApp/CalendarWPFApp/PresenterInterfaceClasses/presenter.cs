@@ -76,13 +76,24 @@ namespace PresenterInterfaceClasses
             else if (isNewDatabase && !File.Exists(filePath))
             {
                 // User chose create new and file doesn't already exist.
+                _saveToPath = filePath;
                 InitializeHomeCalendar(databaseName, filePath, isNewDatabase);
             }
             else
             {
                 // User wants to open existing database.
+                _filePath = filePath;
+                _fileName = databaseName;
                 InitializeHomeCalendar(databaseName, filePath, isNewDatabase);
             }
+        }
+        public void getCurrentLocation()
+        {
+            // Return data field
+
+
+            // default is documents.
+            _mainWindow.RecieveCurrentSaveLocation(_saveToPath);
         }
 
         //==============================================

@@ -11,6 +11,8 @@ using System.Windows.Shapes;
 using System.IO;
 using Microsoft.Win32;
 using PresenterInterfaceClasses;
+using System.Windows.Forms;
+using System.Numerics;
 
 namespace CalendarWPFApp
 {
@@ -30,6 +32,8 @@ namespace CalendarWPFApp
             InitializeComponent();
 
             _presenter = new Presenter(this);
+
+            SetUpPageForNewDatabase();
         }
 
         //==============================================
@@ -44,6 +48,7 @@ namespace CalendarWPFApp
 
                 Microsoft.Win32.OpenFileDialog fileDialog = new Microsoft.Win32.OpenFileDialog();
                 fileDialog.Multiselect = false; //cant select many files
+                fileDialog.Filter = "Sqlite Database Files|*.db";
                 bool? choseFile = fileDialog.ShowDialog();
 
                 if (choseFile == true)
@@ -57,7 +62,7 @@ namespace CalendarWPFApp
                 }
                 else
                 {
-                    chosenFileName.Text = "Please select a valid file.";
+                    ShowMainError("Please select a valid file.");
                     _choiceIsValid = false;
                 }
             }
@@ -66,6 +71,21 @@ namespace CalendarWPFApp
                 // User is selecting a path for creating a database file.
                 // System.Windows.Forms.OpenFileDialog()
 
+                System.Windows.Forms.FolderBrowserDialog folderDialog = new System.Windows.Forms.FolderBrowserDialog();
+                System.Windows.Forms.DialogResult theResult = folderDialog.ShowDialog();
+                
+                if (theResult == System.Windows.Forms.DialogResult.OK)
+                {
+                    //user picked a file
+                    string fullPath = folderDialog.SelectedPath;
+                    chosenDirectoryName.Text = fullPath;
+                    _choiceIsValid = true;
+                }
+                else
+                {
+                    ShowMainError("Please select a folder to store your database file in.");
+                    _choiceIsValid = false;
+                }
             }
         }
         private void swapBtnState_Click(object sender, RoutedEventArgs e)
@@ -105,7 +125,33 @@ namespace CalendarWPFApp
             if (!_isSearchingFile)
             {
                 // New Database.
-
+                if (_choiceIsValid)
+                {
+                    if (chosenFileName.Text == "")
+                    {
+                        // Shouldn't be reached.
+                        ShowMainError("Please enter a file name.");
+                    }
+                    else if (chosenFileName.Text.ToString().EndsWith(".db"))
+                    {
+                        // Pass ! _isSearchingFile so it is recieved as isNewDatabase. _isSearchingFile True == isNewDatabase False
+                        _presenter.ProcessDatabaseFile(chosenFileName.Text, chosenDirectoryName.Text, !_isSearchingFile);
+                    }
+                    else if (!chosenFileName.Text.ToString().EndsWith(".db"))
+                    {
+                        // Add ".db" to end of file name incase user didn't bother to.
+                        _presenter.ProcessDatabaseFile(chosenFileName.Text + ".db", chosenDirectoryName.Text, !_isSearchingFile);
+                    }
+                    else
+                    {
+                        // Shouldn't be reached.
+                        ShowMainError("Bruh.");
+                    }
+                }
+                else
+                {
+                    ShowMainError("Please select a valid folder before creating.");
+                }
             }
             else
             {
@@ -119,7 +165,7 @@ namespace CalendarWPFApp
                 }
                 else
                 {
-                    ErrorFind.Text = "Please select a valid file before searching.";
+                    ShowMainError("Please select a valid file before searching.");
                 }
             }
 
@@ -153,12 +199,53 @@ namespace CalendarWPFApp
             /*
              * FindBtn: Change text to Create Calendar
              * HeaderForChooser: Change to "Choose a save location."
-             * chosenDirectoryName: Set to existing value from presenter (default: documents)
              * DirectoryPathLabelBlock: Set text to "Directory path"
+             * chosenDirectoryName: Set to existing value from presenter (default: documents)
+             * chosenFileName: Set to ""
+             * swapBtnState
+             * CreateFileBtn
+             * SearchFileBtn
              */
 
+            FindBtn.Content = "Create Calendar";
+            HeaderForChooser.Text = "Choose a save location";
+            chosenFileName.Text = String.Empty;
 
+            CreateFileBtn.Background = new BrushConverter().ConvertFrom("#5e9146") as SolidColorBrush;
+            TextBlock text = CreateFileBtn.Child as TextBlock;
+            text.Foreground = new BrushConverter().ConvertFrom("#FFFFFF") as SolidColorBrush;
 
+            SearchFileBtn.Background = new BrushConverter().ConvertFrom("#555555") as SolidColorBrush;
+            text = SearchFileBtn.Child as TextBlock;
+            text.Foreground = new BrushConverter().ConvertFrom("#BBBBBB") as SolidColorBrush;
+
+            _isSearchingFile = false;
+
+            // Get current save location from presenter. VVV
+            _presenter.getCurrentLocation();
+        }
+        public void RecieveCurrentSaveLocation(string location)
+        {
+            // Set current save location from presenter in view. ^^^
+            chosenDirectoryName.Text = location;
+        }
+
+        public void SetUpPageForExistingDatabase()
+        {
+            /*
+             * FindBtn: Change text to Open Calendar
+             * HeaderForChooser: Change to "Choose a Calendar file."
+             * DirectoryPathLabelBlock: Set text to "Full path"
+             * chosenDirectoryName: Set to ""
+             * chosenFileName: Set to ""
+             * swapBtnState
+             * CreateFileBtn
+             * SearchFileBtn
+             */
+
+            FindBtn.Content = "Open Calendar";
+            HeaderForChooser.Text = "Choose a Calendar file";
+            chosenDirectoryName.Text = String.Empty;
 
             CreateFileBtn.Background = new BrushConverter().ConvertFrom("#555555") as SolidColorBrush;
             TextBlock text = CreateFileBtn.Child as TextBlock;
@@ -169,26 +256,6 @@ namespace CalendarWPFApp
             text.Foreground = new BrushConverter().ConvertFrom("#FFFFFF") as SolidColorBrush;
 
             _isSearchingFile = true;
-        }
-
-        public void SetUpPageForExistingDatabase()
-        {
-            /*
-             * FindBtn: Change text to Open Calendar
-             * HeaderForChooser: Change to "Choose a Calendar file."
-             * chosenDirectoryName: Set to ""
-             * DirectoryPathLabelBlock: Set text to "Full path"
-             */
-
-            CreateFileBtn.Background = new BrushConverter().ConvertFrom("#5e9146") as SolidColorBrush;
-            TextBlock text = CreateFileBtn.Child as TextBlock;
-            text.Foreground = new BrushConverter().ConvertFrom("#FFFFFF") as SolidColorBrush;
-
-            SearchFileBtn.Background = new BrushConverter().ConvertFrom("#555555") as SolidColorBrush;
-            text = SearchFileBtn.Child as TextBlock;
-            text.Foreground = new BrushConverter().ConvertFrom("#BBBBBB") as SolidColorBrush;
-
-            
         }
     }
 }
