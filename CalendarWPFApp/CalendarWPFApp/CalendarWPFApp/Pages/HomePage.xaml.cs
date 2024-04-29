@@ -32,7 +32,7 @@ namespace CalendarWPFApp.Pages
             InitializeComponent();
             _presenter = p;
 
-            //CalendarItemsTable.ItemsSource = GetTestData();
+            CalendarItemsTable.ItemsSource = GetTestData();
 
         }
         private List<Event> GetTestData()
@@ -41,25 +41,10 @@ namespace CalendarWPFApp.Pages
             {
                 new Event(DateTime.Now, 1, 3.0, "Wah"),
                 new Event(DateTime.Now, 3, 6.0, "TEST"),
-                new Event(DateTime.Now, 3, 6.0, "Real")
+                new Event(DateTime.MaxValue, 3, 6.0, "Real")
             };
         }
 
-        public void GetFilteringCriteria()
-        {
-            //getting selected dates
-            DateTime? startDate = startDateChosen.SelectedDate;
-            DateTime? endDate = endDateChosen.SelectedDate;
-
-            //filter by a category
-            bool? isFilterByCategoryChecked = filterCategoryCheckbox.IsChecked;
-
-            int selectedCategoryId = -1; //placeholder
-            //parse from filterCategory.SelectedValue (object) --> string --> int
-            bool parseResult = int.TryParse(filterCategory.SelectedValue.ToString(), out selectedCategoryId);
-
-
-        }
 
         //methods for updating the datagrid resource
         public void UpdateEventsGetCalendarItems(List<Calendar.CalendarItem> calendarItems)
@@ -83,7 +68,7 @@ namespace CalendarWPFApp.Pages
         //essentially this should be called anytime any UI element gets a new selection
         //only the first checkbox has this method in it
         //TODO: Make all the other elements (startdate, end, bymonth, bycategory) funnel to this method
-        private void filterCategoryCheckbox_Click(object sender, RoutedEventArgs e)
+        private void getUserInput_Click(object sender, RoutedEventArgs e)
         {
             //getting selected dates
             DateTime? startDate = startDateChosen.SelectedDate;
@@ -94,7 +79,13 @@ namespace CalendarWPFApp.Pages
 
             int selectedCategoryId = -1; //placeholder
             //parse from filterCategory.SelectedValue (object) --> string --> int
-            bool parseResult = int.TryParse(filterCategory.SelectedValue.ToString(), out selectedCategoryId);
+            if (filterCategory.SelectedValue != null)
+            {
+                 bool parseResult = int.TryParse(filterCategory.SelectedValue.ToString(), out selectedCategoryId);
+            } else
+            {
+                isFilterByCategoryChecked = false;
+            }
 
             bool? isMonthChecked = byMonthCheck.IsChecked;
             bool? isCategoryChecked = byCategoryCheck.IsChecked;

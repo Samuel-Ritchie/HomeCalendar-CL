@@ -184,7 +184,7 @@ namespace CalendarWPFApp
             {
                 // Set the content of the frame to the calendar view.
 
-                main.Content = new HomePage();
+                main.Content = new HomePage(_presenter);
                 PageBG.Source = new BitmapImage(new Uri("../assets/Home.jpg", UriKind.Relative));
 
                 foreach (Button b in PageBar.Children)
