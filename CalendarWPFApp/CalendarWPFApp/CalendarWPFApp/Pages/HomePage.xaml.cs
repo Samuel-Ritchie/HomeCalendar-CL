@@ -30,6 +30,7 @@ namespace CalendarWPFApp.Pages
         public HomePage(Presenter p)
         {
             InitializeComponent();
+
             _presenter = p;
 
             CalendarItemsTable.ItemsSource = GetTestData();
