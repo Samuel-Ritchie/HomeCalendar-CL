@@ -60,7 +60,7 @@
                 </Setter.Value>
             </Setter>
         </Style>
-        </Page.Resources>
+    </Page.Resources>
 
     <Grid>
         <Grid.ColumnDefinitions>
@@ -164,8 +164,8 @@
                     <Border Grid.Row="1" Background="White" CornerRadius="3"/>
                 </Grid>
 
-                <DataGrid x:Name="CalendarItemsTable" Grid.Row="0" Grid.RowSpan="3" ItemsSource="{Binding}" Background="Transparent" HeadersVisibility="Column" 
-                      BorderThickness="0" Style="{DynamicResource DataGridStyle1}">
+                <DataGrid x:Name="CalendarItemsTable" Grid.Row="0" Grid.RowSpan="3" Background="Transparent" HeadersVisibility="Column" 
+                      BorderThickness="0" Style="{DynamicResource DataGridStyle1}" AutoGenerateColumns="False">
                     <DataGrid.Columns>
                         <DataGridTemplateColumn>
                             <DataGridTemplateColumn.CellTemplate>

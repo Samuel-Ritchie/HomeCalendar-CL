@@ -21,21 +21,93 @@ namespace CalendarWPFApp.Pages
     /// </summary>
     public partial class HomePage : Page
     {
+        //for testing
+        HomeCalendar _calendar;
         public HomePage()
         {
             InitializeComponent();
+            _calendar = new HomeCalendar("../../testDbInput");
 
-            CalendarItemsTable.ItemsSource = GetTestData();
-
+            SetDataGridCalendarItems();
         }
-        private List<Event> GetTestData()
+
+        //for testing
+        private List<CalendarItem> GetTestData()
         {
-            return new List<Event>()
+
+            return new List<CalendarItem>()
             {
-                new Event(DateTime.Now, 1, 3.0, "Wah"),
-                new Event(DateTime.Now, 3, 6.0, "TEST"),
-                new Event(DateTime.Now, 3, 6.0, "Real")
+                new CalendarItem()
+                {
+                    CategoryID = 1,
+                    EventID = 2,
+                    StartDateTime = DateTime.Now,
+                    Category = _calendar.categories.GetCategoryFromId(1).Description,
+                    ShortDescription = "Wah",
+                    DurationInMinutes = 1580,
+                    BusyTime = 23
+                },
+                new CalendarItem()
+                {
+                    CategoryID = 2,
+                    EventID = 2,
+                    StartDateTime = DateTime.Now,
+                    Category = _calendar.categories.GetCategoryFromId(2).Description,
+                    ShortDescription = "TEST",
+                    DurationInMinutes = 1580,
+                    BusyTime = 23
+                },
+                new CalendarItem()
+                {
+                    CategoryID = 3,
+                    EventID = 2,
+                    StartDateTime = DateTime.Now,
+                    Category = _calendar.categories.GetCategoryFromId(3).Description,
+                    ShortDescription = "Real",
+                    DurationInMinutes = 1580,
+                    BusyTime = 23
+                }
             };
+        }
+        private void SetDataGridCalendarItems()
+        {
+            List<CalendarItem> data = GetTestData();
+
+            CalendarItemsTable.ItemsSource = data;
+            CalendarItemsTable.Columns.Clear();
+
+            DataGridTextColumn column = new DataGridTextColumn();
+
+            column.Header = "Start Date";
+            column.Binding = new Binding("StartDateTime");
+            column.Binding.StringFormat = "yyyy/MM/dd";
+            CalendarItemsTable.Columns.Add(column);
+
+            column = new DataGridTextColumn();
+            column.Header = "Start Time";
+            column.Binding = new Binding("StartDateTime");
+            column.Binding.StringFormat = "HH:mm tt";
+            CalendarItemsTable.Columns.Add(column);
+
+            column = new DataGridTextColumn();
+            column.Header = "Category";
+            column.Binding = new Binding("Category");
+            CalendarItemsTable.Columns.Add(column);
+
+            column = new DataGridTextColumn();
+            column.Header = "Description";
+            column.Binding = new Binding("ShortDescription");
+            CalendarItemsTable.Columns.Add(column);
+
+            column = new DataGridTextColumn();
+            column.Header = "Duration";
+            column.Binding = new Binding("DurationInMinutes");
+            CalendarItemsTable.Columns.Add(column);
+
+            column = new DataGridTextColumn();
+            column.Header = "Busy Time";
+            column.Binding = new Binding("BusyTime");
+            CalendarItemsTable.Columns.Add(column);
         }
     }
 }
