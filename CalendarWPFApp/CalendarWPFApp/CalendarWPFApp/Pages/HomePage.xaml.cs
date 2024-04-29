@@ -92,7 +92,7 @@ namespace CalendarWPFApp.Pages
             bool? isCategoryChecked = byCategoryCheck.IsChecked;
 
             //update the sorted list of events each time there is a trigger
-            _presenter.SortEvents(_homePageInterface, startDate, endDate, isFilterByCategoryChecked, selectedCategoryId, isMonthChecked, isCategoryChecked);
+            _presenter.SortEvents( this,startDate, endDate, isFilterByCategoryChecked, selectedCategoryId, isMonthChecked, isCategoryChecked);
         }
     }
 }
