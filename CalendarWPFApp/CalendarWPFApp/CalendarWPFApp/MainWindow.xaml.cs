@@ -41,6 +41,7 @@ namespace CalendarWPFApp
         //==============================================
         private void fileExplorer_Click(object sender, RoutedEventArgs e)
         {
+            _choiceIsValid = false;
             if (_isSearchingFile)
             {
                 // User is searching for existing database file.
@@ -84,7 +85,6 @@ namespace CalendarWPFApp
                 else
                 {
                     ShowMainError("Please select a folder to store your database file in.");
-                    _choiceIsValid = false;
                 }
             }
         }
@@ -207,6 +207,7 @@ namespace CalendarWPFApp
              * SearchFileBtn
              */
 
+            DirectoryPathLabelBlock.Text = "Directory path";
             FindBtn.Content = "Create Calendar";
             HeaderForChooser.Text = "Choose a save location";
             chosenFileName.Text = String.Empty;
@@ -228,6 +229,7 @@ namespace CalendarWPFApp
         {
             // Set current save location from presenter in view. ^^^
             chosenDirectoryName.Text = location;
+            _choiceIsValid = true;
         }
 
         public void SetUpPageForExistingDatabase()
@@ -243,6 +245,7 @@ namespace CalendarWPFApp
              * SearchFileBtn
              */
 
+            DirectoryPathLabelBlock.Text = "Full path";
             FindBtn.Content = "Open Calendar";
             HeaderForChooser.Text = "Choose a Calendar file";
             chosenDirectoryName.Text = String.Empty;

@@ -119,6 +119,10 @@ namespace CalendarWPFApp
             {
                 _presenter.PromptCreateWindowClosing(this);
             }
+            else if (_currentAppState == Interfaces.CalendarView)
+            {
+                _presenter.PromptCreateWindowClosing(this);
+            }
             else if (_currentAppState == Interfaces.CreateEvent)
             {
                 _presenter.PromptCreateWindowClosing(this);
@@ -137,7 +141,7 @@ namespace CalendarWPFApp
                 System.Windows.Application.Current.Shutdown();
             }
         }
-        public void AskToSaveOrDiscardPromptCreate(bool changesMade)
+        public void AskToSaveOrDiscardPromptCreate()
         {
             // Get whether or not user want's to save changes.
             MessageBoxResult userChoice = System.Windows.MessageBox.Show("You are about to quit and your changes may not be saved.", "SAVE ME!", MessageBoxButton.OKCancel, MessageBoxImage.Question);

@@ -15,7 +15,7 @@ namespace PresenterInterfaceClasses
         public void ShowCreateCategoryForm();
 
         // Presenter calls method to ask user if they really want to quit. (the Closing event handler is called when red X button is pressed)
-        public void AskToSaveOrDiscardPromptCreate(bool changesMade);
+        public void AskToSaveOrDiscardPromptCreate();
 
         
     }

@@ -18,10 +18,14 @@ namespace PresenterInterfaceClasses
         private IPromptCreationWindow? _promptCreationWindow;
 
         // State of application fields
-        private string _filePath = "";
+        private string _folderPath = "";
         private string _fileName = "";
+        private string _fullPath = "";
+
+        // Create new calendar.
         private string _saveToPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\Calendars";
-        public bool _changesMade = false;
+
+        // Old code, see where this value is implemented and remove.
 
         public Presenter(IMainView mainWindow)
         {
@@ -32,13 +36,43 @@ namespace PresenterInterfaceClasses
         //==============================================
         //  Presenter to Model Methods
         //==============================================
-        public void InitializeHomeCalendar(string databaseName, string filePath, bool isNewDatabase)
+        public void InitializeHomeCalendar(string databaseName, string folderPath, bool isNewDatabase)
         {
-            _filePath = filePath;
-            _fileName = databaseName;
-            _Model = new HomeCalendar(_filePath, isNewDatabase);
+            if (isNewDatabase)
+            {
+                _fileName = databaseName;
+                _folderPath = folderPath;
+                
+                if (!Directory.Exists(folderPath))
+                {
+                    Directory.CreateDirectory(folderPath);
+                }
+
+                if (!folderPath.EndsWith(".db"))
+                {
+                    _fullPath = _folderPath + $"\\{databaseName}";
+                }
+                else
+                {
+                    _fullPath = _folderPath;
+                }
+            }
+            else
+            {
+                // Database already exists
+                // folderPath and fullPath both hold the path and name together.
+                _fileName = databaseName;
+                _folderPath = folderPath;
+                _fullPath = folderPath;
+            }
+
+            // Create instance (Open Calendar)
+            _Model = new HomeCalendar(_fullPath, isNewDatabase);
+            // var a = _Model.categories.List();
 
             // Open new window with view function.
+
+            _mainWindow.ShowCalendarInteractivity();
 
             // --------------------------------------------
             // _mainWindow.ShowLocationPicker(_saveToPath);
@@ -53,9 +87,8 @@ namespace PresenterInterfaceClasses
             {
                 // User chose to save their changes that have been made.
                 // Use saveLocation and add file name to end.
-                _Model.SaveToFile(_saveToPath + "\\" + _fileName);
 
-                // Close the database
+                // Close the database (Save automatically)
                 _Model.CloseDB();
                 _Model = null;
             }
@@ -73,17 +106,8 @@ namespace PresenterInterfaceClasses
                 // User chose create new but file already exists.
                 _mainWindow.ShowMainError("Error: database file already exists.");
             }
-            else if (isNewDatabase && !File.Exists(filePath))
-            {
-                // User chose create new and file doesn't already exist.
-                _saveToPath = filePath;
-                InitializeHomeCalendar(databaseName, filePath, isNewDatabase);
-            }
             else
             {
-                // User wants to open existing database.
-                _filePath = filePath;
-                _fileName = databaseName;
                 InitializeHomeCalendar(databaseName, filePath, isNewDatabase);
             }
         }
@@ -112,7 +136,7 @@ namespace PresenterInterfaceClasses
         public void PromptCreateWindowClosing(IPromptCreationWindow View)
         {
             // Pass back changes made.
-            View.AskToSaveOrDiscardPromptCreate(_changesMade);
+            View.AskToSaveOrDiscardPromptCreate();
         }
 
         //==============================================
@@ -142,8 +166,6 @@ namespace PresenterInterfaceClasses
                 {
                     _Model.events.Add(date, id, durationMinutes, details);
                     // If Event added successfully
-                    // Set _changesMade to true
-                    _changesMade = true;
                     View.ShowEventCreated();
                 }
                 else
@@ -180,9 +202,6 @@ namespace PresenterInterfaceClasses
                     _Model.categories.Add(description, Calendar.Category.CategoryType.Event);
 
                     // If Category added successfully
-                    // Set _changesMade to true
-                    _changesMade = true;
-
                     View.ShowCategoryCreated();
                 }
                 else if (categoryType == "Availibility")
@@ -190,9 +209,6 @@ namespace PresenterInterfaceClasses
                     _Model.categories.Add(description, Calendar.Category.CategoryType.Availability);
 
                     // If Category added successfully
-                    // Set _changesMade to true
-                    _changesMade = true;
-
                     View.ShowCategoryCreated();
                 }
                 else if (categoryType == "All Day Event")
@@ -200,9 +216,6 @@ namespace PresenterInterfaceClasses
                     _Model.categories.Add(description, Calendar.Category.CategoryType.AllDayEvent);
 
                     // If Category added successfully
-                    // Set _changesMade to true
-                    _changesMade = true;
-
                     View.ShowCategoryCreated();
                 }
                 else if (categoryType == "Holiday")
@@ -210,9 +223,6 @@ namespace PresenterInterfaceClasses
                     _Model.categories.Add(description, Calendar.Category.CategoryType.Holiday);
 
                     // If Category added successfully
-                    // Set _changesMade to true
-                    _changesMade = true;
-
                     View.ShowCategoryCreated();
                 }
                 else
@@ -232,8 +242,6 @@ namespace PresenterInterfaceClasses
             if (Directory.Exists(location))
             {
                 _saveToPath = location;
-
-                MainView.ShowCalendarInteractivity();
             }
             else
             {
