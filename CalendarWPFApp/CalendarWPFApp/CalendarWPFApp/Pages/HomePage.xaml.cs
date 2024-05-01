@@ -13,6 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Calendar;
+using PresenterInterfaceClasses;
 
 namespace CalendarWPFApp.Pages
 {
@@ -23,10 +24,12 @@ namespace CalendarWPFApp.Pages
     {
         //for testing
         HomeCalendar _calendar;
-        public HomePage()
+        Presenter _presenter;
+        public HomePage(Presenter presenter)
         {
             InitializeComponent();
             _calendar = new HomeCalendar("../../testDbInput");
+            _presenter = presenter;
 
             SetDataGridCalendarItems();
         }
@@ -71,7 +74,7 @@ namespace CalendarWPFApp.Pages
         }
         private void SetDataGridCalendarItems()
         {
-            List<CalendarItem> data = GetTestData();
+            List<CalendarItem> data = GetTestData();    
 
             CalendarItemsTable.ItemsSource = data;
             CalendarItemsTable.Columns.Clear();
