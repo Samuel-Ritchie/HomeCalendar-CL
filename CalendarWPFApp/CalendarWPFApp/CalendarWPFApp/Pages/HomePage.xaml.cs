@@ -2,6 +2,7 @@
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
+using System.Windows.Input;
 using Calendar;
 using PresenterInterfaceClasses;
 
@@ -19,12 +20,76 @@ namespace CalendarWPFApp.Pages
             InitializeComponent();
             _presenter = presenter;
 
-            SetDataGridCalendarItems();
+            SetCalendarItems();
+            SetCategories();
         }
-        private void SetDataGridCalendarItems()
-        {
-            List<CalendarItem> data = _presenter.SortEvents(null, null, false, 1);
 
+        private void SetCategories()
+        {
+            filterCategory.ItemsSource = _presenter.GetListOfCategories();
+            filterCategory.DisplayMemberPath = "Description";
+        }
+
+        //methods for updating the datagrid resource
+        public void UpdateEventsGetCalendarItems(List<Calendar.CalendarItem> calendarItems)
+        {
+            CalendarItemsTable.ItemsSource = calendarItems;
+        }
+        public void UpdateEventsGetCalendarItemsByCategory(List<Calendar.CalendarItemsByCategory> calendarItemsByCategory)
+        {
+            CalendarItemsTable.ItemsSource = calendarItemsByCategory;
+        }
+        public void UpdateEventsGetCalendarItemsByMonth(List<Calendar.CalendarItemsByMonth> calendarItemsByMonth)
+        {
+            CalendarItemsTable.ItemsSource = calendarItemsByMonth;
+        }
+        public void UpdateEventsGetCalendarItemsByCategoryAndMonth(List<Dictionary<string, object>> calendarItemsByCatAndMonth)
+        {
+            CalendarItemsTable.ItemsSource = calendarItemsByCatAndMonth;
+        }
+
+
+        //essentially this should be called anytime any UI element gets a new selection
+        //only the first checkbox has this method in it
+        //TODO: Make all the other elements (startdate, end, bymonth, bycategory) funnel to this method
+        private void getUserInput_Click(object sender, RoutedEventArgs e)
+        {
+            //getting selected dates, if null set to start =  yesterday, end = today
+            DateTime? startDate = startDateChosen.SelectedDate == null ? new DateTime(1900, 1, 1) : startDateChosen.SelectedDate;
+            DateTime? endDate = endDateChosen.SelectedDate == null ? new DateTime(2500, 1, 1) : endDateChosen.SelectedDate;
+
+            //filter by a category
+            bool isFilterByCategoryChecked = filterCategoryCheckbox.IsChecked == true;
+
+            int selectedCategoryId = 0; //placeholder
+            //parse from filterCategory.SelectedValue (object) --> string --> int
+            if (filterCategory.SelectedValue != null)
+            {
+                Category c = filterCategory.SelectedItem as Category;
+                selectedCategoryId = c.Id;
+            } else
+            {
+                isFilterByCategoryChecked = false;
+            }
+
+            bool isMonthChecked = (byMonthCheck.IsChecked is not null && byMonthCheck.IsChecked == true) ? true : false;
+            bool isCategoryChecked = (byCategoryCheck.IsChecked is not null && byCategoryCheck.IsChecked == true) ? true : false;
+
+            if (!isMonthChecked && !isCategoryChecked)
+                SetCalendarItems(startDate, endDate, isFilterByCategoryChecked, selectedCategoryId);
+            else if (isMonthChecked && !isCategoryChecked)
+                SetCalendarItemsByMonth(startDate, endDate, isFilterByCategoryChecked, selectedCategoryId);
+            else if (!isMonthChecked && isCategoryChecked)
+                SetCalendarItemsByCategory(startDate, endDate, isFilterByCategoryChecked, selectedCategoryId); 
+            else
+                SetCalendarItemsByCategoryAndMonth(startDate, endDate, isFilterByCategoryChecked, selectedCategoryId);
+        }
+
+        private void SetCalendarItems(DateTime? start = null, DateTime? end = null, bool filter = false, int category = 0)
+        {
+            List<CalendarItem> data = _presenter.SortEvents(start, end, filter, category);
+
+            CalendarItemsTable.HeadersVisibility = DataGridHeadersVisibility.Column;
             CalendarItemsTable.ItemsSource = data;
             CalendarItemsTable.Columns.Clear();
 
@@ -61,54 +126,66 @@ namespace CalendarWPFApp.Pages
             column.Binding = new System.Windows.Data.Binding("BusyTime");
             CalendarItemsTable.Columns.Add(column);
         }
-
-
-        //methods for updating the datagrid resource
-        public void UpdateEventsGetCalendarItems(List<Calendar.CalendarItem> calendarItems)
+        private void SetCalendarItemsByMonth(DateTime? start = null, DateTime? end = null, bool filter = false, int category = 0)
         {
-            CalendarItemsTable.ItemsSource = calendarItems;
+            List<CalendarItemsByMonth> data = _presenter.SortEventsByMonth(start, end, filter, category);
+
+            CalendarItemsTable.HeadersVisibility = DataGridHeadersVisibility.Column;
+            CalendarItemsTable.ItemsSource = data;
+            CalendarItemsTable.Columns.Clear();
+
+            DataGridTextColumn column = new DataGridTextColumn();
+
+            column = new DataGridTextColumn();
+            column.Header = "Month";
+            column.Binding = new System.Windows.Data.Binding("Month");
+            CalendarItemsTable.Columns.Add(column);
+
+
+            column = new DataGridTextColumn();
+            column.Header = "Total Busy Time";
+            column.Binding = new System.Windows.Data.Binding("TotalBusyTime");
+            CalendarItemsTable.Columns.Add(column);
         }
-        public void UpdateEventsGetCalendarItemsByCategory(List<Calendar.CalendarItemsByCategory> calendarItemsByCategory)
+        private void SetCalendarItemsByCategory(DateTime? start = null, DateTime? end = null, bool filter = false, int category = 0)
         {
-            CalendarItemsTable.ItemsSource = calendarItemsByCategory;
+            List<CalendarItemsByCategory> data = _presenter.SortEventsByCategory(start, end, filter, category);
+
+            CalendarItemsTable.HeadersVisibility = DataGridHeadersVisibility.Column;
+            CalendarItemsTable.ItemsSource = data;
+            CalendarItemsTable.Columns.Clear();
+
+            DataGridTextColumn column = new DataGridTextColumn();
+
+            column = new DataGridTextColumn();
+            column.Header = "Category";
+            column.Binding = new System.Windows.Data.Binding("Category");
+            CalendarItemsTable.Columns.Add(column);
+
+            column = new DataGridTextColumn();
+            column.Header = "Total Busy Time";
+            column.Binding = new System.Windows.Data.Binding("TotalBusyTime");
+            CalendarItemsTable.Columns.Add(column);
         }
-        public void UpdateEventsGetCalendarItemsByMonth(List<Calendar.CalendarItemsByMonth> calendarItemsByMonth)
+        private void SetCalendarItemsByCategoryAndMonth(DateTime? start = null, DateTime? end = null, bool filter = false, int category = 0)
         {
-            CalendarItemsTable.ItemsSource = calendarItemsByMonth;
-        }
-        public void UpdateEventsGetCalendarItemsByCategoryAndMonth(List<Dictionary<string, object>> calendarItemsByCatAndMonth)
-        {
-            CalendarItemsTable.ItemsSource = calendarItemsByCatAndMonth;
-        }
+            List<Dictionary<string, object>> data = _presenter.SortEventsByCategoryAndMonth(start, end, filter, category);
 
+            CalendarItemsTable.ItemsSource = data;
+            CalendarItemsTable.Columns.Clear();
 
-        //essentially this should be called anytime any UI element gets a new selection
-        //only the first checkbox has this method in it
-        //TODO: Make all the other elements (startdate, end, bymonth, bycategory) funnel to this method
-        private void getUserInput_Click(object sender, RoutedEventArgs e)
-        {
-            //getting selected dates, if null set to start =  yesterday, end = today
-            DateTime? startDate = startDateChosen.SelectedDate == null ? DateTime.Today.AddDays(-1) : startDateChosen.SelectedDate;
-            DateTime? endDate = endDateChosen.SelectedDate == null ? DateTime.Today : endDateChosen.SelectedDate;
+            DataGridTextColumn column = new DataGridTextColumn();
 
-            //filter by a category
-            bool isFilterByCategoryChecked = filterCategoryCheckbox.IsChecked == true;
-
-            int selectedCategoryId = -1; //placeholder
-            //parse from filterCategory.SelectedValue (object) --> string --> int
-            if (filterCategory.SelectedValue != null)
+            for (int categoryK = 0; category < 1; category++)
             {
-                 bool parseResult = int.TryParse(filterCategory.SelectedValue.ToString(), out selectedCategoryId);
-            } else
-            {
-                isFilterByCategoryChecked = false;
+                foreach (var a in data[categoryK].Keys)
+                {
+                    column = new DataGridTextColumn();
+                    column.Header = a;
+                    column.Binding = new System.Windows.Data.Binding($"[{a}]");
+                    CalendarItemsTable.Columns.Add(column);
+                }
             }
-
-            bool? isMonthChecked = byMonthCheck.IsChecked;
-            bool? isCategoryChecked = byCategoryCheck.IsChecked;
-
-            //update the sorted list of events each time there is a trigger
-            _presenter.SortEvents(null, null, false, 1);
         }
     }
 }
