@@ -37,15 +37,15 @@ namespace CalendarWPFApp
         }
         private void SetPageButtonColor(System.Windows.Controls.Button button, bool clicked)
         {
-            SolidColorBrush UNPRESSED_BG = new BrushConverter().ConvertFrom("#555555") as SolidColorBrush;
-            SolidColorBrush UNPRESSED_FG = new BrushConverter().ConvertFrom("#BBBBBB") as SolidColorBrush;
-            SolidColorBrush PRESSED_BG = new BrushConverter().ConvertFrom("#e88833") as SolidColorBrush;
-            SolidColorBrush PRESSED_FG = new BrushConverter().ConvertFrom("#FFFFFF") as SolidColorBrush;
+            SolidColorBrush? UNPRESSED_BG = new BrushConverter().ConvertFrom("#555555") as SolidColorBrush;
+            SolidColorBrush? UNPRESSED_FG = new BrushConverter().ConvertFrom("#BBBBBB") as SolidColorBrush;
+            SolidColorBrush? PRESSED_BG = new BrushConverter().ConvertFrom("#e88833") as SolidColorBrush;
+            SolidColorBrush? PRESSED_FG = new BrushConverter().ConvertFrom("#FFFFFF") as SolidColorBrush;
 
-            Border border = button.Content as Border;
+            Border? border = button.Content as Border;
             border.Background = (clicked) ? PRESSED_BG : UNPRESSED_BG;
 
-            TextBlock textBlock = border.Child as TextBlock;
+            TextBlock? textBlock = border.Child as TextBlock;
             textBlock.Foreground = (clicked) ? PRESSED_FG : UNPRESSED_FG;
         }
 

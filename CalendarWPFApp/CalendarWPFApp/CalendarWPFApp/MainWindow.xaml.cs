@@ -112,8 +112,8 @@ namespace CalendarWPFApp
         {
             _usingStandardTheme = (_usingStandardTheme) ? false : true;
 
-            SolidColorBrush BG_VISIBLE = new BrushConverter().ConvertFrom("#665e9146") as SolidColorBrush;
-            SolidColorBrush BG_HIDDEN = new BrushConverter().ConvertFrom("#222222") as SolidColorBrush;
+            SolidColorBrush? BG_VISIBLE = new BrushConverter().ConvertFrom("#665e9146") as SolidColorBrush;
+            SolidColorBrush? BG_HIDDEN = new BrushConverter().ConvertFrom("#222222") as SolidColorBrush;
 
             MainBG.Visibility = (_usingStandardTheme) ? Visibility.Visible : Visibility.Hidden;
             ColorBG.Background = (_usingStandardTheme) ? BG_VISIBLE : BG_HIDDEN;

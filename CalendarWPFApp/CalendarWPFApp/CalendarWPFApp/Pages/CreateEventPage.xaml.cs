@@ -150,20 +150,6 @@ namespace CalendarWPFApp.Pages
             }
         }
 
-        public void ClearEventForm()
-        {
-            throw new NotImplementedException();
-        }
-
-        public void DoubleCheckCloseEventForm()
-        {
-            throw new NotImplementedException();
-        }
-
-        public void ShowCreateCategoryFormFromEventForm()
-        {
-            throw new NotImplementedException();
-        }
 
         public void ShowEventCreated()
         {

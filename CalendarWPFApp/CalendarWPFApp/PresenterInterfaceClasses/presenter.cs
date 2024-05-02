@@ -123,10 +123,55 @@ namespace PresenterInterfaceClasses
         //==============================================
         public void ProcessDatabaseFile(string databaseName, string filePath, bool isNewDatabase)
         {
-            if (isNewDatabase && File.Exists(filePath))
+            string fileName;
+            string folderPath;
+            string fullPath;
+            if (isNewDatabase)
+            {
+                fileName = databaseName;
+                folderPath = filePath;
+
+                bool existsDir = Directory.Exists(folderPath);
+
+                if (!Directory.Exists(folderPath))
+                {
+                    Directory.CreateDirectory(folderPath);
+                }
+
+                if (!folderPath.EndsWith(".db"))
+                {
+                    if (databaseName.EndsWith(".db"))
+                    {
+                        fullPath = folderPath + $"\\{databaseName}";
+                    }
+                    else
+                    {
+                        fullPath = folderPath + $"\\{databaseName}" + ".db";
+                    }
+                }
+                else
+                {
+                    fullPath = folderPath;
+                }
+            }
+            else
+            {
+                // Database already exists
+                // folderPath and fullPath both hold the path and name together.
+                fileName = databaseName;
+                folderPath = filePath;
+                fullPath = filePath;
+            }
+
+            if (isNewDatabase && File.Exists(fullPath))
             {
                 // User chose create new but file already exists.
                 _mainWindow.ShowMainError("Error: database file already exists.");
+            }
+            else if (!isNewDatabase && !File.Exists(fullPath))
+            {
+                // User chose create new but file already exists.
+                _mainWindow.ShowMainError("File not found.");
             }
             else
             {
@@ -221,22 +266,6 @@ namespace PresenterInterfaceClasses
                     // This is mor for debugging.
                     View.ShowCategoryCreationError("Some error I guess.");
                 }
-            }
-        }
-
-        //==============================================
-        //  Location Picker Methods
-        //==============================================
-
-        public void ProcessLocation(IMainView MainView, ILocationPicker View, string location)
-        {
-            if (Directory.Exists(location))
-            {
-                _saveToPath = location;
-            }
-            else
-            {
-                View.ShowErrorLocationPicker("Directory does not exist.");
             }
         }
     }

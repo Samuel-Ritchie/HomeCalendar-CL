@@ -80,22 +80,6 @@ namespace CalendarWPFApp.Pages
         //==============================================
         //  Interface methods
         //==============================================
-
-        public void ClearCategoryForm()
-        {
-            throw new NotImplementedException();
-        }
-
-        public void DoubleCheckCloseCategoryForm()
-        {
-            throw new NotImplementedException();
-        }
-
-        public void ReturnToEventForm()
-        {
-            throw new NotImplementedException();
-        }
-
         public void ShowCategoryCreated()
         {
             MessageBoxResult userChoice = System.Windows.MessageBox.Show("Category has been created.", "Error", MessageBoxButton.OK, MessageBoxImage.Information);
