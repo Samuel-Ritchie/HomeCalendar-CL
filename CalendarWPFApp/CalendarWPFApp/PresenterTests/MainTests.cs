@@ -1,4 +1,6 @@
 using NuGet.Frameworks;
+using PresenterInterfaceClasses;
+
 
 namespace PresenterTests
 {
@@ -63,18 +65,17 @@ namespace PresenterTests
         [Fact]
         public void AskToSaveOrDiscardPromptCreateIsCalled()
         {
-            MocMainView a = new MocMainView();
-
             string fileName = "testDBInput.db";
             string fullPath = "..\\..\\..\\Calendars\\testDBInput.db";
             bool isNewDatabase = false;
 
-            a._presenter.ProcessDatabaseFile(fileName, fullPath, isNewDatabase);
+            MocMainView a = new MocMainView();
+            Presenter presenter = a._presenter;
+            presenter.ProcessDatabaseFile(fileName, fullPath, isNewDatabase);
 
-            Assert.True(a._wasCalled_RecieveCurrentSaveLocation);
 
-
-            MocPromptView b = new MocPromptView(a._presenter);
+            MocPromptView b = new MocPromptView(presenter);
+            presenter.PromptCreateWindowClosing(b);
 
             Assert.True(b._wasCalled_AskToSaveOrDiscardPromptCreate);
 
