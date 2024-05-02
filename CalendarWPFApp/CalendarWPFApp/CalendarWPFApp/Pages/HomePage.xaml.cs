@@ -31,34 +31,34 @@ namespace CalendarWPFApp.Pages
             DataGridTextColumn column = new DataGridTextColumn();
 
             column.Header = "Start Date";
-            column.Binding = new Binding("StartDateTime");
+            column.Binding = new System.Windows.Data.Binding("StartDateTime");
             column.Binding.StringFormat = "yyyy/MM/dd";
             CalendarItemsTable.Columns.Add(column);
 
             column = new DataGridTextColumn();
             column.Header = "Start Time";
-            column.Binding = new Binding("StartDateTime");
+            column.Binding = new System.Windows.Data.Binding("StartDateTime");
             column.Binding.StringFormat = "HH:mm tt";
             CalendarItemsTable.Columns.Add(column);
 
             column = new DataGridTextColumn();
             column.Header = "Category";
-            column.Binding = new Binding("Category");
+            column.Binding = new System.Windows.Data.Binding("Category");
             CalendarItemsTable.Columns.Add(column);
 
             column = new DataGridTextColumn();
             column.Header = "Description";
-            column.Binding = new Binding("ShortDescription");
+            column.Binding = new System.Windows.Data.Binding("ShortDescription");
             CalendarItemsTable.Columns.Add(column);
 
             column = new DataGridTextColumn();
             column.Header = "Duration";
-            column.Binding = new Binding("DurationInMinutes");
+            column.Binding = new System.Windows.Data.Binding("DurationInMinutes");
             CalendarItemsTable.Columns.Add(column);
 
             column = new DataGridTextColumn();
             column.Header = "Busy Time";
-            column.Binding = new Binding("BusyTime");
+            column.Binding = new System.Windows.Data.Binding("BusyTime");
             CalendarItemsTable.Columns.Add(column);
         }
 
