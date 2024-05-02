@@ -13,7 +13,6 @@ namespace CalendarWPFApp.Pages
     public partial class HomePage : Page, IHomePage
     {
         private Presenter _presenter;
-        private IHomePage _homePageInterface;
 
         public HomePage(Presenter presenter)
         {
