@@ -15,7 +15,8 @@ namespace PresenterInterfaceClasses
 
         // Interface references
         private IMainView _mainWindow;
-        private IPromptCreationWindow? _promptCreationWindow;
+        //private IPromptCreationWindow? _promptCreationWindow;
+        //private IHomePage _homePage;
 
         // State of application fields
         private string _folderPath = "";
@@ -31,6 +32,32 @@ namespace PresenterInterfaceClasses
         {
             // Initialize all existing windows.
             _mainWindow = mainWindow;
+
+        }
+
+        //==============================================
+        //  Filtering and Sorting methods
+        //==============================================
+        public List<CalendarItem> SortEvents(DateTime? startDate, DateTime? endDate, bool FilterFlag, int CategoryID)
+        {
+            //if (isByMonthCheck == false && isByCategoryCheck == false)
+            //{
+            return _Model.GetCalendarItems(startDate, endDate, FilterFlag, CategoryID);
+            //    home.UpdateEventsGetCalendarItems(calendarItems);
+
+            //} else if (isByMonthCheck == false && isByCategoryCheck == true)
+            //{
+            //    List<CalendarItemsByCategory> calendarItemsByCategory = _Model.GetCalendarItemsByCategory(startDate, endDate, FilterFlag, CategoryID);
+            //    home.UpdateEventsGetCalendarItemsByCategory(calendarItemsByCategory);
+            //} else if (isByMonthCheck == true && isByCategoryCheck == false)
+            //{
+            //    List<CalendarItemsByMonth> calendarItemsByMonth = _Model.GetCalendarItemsByMonth(startDate, endDate, FilterFlag, CategoryID);
+            //    home.UpdateEventsGetCalendarItemsByMonth(calendarItemsByMonth);
+            //} else
+            //{
+            //    List<Dictionary<string, object>> calendarItemsByCategoryAndMonth = _Model.GetCalendarDictionaryByCategoryAndMonth(startDate, endDate, FilterFlag, CategoryID);
+            //    home.UpdateEventsGetCalendarItemsByCategoryAndMonth(calendarItemsByCategoryAndMonth);
+            //}
         }
 
         //==============================================
@@ -71,12 +98,7 @@ namespace PresenterInterfaceClasses
             // var a = _Model.categories.List();
 
             // Open new window with view function.
-
             _mainWindow.ShowCalendarInteractivity();
-
-            // --------------------------------------------
-            // _mainWindow.ShowLocationPicker(_saveToPath);
-            // --------------------------------------------
 
             // _mainWindow will close after this.
         }
@@ -175,19 +197,9 @@ namespace PresenterInterfaceClasses
             }
         }
 
-        public void GetListOfCategories(IEventForm View)
+        public List<Category> GetListOfCategories()
         {
-            if (_Model is not null)
-            {
-                List<string> theCategories = new List<string>();
-
-                foreach (Calendar.Category category in _Model.categories.List())
-                {
-                    theCategories.Add(category.Description);
-                }
-
-                View.GiveListOfCategories(theCategories);
-            }
+            return _Model.categories.List();
         }
 
         //==============================================
@@ -238,7 +250,7 @@ namespace PresenterInterfaceClasses
         //==============================================
 
         public void ProcessLocation(IMainView MainView, ILocationPicker View, string location)
-       {
+        {
             if (Directory.Exists(location))
             {
                 _saveToPath = location;

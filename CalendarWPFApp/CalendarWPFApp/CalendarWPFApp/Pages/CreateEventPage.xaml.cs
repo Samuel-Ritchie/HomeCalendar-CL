@@ -21,6 +21,13 @@ namespace CalendarWPFApp.Pages
 
             HoursComboBox.ItemsSource = GetIntRange(1, 12);
             MinutesComboBox.ItemsSource = GetIntRange(0, 59);
+            SetCategories();
+        }
+
+        private void SetCategories()
+        {
+            Categories.ItemsSource = _presenter.GetListOfCategories();
+            Categories.DisplayMemberPath = "Description";
         }
 
         private List<string> GetIntRange(int start, int end)
@@ -36,10 +43,6 @@ namespace CalendarWPFApp.Pages
         //==============================================
         //  Event Handlers
         //==============================================
-        private void Categories_DropDownOpened(object sender, EventArgs e)
-        {
-            _presenter.GetListOfCategories(this);
-        }
 
         private void CancelTheEvent_Click(object sender, RoutedEventArgs e)
         {

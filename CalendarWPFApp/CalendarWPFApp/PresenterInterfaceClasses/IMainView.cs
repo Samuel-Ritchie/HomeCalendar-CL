@@ -12,7 +12,5 @@ namespace PresenterInterfaceClasses
 
         // Switch to Prompt Window.
         public void ShowCalendarInteractivity();
-
-        public void RecieveCurrentSaveLocation(string location);
     }
 }
