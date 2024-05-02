@@ -97,7 +97,7 @@
                             </Grid.RowDefinitions>
 
                             <TextBlock>StartDate</TextBlock>
-                            <DatePicker Grid.Row="1"></DatePicker>
+                            <DatePicker x:Name="startDateChosen" Grid.Row="1"></DatePicker>
                         </Grid>
 
                         <Grid Grid.Row="2" Height="40">
@@ -107,7 +107,7 @@
                             </Grid.RowDefinitions>
 
                             <TextBlock>EndDate</TextBlock>
-                            <DatePicker Grid.Row="1"></DatePicker>
+                            <DatePicker x:Name="endDateChosen" Grid.Row="1"></DatePicker>
                         </Grid>
 
                         <Grid Grid.Row="3" Height="40" Margin="0 20">
@@ -116,22 +116,26 @@
                                 <RowDefinition Height="Auto"/>
                             </Grid.RowDefinitions>
 
-                            <CheckBox>Filer By Category?</CheckBox>
-                            <ComboBox Grid.Row="1"></ComboBox>
+                            <CheckBox Click="getUserInput_Click" x:Name="filterCategoryCheckbox">Filter By Category?</CheckBox>
+                            <ComboBox x:Name="filterCategory"  Grid.Row="1">
+                                <ComboBoxItem>1</ComboBoxItem>
+                                <ComboBoxItem>2</ComboBoxItem>
+                                <ComboBoxItem>3</ComboBoxItem>
+                            </ComboBox>
                         </Grid>
 
                         <Border Grid.Row="4" HorizontalAlignment="Center" Margin="0 30 0 0">
                             <TextBlock FontSize="15" FontWeight="DemiBold">Summary</TextBlock>
                         </Border>
-                        
+
                         <Grid Grid.Row="5">
                             <Grid.RowDefinitions>
                                 <RowDefinition/>
                                 <RowDefinition/>
                             </Grid.RowDefinitions>
-                            
-                            <CheckBox Grid.Row="0" Margin="0 5">By Month</CheckBox>
-                            <CheckBox Grid.Row="1" Margin="0 5">By Category</CheckBox>
+
+                            <CheckBox x:Name="byMonthCheck" Grid.Row="0" Margin="0 5">By Month</CheckBox>
+                            <CheckBox x:Name="byCategoryCheck" Grid.Row="1" Margin="0 5">By Category</CheckBox>
                         </Grid>
 
                     </Grid>

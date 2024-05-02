@@ -101,19 +101,31 @@ namespace CalendarWPFApp
         }
         private void FindBtn_Click(object sender, RoutedEventArgs e)
         {
-            ErrorFind.Text = "";
-            //validate selected file before finding?
-            if (true)
+            //ClearErrorMessage();
+
+            if (!_isSearchingFile)
             {
-                // Pass ! _isSearchingFile so it is recieved as isNewDatabase. _isSearchingFile True == isNewDatabase False
-                Window w = new CalendarWindow(_presenter);
-                w.Show();
-                this.Close();
+                // New Database.
+
             }
             else
             {
-                ErrorFind.Text = "Please select a valid file before searching.";
+                // Search existing database.
+
+                // Validate selected file before finding?
+                if (_choiceIsValid)
+                {
+                    // Pass ! _isSearchingFile so it is recieved as isNewDatabase. _isSearchingFile True == isNewDatabase False
+                    _presenter.ProcessDatabaseFile(chosenFileName.Text, chosenDirectoryName.Text, !_isSearchingFile);
+                }
+                else
+                {
+                    ErrorFind.Text = "Please select a valid file before searching.";
+                }
             }
+
+
+
         }
         public void ShowMainError(string errMsg)
         {
@@ -125,13 +137,6 @@ namespace CalendarWPFApp
             Window w = new CalendarWindow(_presenter);
             w.Show();
             this.Close();
-        }
-
-        public void ShowLocationPicker(string currentSaveLocation)
-        {
-            // Make user pick save location first.
-            LocationPicker locationPickerWindow = new LocationPicker(this, _presenter, currentSaveLocation);
-            locationPickerWindow.Show();
         }
     }
 }
