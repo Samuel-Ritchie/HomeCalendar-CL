@@ -158,7 +158,7 @@ namespace CalendarWPFApp
                 // Search existing database.
 
                 // Validate selected file before finding?
-                if (_choiceIsValid)
+                if (_choiceIsValid )
                 {
                     // Pass ! _isSearchingFile so it is recieved as isNewDatabase. _isSearchingFile True == isNewDatabase False
                     _presenter.ProcessDatabaseFile(chosenFileName.Text, chosenDirectoryName.Text, !_isSearchingFile);
@@ -219,7 +219,7 @@ namespace CalendarWPFApp
             SearchFileBtn.Background = new BrushConverter().ConvertFrom("#555555") as SolidColorBrush;
             text = SearchFileBtn.Child as TextBlock;
             text.Foreground = new BrushConverter().ConvertFrom("#BBBBBB") as SolidColorBrush;
-
+            _choiceIsValid = true;
             _isSearchingFile = false;
 
             // Get current save location from presenter. VVV
@@ -257,7 +257,7 @@ namespace CalendarWPFApp
             SearchFileBtn.Background = new BrushConverter().ConvertFrom("#5e9146") as SolidColorBrush;
             text = SearchFileBtn.Child as TextBlock;
             text.Foreground = new BrushConverter().ConvertFrom("#FFFFFF") as SolidColorBrush;
-
+            _choiceIsValid = false;
             _isSearchingFile = true;
         }
     }

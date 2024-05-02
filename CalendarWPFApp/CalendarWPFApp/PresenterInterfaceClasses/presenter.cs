@@ -164,36 +164,15 @@ namespace PresenterInterfaceClasses
         //==============================================
         //  CreateEvent Methods
         //==============================================
-        public void processEventForm(IEventForm View, string details, DateTime date, int hours, int minutes, int durationMinutes, string category)
+        public void processEventForm(IEventForm View, string details, DateTime date, int hours, int minutes, int durationMinutes, Category category)
         {
             if (_Model is not null)
             {
                 date = date.AddHours(hours).AddMinutes(minutes);
 
-                List<Calendar.Category> list = _Model.categories.List();
-
-                int id = -1;
-
-                // Should always find the id.
-                foreach (Category currentCataegory in list)
-                {
-                    if (currentCataegory.Description == category)
-                    {
-                        id = currentCataegory.Id;
-                        break;
-                    }
-                }
-
-                if (id != -1)
-                {
-                    _Model.events.Add(date, id, durationMinutes, details);
-                    // If Event added successfully
-                    View.ShowEventCreated();
-                }
-                else
-                {
-                    View.ShowEventCreationError("This Error should be unreachable since all Categories are added to the combobox from the same list. If You are seeing this, welp...");
-                }
+                _Model.events.Add(date, category.Id, durationMinutes, details);
+                // If Event added successfully
+                View.ShowEventCreated();
             }
         }
 

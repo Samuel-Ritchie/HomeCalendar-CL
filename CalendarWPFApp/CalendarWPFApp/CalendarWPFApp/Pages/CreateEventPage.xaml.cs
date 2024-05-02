@@ -1,6 +1,7 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
 using PresenterInterfaceClasses;
+using Calendar;
 
 namespace CalendarWPFApp.Pages
 {
@@ -68,7 +69,7 @@ namespace CalendarWPFApp.Pages
             int theMinutes;
             string theAmPm;
             int theDurationInMinutes;
-            string category;
+            Category category;
 
             if (DetailsBox.Text != "")
             {
@@ -88,9 +89,9 @@ namespace CalendarWPFApp.Pages
                             if (DurationBox.Text.ToString() != "" &&
                                 int.TryParse(DurationBox.Text.ToString(), out theDurationInMinutes))
                             {
-                                if ((ComboBoxItem)Categories.SelectedValue is not null)
+                                if (Categories.SelectedValue is not null && Categories.SelectedValue is Category)
                                 {
-                                    category = ((ComboBoxItem)Categories.SelectedValue).Content.ToString();
+                                    category = Categories.SelectedValue as Category;
 
                                     _presenter.processEventForm(
                                         this,
