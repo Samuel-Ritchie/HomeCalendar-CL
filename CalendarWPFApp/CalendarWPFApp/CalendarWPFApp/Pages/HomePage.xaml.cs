@@ -22,59 +22,17 @@ namespace CalendarWPFApp.Pages
     /// </summary>
     public partial class HomePage : Page
     {
-        //for testing
-        HomeCalendar _calendar;
         Presenter _presenter;
         public HomePage(Presenter presenter)
         {
             InitializeComponent();
-            _calendar = new HomeCalendar("../../testDbInput");
             _presenter = presenter;
 
             SetDataGridCalendarItems();
         }
-
-        //for testing
-        private List<CalendarItem> GetTestData()
-        {
-
-            return new List<CalendarItem>()
-            {
-                new CalendarItem()
-                {
-                    CategoryID = 1,
-                    EventID = 2,
-                    StartDateTime = DateTime.Now,
-                    Category = _calendar.categories.GetCategoryFromId(1).Description,
-                    ShortDescription = "Wah",
-                    DurationInMinutes = 1580,
-                    BusyTime = 23
-                },
-                new CalendarItem()
-                {
-                    CategoryID = 2,
-                    EventID = 2,
-                    StartDateTime = DateTime.Now,
-                    Category = _calendar.categories.GetCategoryFromId(2).Description,
-                    ShortDescription = "TEST",
-                    DurationInMinutes = 1580,
-                    BusyTime = 23
-                },
-                new CalendarItem()
-                {
-                    CategoryID = 3,
-                    EventID = 2,
-                    StartDateTime = DateTime.Now,
-                    Category = _calendar.categories.GetCategoryFromId(3).Description,
-                    ShortDescription = "Real",
-                    DurationInMinutes = 1580,
-                    BusyTime = 23
-                }
-            };
-        }
         private void SetDataGridCalendarItems()
         {
-            List<CalendarItem> data = GetTestData();    
+            List<CalendarItem> data = null; 
 
             CalendarItemsTable.ItemsSource = data;
             CalendarItemsTable.Columns.Clear();
