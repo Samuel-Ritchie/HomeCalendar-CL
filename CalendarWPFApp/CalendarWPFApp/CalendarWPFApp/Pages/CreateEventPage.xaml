@@ -5,73 +5,112 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:CalendarWPFApp.Pages"
       mc:Ignorable="d" 
-      d:DesignHeight="450" d:DesignWidth="800"
+      d:DesignHeight="800" d:DesignWidth="1200"
       Title="CreateEventPage">
 
-    <Grid ShowGridLines="True">
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*"></ColumnDefinition>
-
-        </Grid.ColumnDefinitions>
-
-        <!--Define the rows -->
-        <Grid.RowDefinitions>
-            <RowDefinition Height="*"></RowDefinition>
-        </Grid.RowDefinitions>
-
-        <TextBlock Grid.Row="0" Grid.Column="0" FontSize="20" HorizontalAlignment="Center" VerticalAlignment="Top" FontWeight="DemiBold" Text="Create an event"></TextBlock>
-
-        <TextBlock Margin="0,30,0,0" Grid.Row="0" Grid.Column="0" FontSize="14" HorizontalAlignment="Center" VerticalAlignment="Top" Text="Event Details"></TextBlock>
-        <TextBox x:Name="DetailsBox"  Grid.Row="0" Grid.Column="0" Height="90" Width="200" Margin="0,0,0,230"></TextBox>
-
-        <DatePicker x:Name="datePickerInput" Margin="0,0,0,60" VerticalAlignment="Center" Grid.Row="0" Grid.Column="0" Width="200" Height="25"></DatePicker>
-
-        <TextBlock Margin="0,0,0,200" Grid.Row="0" Grid.Column="0" FontSize="14" HorizontalAlignment="Center" VerticalAlignment="Bottom" Text="Select a time to start your event:"></TextBlock>
-
-        <Grid Margin="0,0,0,130" VerticalAlignment="Bottom" HorizontalAlignment="Center" Grid.Row="0" Grid.Column="0" ShowGridLines="False">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="50"></ColumnDefinition>
-                <ColumnDefinition Width="50"></ColumnDefinition>
-                <ColumnDefinition Width="50"></ColumnDefinition>
-            </Grid.ColumnDefinitions>
-
-            <!--Define the rows -->
+    <Grid>
+        <Grid Height="550" Width="400">
             <Grid.RowDefinitions>
-                <RowDefinition Height="70"></RowDefinition>
+                <RowDefinition Height="3*"/>
+                <RowDefinition/>
             </Grid.RowDefinitions>
 
-            <TextBlock Text="Hours" Grid.Row="0" Grid.Column="0"></TextBlock>
-            <TextBlock Text="Minutes" Grid.Row="0" Grid.Column="1"></TextBlock>
-            <TextBlock Text="AM/PM" Grid.Row="0" Grid.Column="3"></TextBlock>
+            <Border Grid.Row="0" BorderBrush="White" BorderThickness="5" CornerRadius="20">
+                <Border Margin="10" Background="#CCFFFFFF" CornerRadius="10">
+                    <Grid Margin="10">
+                        <Grid >
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="2*"/>
+                                <RowDefinition Height="2*"/>
+                                <RowDefinition Height="2*"/>
+                                <RowDefinition Height="2*"/>
+                                <RowDefinition Height="2*"/>
+                            </Grid.RowDefinitions>
 
-            <ComboBox Grid.Row="0" Grid.Column="0" Width="40" Height="40" Name="HoursComboBox" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
-            <ComboBox Grid.Row="0" Grid.Column="1" Width="40" Height="40" Name="MinutesComboBox" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
-            <ComboBox Grid.Row="1" Grid.Column="2" Width="40" Height="40" Name="AMPMComboBox" SelectedIndex="0" HorizontalContentAlignment="Center" VerticalContentAlignment="Center">
-                <ComboBoxItem Content="AM"></ComboBoxItem>
-                <ComboBoxItem Content="PM"></ComboBoxItem>
-            </ComboBox>
-        </Grid>
+                            <TextBlock Grid.Row="0" HorizontalAlignment="Center" Foreground="#222222" FontWeight="DemiBold" FontSize="25">Create Event!</TextBlock>
+                            
+                            <Border Margin="5" Grid.Row="1" Background="#222222" CornerRadius="8" Height="50">
+                                <Grid Grid.Row="0">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="2*"></ColumnDefinition>
+                                        <ColumnDefinition Width="5*"></ColumnDefinition>
+                                    </Grid.ColumnDefinitions>
 
-        <TextBlock Margin="0,0,0,115" Grid.Row="0" Grid.Column="0" VerticalAlignment="Bottom" HorizontalAlignment="Center" Text="Duration in Minutes"></TextBlock>
-        <TextBox x:Name="DurationBox" Margin="0,0,0,90" VerticalAlignment="Bottom" HorizontalAlignment="Center" Grid.Row="0" Grid.Column="0" Height="20" Width="140"></TextBox>
+                                    <Border Grid.Column="0" Margin="3" Background="#e88833" CornerRadius="5">
+                                        <TextBlock Foreground="White" TextAlignment="Center" FontWeight="DemiBold" FontSize="15" VerticalAlignment="Center">Event <LineBreak/> Details</TextBlock>
+                                    </Border>
 
-        <Grid Margin="0,0,0,5" VerticalAlignment="Bottom" HorizontalAlignment="Center" Grid.Row="0" Grid.Column="0" ShowGridLines="False">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="1*"></ColumnDefinition>
-                <ColumnDefinition Width="1*"></ColumnDefinition>
-            </Grid.ColumnDefinitions>
-            <Button x:Name="CreateTheEvent" Click="CreateTheEvent_Click" Grid.Column="0" HorizontalAlignment="Left" Grid.Row="0" Height="20" Width="140">CreateEvent</Button>
-            <Button x:Name="CancelTheEvent" Click="CancelTheEvent_Click" Grid.Column="1" HorizontalAlignment="Right" Grid.Row="0" Height="20" Width="140">Cancel</Button>
-        </Grid>
+                                    <TextBox Grid.Column="1" x:Name="DetailsBox" Background="Transparent" BorderBrush="Transparent" 
+                                         VerticalAlignment="Center" Foreground="White" FontSize="15" Height="30" Margin="0 0 5 0"></TextBox>
+                                </Grid>
+                            </Border>
 
-        <Grid Margin="0,0,0,35" VerticalAlignment="Bottom" HorizontalAlignment="Center" Grid.Row="0" Grid.Column="0" ShowGridLines="False">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="2*"></RowDefinition>
-                <RowDefinition Height="1*"></RowDefinition>
-            </Grid.RowDefinitions>
-            <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Text="Category" Grid.Row="0" Grid.Column="0"></TextBlock>
-            <ComboBox Grid.Row="1" VerticalAlignment="Center" Grid.Column="3" Width="150" Height="30" x:Name="Categories">
-            </ComboBox>
+                            <Border Margin="1" Grid.Row="2" Background="#222222" CornerRadius="8" Height="50">
+                                <Grid Grid.Row="0">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="2*"></ColumnDefinition>
+                                        <ColumnDefinition Width="5*"></ColumnDefinition>
+                                    </Grid.ColumnDefinitions>
+
+                                    <Border Grid.Column="0" Margin="3" Background="#e88833" CornerRadius="5">
+                                        <TextBlock Foreground="White" TextAlignment="Center" FontWeight="DemiBold" FontSize="15" VerticalAlignment="Center">Category</TextBlock>
+                                    </Border>
+
+                                    <ComboBox Grid.Column="1" x:Name="Categories" Margin="5"/>
+                                </Grid>
+                            </Border>
+
+                            <Border Margin="2" Grid.Row="3" Background="#222222" CornerRadius="8" Height="50">
+                                <Grid Grid.Row="0">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="2*"></ColumnDefinition>
+                                        <ColumnDefinition Width="5*"></ColumnDefinition>
+                                    </Grid.ColumnDefinitions>
+
+                                    <Border Grid.Column="0" Margin="3" Background="#e88833" CornerRadius="5">
+                                        <TextBlock Foreground="White" TextAlignment="Center" FontWeight="DemiBold" FontSize="15" VerticalAlignment="Center">Duration<LineBreak/>in Minutes</TextBlock>
+                                    </Border>
+
+                                    <TextBox Grid.Column="1" x:Name="DurationBox" Background="Transparent" BorderBrush="Transparent" 
+                                         VerticalAlignment="Center" Foreground="White" FontSize="15" Height="30" Margin="0 0 5 0"></TextBox>
+                                </Grid>
+                            </Border>
+
+                            <DatePicker Grid.Row="4" x:Name="datePickerInput" Width="200" Height="25"></DatePicker>
+
+                            <Grid Grid.Row="5" HorizontalAlignment="Center">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition></ColumnDefinition>
+                                    <ColumnDefinition></ColumnDefinition>
+                                    <ColumnDefinition></ColumnDefinition>
+                                </Grid.ColumnDefinitions>
+
+                                <!--Define the rows -->
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="70"></RowDefinition>
+                                </Grid.RowDefinitions>
+
+                                <TextBlock Text="Hours" Grid.Row="0" Grid.Column="0"></TextBlock>
+                                <TextBlock Text="Minutes" Grid.Row="0" Grid.Column="1"></TextBlock>
+                                <TextBlock Text="AM/PM" Grid.Row="0" Grid.Column="3"></TextBlock>
+
+                                <ComboBox Grid.Row="0" Grid.Column="0" Width="50" Height="40" Name="HoursComboBox" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
+                                <ComboBox Grid.Row="0" Grid.Column="1" Width="50" Height="40" Name="MinutesComboBox" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
+                                <ComboBox Grid.Row="1" Grid.Column="2" Width="50" Height="40" Name="AMPMComboBox" SelectedIndex="0" HorizontalContentAlignment="Center" VerticalContentAlignment="Center">
+                                    <ComboBoxItem Content="AM"></ComboBoxItem>
+                                    <ComboBoxItem Content="PM"></ComboBoxItem>
+                                </ComboBox>
+                            </Grid>
+                        </Grid>
+                    </Grid>
+                </Border>
+            </Border>
+
+            <Border Grid.Row="1" Background="#e88833" CornerRadius="10" BorderThickness="5" BorderBrush="White" Margin="0 10">
+                <Button x:Name="CreateTheEvent" Click="CreateTheEvent_Click"
+                        Background="Transparent" BorderBrush="Transparent" Foreground="White" FontWeight="DemiBold" FontSize="20">Create Event</Button>
+            </Border>
         </Grid>
     </Grid>
 </Page>
