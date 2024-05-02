@@ -1,6 +1,7 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
 using PresenterInterfaceClasses;
+using Calendar;
 
 namespace CalendarWPFApp.Pages
 {
@@ -21,6 +22,13 @@ namespace CalendarWPFApp.Pages
 
             HoursComboBox.ItemsSource = GetIntRange(1, 12);
             MinutesComboBox.ItemsSource = GetIntRange(0, 59);
+            SetCategories();
+        }
+
+        private void SetCategories()
+        {
+            Categories.ItemsSource = _presenter.GetListOfCategories();
+            Categories.DisplayMemberPath = "Description";
         }
 
         private List<string> GetIntRange(int start, int end)
@@ -36,10 +44,6 @@ namespace CalendarWPFApp.Pages
         //==============================================
         //  Event Handlers
         //==============================================
-        private void Categories_DropDownOpened(object sender, EventArgs e)
-        {
-            _presenter.GetListOfCategories(this);
-        }
 
         private void CancelTheEvent_Click(object sender, RoutedEventArgs e)
         {
@@ -65,7 +69,7 @@ namespace CalendarWPFApp.Pages
             int theMinutes;
             string theAmPm;
             int theDurationInMinutes;
-            string category;
+            Category category;
 
             if (DetailsBox.Text != "")
             {
@@ -85,9 +89,9 @@ namespace CalendarWPFApp.Pages
                             if (DurationBox.Text.ToString() != "" &&
                                 int.TryParse(DurationBox.Text.ToString(), out theDurationInMinutes))
                             {
-                                if ((ComboBoxItem)Categories.SelectedValue is not null)
+                                if (Categories.SelectedValue is not null && Categories.SelectedValue is Category)
                                 {
-                                    category = ((ComboBoxItem)Categories.SelectedValue).Content.ToString();
+                                    category = Categories.SelectedValue as Category;
 
                                     _presenter.processEventForm(
                                         this,
@@ -146,24 +150,10 @@ namespace CalendarWPFApp.Pages
             }
         }
 
-        public void ClearEventForm()
-        {
-            throw new NotImplementedException();
-        }
-
-        public void DoubleCheckCloseEventForm()
-        {
-            throw new NotImplementedException();
-        }
-
-        public void ShowCreateCategoryFormFromEventForm()
-        {
-            throw new NotImplementedException();
-        }
 
         public void ShowEventCreated()
         {
-            MessageBoxResult userChoice = MessageBox.Show("Event has been created.", "Error", MessageBoxButton.OK, MessageBoxImage.Information);
+            MessageBoxResult userChoice = System.Windows.MessageBox.Show("Event has been created.", "Error", MessageBoxButton.OK, MessageBoxImage.Information);
 
             _calendarWindow.SwitchForms(CalendarWindow.Interfaces.CalendarView, null);
         }
@@ -171,7 +161,7 @@ namespace CalendarWPFApp.Pages
         public void ShowEventCreationError(string errMessage)
         {
             // Display Error to do with Event Creation user using Message Box.
-            MessageBoxResult userChoice = MessageBox.Show(errMessage, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            MessageBoxResult userChoice = System.Windows.MessageBox.Show(errMessage, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
         }
     }
 }

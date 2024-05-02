@@ -15,31 +15,90 @@ namespace PresenterInterfaceClasses
 
         // Interface references
         private IMainView _mainWindow;
-        private IPromptCreationWindow? _promptCreationWindow;
+        //private IPromptCreationWindow? _promptCreationWindow;
+        //private IHomePage _homePage;
 
         // State of application fields
-        private string _filePath = "";
+        private string _folderPath = "";
         private string _fileName = "";
+        private string _fullPath = "";
+
+        // Create new calendar.
         private string _saveToPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\Calendars";
-        public bool _changesMade = false;
+
+        // Old code, see where this value is implemented and remove.
 
         public Presenter(IMainView mainWindow)
         {
             // Initialize all existing windows.
             _mainWindow = mainWindow;
+
+        }
+
+        //==============================================
+        //  Filtering and Sorting methods
+        //==============================================
+        public List<CalendarItem> SortEvents(DateTime? startDate, DateTime? endDate, bool FilterFlag, int CategoryID)
+        {
+            //if (isByMonthCheck == false && isByCategoryCheck == false)
+            //{
+            return _Model.GetCalendarItems(startDate, endDate, FilterFlag, CategoryID);
+            //    home.UpdateEventsGetCalendarItems(calendarItems);
+
+            //} else if (isByMonthCheck == false && isByCategoryCheck == true)
+            //{
+            //    List<CalendarItemsByCategory> calendarItemsByCategory = _Model.GetCalendarItemsByCategory(startDate, endDate, FilterFlag, CategoryID);
+            //    home.UpdateEventsGetCalendarItemsByCategory(calendarItemsByCategory);
+            //} else if (isByMonthCheck == true && isByCategoryCheck == false)
+            //{
+            //    List<CalendarItemsByMonth> calendarItemsByMonth = _Model.GetCalendarItemsByMonth(startDate, endDate, FilterFlag, CategoryID);
+            //    home.UpdateEventsGetCalendarItemsByMonth(calendarItemsByMonth);
+            //} else
+            //{
+            //    List<Dictionary<string, object>> calendarItemsByCategoryAndMonth = _Model.GetCalendarDictionaryByCategoryAndMonth(startDate, endDate, FilterFlag, CategoryID);
+            //    home.UpdateEventsGetCalendarItemsByCategoryAndMonth(calendarItemsByCategoryAndMonth);
+            //}
         }
 
         //==============================================
         //  Presenter to Model Methods
         //==============================================
-        public void InitializeHomeCalendar(string databaseName, string filePath, bool isNewDatabase)
+        public void InitializeHomeCalendar(string databaseName, string folderPath, bool isNewDatabase)
         {
-            _filePath = filePath;
-            _fileName = databaseName;
-            _Model = new HomeCalendar(_filePath, isNewDatabase);
+            if (isNewDatabase)
+            {
+                _fileName = databaseName;
+                _folderPath = folderPath;
+                
+                if (!Directory.Exists(folderPath))
+                {
+                    Directory.CreateDirectory(folderPath);
+                }
+
+                if (!folderPath.EndsWith(".db"))
+                {
+                    _fullPath = _folderPath + $"\\{databaseName}";
+                }
+                else
+                {
+                    _fullPath = _folderPath;
+                }
+            }
+            else
+            {
+                // Database already exists
+                // folderPath and fullPath both hold the path and name together.
+                _fileName = databaseName;
+                _folderPath = folderPath;
+                _fullPath = folderPath;
+            }
+
+            // Create instance (Open Calendar)
+            _Model = new HomeCalendar(_fullPath, isNewDatabase);
+            // var a = _Model.categories.List();
 
             // Open new window with view function.
-            _mainWindow.ShowLocationPicker(_saveToPath);
+            _mainWindow.ShowCalendarInteractivity();
 
             // _mainWindow will close after this.
         }
@@ -50,9 +109,8 @@ namespace PresenterInterfaceClasses
             {
                 // User chose to save their changes that have been made.
                 // Use saveLocation and add file name to end.
-                _Model.SaveToFile(_saveToPath + "\\" + _fileName);
 
-                // Close the database
+                // Close the database (Save automatically)
                 _Model.CloseDB();
                 _Model = null;
             }
@@ -65,21 +123,68 @@ namespace PresenterInterfaceClasses
         //==============================================
         public void ProcessDatabaseFile(string databaseName, string filePath, bool isNewDatabase)
         {
-            if (isNewDatabase && File.Exists(filePath))
+            string fileName;
+            string folderPath;
+            string fullPath;
+            if (isNewDatabase)
+            {
+                fileName = databaseName;
+                folderPath = filePath;
+
+                bool existsDir = Directory.Exists(folderPath);
+
+                if (!Directory.Exists(folderPath))
+                {
+                    Directory.CreateDirectory(folderPath);
+                }
+
+                if (!folderPath.EndsWith(".db"))
+                {
+                    if (databaseName.EndsWith(".db"))
+                    {
+                        fullPath = folderPath + $"\\{databaseName}";
+                    }
+                    else
+                    {
+                        fullPath = folderPath + $"\\{databaseName}" + ".db";
+                    }
+                }
+                else
+                {
+                    fullPath = folderPath;
+                }
+            }
+            else
+            {
+                // Database already exists
+                // folderPath and fullPath both hold the path and name together.
+                fileName = databaseName;
+                folderPath = filePath;
+                fullPath = filePath;
+            }
+
+            if (isNewDatabase && File.Exists(fullPath))
             {
                 // User chose create new but file already exists.
                 _mainWindow.ShowMainError("Error: database file already exists.");
             }
-            else if (isNewDatabase && !File.Exists(filePath))
+            else if (!isNewDatabase && !File.Exists(fullPath))
             {
-                // User chose create new and file doesn't already exist.
-                InitializeHomeCalendar(databaseName, filePath, isNewDatabase);
+                // User chose create new but file already exists.
+                _mainWindow.ShowMainError("File not found.");
             }
             else
             {
-                // User wants to open existing database.
                 InitializeHomeCalendar(databaseName, filePath, isNewDatabase);
             }
+        }
+        public void getCurrentLocation()
+        {
+            // Return data field
+
+
+            // default is documents.
+            _mainWindow.RecieveCurrentSaveLocation(_saveToPath);
         }
 
         //==============================================
@@ -98,60 +203,27 @@ namespace PresenterInterfaceClasses
         public void PromptCreateWindowClosing(IPromptCreationWindow View)
         {
             // Pass back changes made.
-            View.AskToSaveOrDiscardPromptCreate(_changesMade);
+            View.AskToSaveOrDiscardPromptCreate();
         }
 
         //==============================================
         //  CreateEvent Methods
         //==============================================
-        public void processEventForm(IEventForm View, string details, DateTime date, int hours, int minutes, int durationMinutes, string category)
+        public void processEventForm(IEventForm View, string details, DateTime date, int hours, int minutes, int durationMinutes, Category category)
         {
             if (_Model is not null)
             {
                 date = date.AddHours(hours).AddMinutes(minutes);
 
-                List<Calendar.Category> list = _Model.categories.List();
-
-                int id = -1;
-
-                // Should always find the id.
-                foreach (Category currentCataegory in list)
-                {
-                    if (currentCataegory.Description == category)
-                    {
-                        id = currentCataegory.Id;
-                        break;
-                    }
-                }
-
-                if (id != -1)
-                {
-                    _Model.events.Add(date, id, durationMinutes, details);
-                    // If Event added successfully
-                    // Set _changesMade to true
-                    _changesMade = true;
-                    View.ShowEventCreated();
-                }
-                else
-                {
-                    View.ShowEventCreationError("This Error should be unreachable since all Categories are added to the combobox from the same list. If You are seeing this, welp...");
-                }
+                _Model.events.Add(date, category.Id, durationMinutes, details);
+                // If Event added successfully
+                View.ShowEventCreated();
             }
         }
 
-        public void GetListOfCategories(IEventForm View)
+        public List<Category> GetListOfCategories()
         {
-            if (_Model is not null)
-            {
-                List<string> theCategories = new List<string>();
-
-                foreach (Calendar.Category category in _Model.categories.List())
-                {
-                    theCategories.Add(category.Description);
-                }
-
-                View.GiveListOfCategories(theCategories);
-            }
+            return _Model.categories.List();
         }
 
         //==============================================
@@ -166,9 +238,6 @@ namespace PresenterInterfaceClasses
                     _Model.categories.Add(description, Calendar.Category.CategoryType.Event);
 
                     // If Category added successfully
-                    // Set _changesMade to true
-                    _changesMade = true;
-
                     View.ShowCategoryCreated();
                 }
                 else if (categoryType == "Availibility")
@@ -176,9 +245,6 @@ namespace PresenterInterfaceClasses
                     _Model.categories.Add(description, Calendar.Category.CategoryType.Availability);
 
                     // If Category added successfully
-                    // Set _changesMade to true
-                    _changesMade = true;
-
                     View.ShowCategoryCreated();
                 }
                 else if (categoryType == "All Day Event")
@@ -186,9 +252,6 @@ namespace PresenterInterfaceClasses
                     _Model.categories.Add(description, Calendar.Category.CategoryType.AllDayEvent);
 
                     // If Category added successfully
-                    // Set _changesMade to true
-                    _changesMade = true;
-
                     View.ShowCategoryCreated();
                 }
                 else if (categoryType == "Holiday")
@@ -196,9 +259,6 @@ namespace PresenterInterfaceClasses
                     _Model.categories.Add(description, Calendar.Category.CategoryType.Holiday);
 
                     // If Category added successfully
-                    // Set _changesMade to true
-                    _changesMade = true;
-
                     View.ShowCategoryCreated();
                 }
                 else
@@ -206,24 +266,6 @@ namespace PresenterInterfaceClasses
                     // This is mor for debugging.
                     View.ShowCategoryCreationError("Some error I guess.");
                 }
-            }
-        }
-
-        //==============================================
-        //  Location Picker Methods
-        //==============================================
-
-        public void ProcessLocation(IMainView MainView, ILocationPicker View, string location)
-       {
-            if (Directory.Exists(location))
-            {
-                _saveToPath = location;
-
-                MainView.ShowCalendarInteractivity();
-            }
-            else
-            {
-                View.ShowErrorLocationPicker("Directory does not exist.");
             }
         }
     }
