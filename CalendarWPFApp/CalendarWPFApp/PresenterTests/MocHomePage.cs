@@ -11,42 +11,37 @@ namespace PresenterTests
     internal class MocHomePage : IHomePage
     {
 
+        public Presenter _presenter;
 
-
-
-
-
-
-
-
+        public MocHomePage(Presenter presenter)
+        {
+            _presenter = presenter;
+        }
 
         // =================================
         //  Interface Fields
         // =================================
 
-        public bool _wasCalled_UpdateEventsGetCalendarItems = false;
-        public bool _wasCalled_UpdateEventsGetCalendarItemsByCategory = false;
-        public bool _wasCalled_UpdateEventsGetCalendarItemsByCategoryAndMonth = false;
-        public bool _wasCalled_UpdateEventsGetCalendarItemsByMonth = false;
+        public bool _wasCalled_SetCalendarItems = false;
+        public bool _wasCalled_SetCalendarItemsByMonth = false;
+        public bool _wasCalled_SetCalendarItemsByCategory = false;
+        public bool _wasCalled_SetCalendarItemsByMonthAndCategory = false;
 
-        public void UpdateEventsGetCalendarItems(List<CalendarItem> calendarItems)
+        public void SetCalendarItems(DateTime? start = null, DateTime? end = null, bool filter = false, int searchCategory = 0)
         {
-            _wasCalled_UpdateEventsGetCalendarItems = true;
+            _wasCalled_SetCalendarItems = true;
         }
-
-        public void UpdateEventsGetCalendarItemsByCategory(List<CalendarItemsByCategory> calendarItemsByCategory)
+        public void SetCalendarItemsByMonth(DateTime? start = null, DateTime? end = null, bool filter = false, int searchCategory = 0)
         {
-            _wasCalled_UpdateEventsGetCalendarItemsByCategory = true;
+            _wasCalled_SetCalendarItemsByMonth = true;
         }
-
-        public void UpdateEventsGetCalendarItemsByCategoryAndMonth(List<Dictionary<string, object>> calendarItemsByCatAndMonth)
+        public void SetCalendarItemsByCategory(DateTime? start = null, DateTime? end = null, bool filter = false, int searchCategory = 0)
         {
-            _wasCalled_UpdateEventsGetCalendarItemsByCategoryAndMonth = true;
+            _wasCalled_SetCalendarItemsByCategory = true;
         }
-
-        public void UpdateEventsGetCalendarItemsByMonth(List<CalendarItemsByMonth> calendarItemsByMonth)
+        public void SetCalendarItemsByCategoryAndMonth(DateTime? start = null, DateTime? end = null, bool filter = false, int searchCategory = 0)
         {
-            _wasCalled_UpdateEventsGetCalendarItemsByMonth = true;
+            _wasCalled_SetCalendarItemsByMonthAndCategory = true;
         }
     }
 }

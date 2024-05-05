@@ -137,6 +137,7 @@ namespace CalendarWPFApp.Pages
         //==============================================
         //  Interface methods
         //==============================================
+        /*
         public void GiveListOfCategories(List<string> categories)
         {
             Categories.Items.Clear();
@@ -149,6 +150,7 @@ namespace CalendarWPFApp.Pages
                 Categories.Items.Add(categoryComboBoxItem);
             }
         }
+        */
 
 
         public void ShowEventCreated()
