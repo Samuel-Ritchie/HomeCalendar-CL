@@ -1,6 +1,7 @@
 ﻿using Calendar;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.Metrics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -53,6 +54,17 @@ namespace PresenterInterfaceClasses
         public List<Dictionary<string, object>> SortEventsByCategoryAndMonth(DateTime? startDate, DateTime? endDate, bool FilterFlag, int CategoryID)
         {
             return _Model.GetCalendarDictionaryByCategoryAndMonth(startDate, endDate, FilterFlag, CategoryID);
+        }
+        public void DisplayCalendarItems(IHomePage page, bool isMonthChecked, bool isCategoryChecked, DateTime startDate, DateTime endDate, bool filter, int selectedCategoryId)
+        {
+            if (!isMonthChecked && !isCategoryChecked)
+                page.SetCalendarItems(startDate, endDate, filter, selectedCategoryId);
+            else if (isMonthChecked && !isCategoryChecked)
+                page.SetCalendarItemsByMonth(startDate, endDate, filter, selectedCategoryId);
+            else if (!isMonthChecked && isCategoryChecked)
+                page.SetCalendarItemsByCategory(startDate, endDate, filter, selectedCategoryId);
+            else
+                page.SetCalendarItemsByCategoryAndMonth(startDate, endDate, filter, selectedCategoryId);
         }
 
         //==============================================
