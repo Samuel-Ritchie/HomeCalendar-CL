@@ -10,7 +10,7 @@ namespace PresenterTests
     internal class MocPromptView : IPromptCreationWindow
     {
 
-        private Presenter _presenter;
+        public Presenter _presenter;
 
         // To keep track of which screen the user is being faced with.
         public enum Interfaces

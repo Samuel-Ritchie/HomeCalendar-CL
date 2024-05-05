@@ -9,8 +9,27 @@ namespace PresenterTests
 {
     internal class MocCategoryFormView : ICategoryForm
     {
+        public Presenter _presenter;
+
+        public MocPromptView _calendarWindow;
+        // MocEventForm? _eventWindow;
+        // private bool _initializedFromCalendarWindow;
+
+        public MocCategoryFormView(Presenter presenter, MocPromptView calendarWindow /*, CreateEventPage? eventWindow */)
+        {
+            _presenter = presenter;
+            _calendarWindow = calendarWindow;
 
 
+            // _initializedFromCalendarWindow = true;
+            /*
+            if (eventWindow is not null)
+            {
+                _initializedFromCalendarWindow = false;
+                _eventWindow = eventWindow;
+            }
+            */
+        }
 
         // =================================
         //  Interface Fields

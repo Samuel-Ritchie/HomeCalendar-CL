@@ -117,11 +117,7 @@
                             </Grid.RowDefinitions>
 
                             <CheckBox Click="getUserInput_Click" x:Name="filterCategoryCheckbox">Filter By Category?</CheckBox>
-                            <ComboBox x:Name="filterCategory"  Grid.Row="1">
-                                <ComboBoxItem>1</ComboBoxItem>
-                                <ComboBoxItem>2</ComboBoxItem>
-                                <ComboBoxItem>3</ComboBoxItem>
-                            </ComboBox>
+                            <ComboBox x:Name="filterCategory"  Grid.Row="1"/>
                         </Grid>
 
                         <Border Grid.Row="4" HorizontalAlignment="Center" Margin="0 30 0 0">
@@ -134,8 +130,8 @@
                                 <RowDefinition/>
                             </Grid.RowDefinitions>
 
-                            <CheckBox x:Name="byMonthCheck" Grid.Row="0" Margin="0 5">By Month</CheckBox>
-                            <CheckBox x:Name="byCategoryCheck" Grid.Row="1" Margin="0 5">By Category</CheckBox>
+                            <CheckBox Click="getUserInput_Click" x:Name="byMonthCheck" Grid.Row="0" Margin="0 5">By Month</CheckBox>
+                            <CheckBox Click="getUserInput_Click" x:Name="byCategoryCheck" Grid.Row="1" Margin="0 5">By Category</CheckBox>
                         </Grid>
 
                     </Grid>

@@ -84,7 +84,9 @@ namespace CalendarWPFApp
                 }
                 else
                 {
-                    ShowMainError("Please select a folder to store your database file in.");
+                    string fullPath = chosenDirectoryName.Text;
+                    chosenDirectoryName.Text = fullPath;
+                    _choiceIsValid = true;
                 }
             }
         }
