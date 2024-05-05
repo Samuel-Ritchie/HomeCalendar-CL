@@ -279,7 +279,6 @@ namespace PresenterTests
             a._presenter.ProcessDatabaseFile(fileName, fullPath, isNewDatabase);
 
             Assert.True(a._wasCalled_RecieveCurrentSaveLocation);
-            MocMainView a = new MocMainView();
             Presenter presenter = a._presenter;
             presenter.ProcessDatabaseFile(fileName, fullPath, isNewDatabase);
 
