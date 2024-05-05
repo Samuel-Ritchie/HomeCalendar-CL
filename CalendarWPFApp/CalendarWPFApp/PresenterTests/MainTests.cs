@@ -127,7 +127,7 @@ namespace PresenterTests
         //  HomePage View
         // ===========================
         [Fact]
-        public void UpdateEventsGetCalendarItemsIsCalled()
+        public void SetCalendarItemsIsCalled()
         {
             MocMainView a = new MocMainView();
 
@@ -143,11 +143,72 @@ namespace PresenterTests
 
             MocHomePage c = new MocHomePage(b._presenter);
 
-            c._presenter.SortEvents(null, null, false, 0);
+            c._presenter.DisplayCalendarItems(c, false, false, DateTime.Now, DateTime.Now, false, 0);
 
-            // Assert.True(c._wasCalled_ShowEventCreated);
+            Assert.True(c._wasCalled_SetCalendarItems);
+        }
+        [Fact]
+        public void SetCalendarItemsByMonthIsCalled()
+        {
+            MocMainView a = new MocMainView();
 
-            // Further implementation needed in HomePage.cs
+            string fileName = "testDBInput.db";
+            string fullPath = "..\\..\\..\\Calendars\\testDBInput.db";
+            bool isNewDatabase = false;
+
+            a._presenter.ProcessDatabaseFile(fileName, fullPath, isNewDatabase);
+
+            Assert.True(a._wasCalled_RecieveCurrentSaveLocation);
+
+            MocPromptView b = new MocPromptView(a._presenter);
+
+            MocHomePage c = new MocHomePage(b._presenter);
+
+            c._presenter.DisplayCalendarItems(c, true, false, DateTime.Now, DateTime.Now, false, 0);
+
+            Assert.True(c._wasCalled_SetCalendarItemsByMonth);
+        }
+        [Fact]
+        public void SetCalendarItemsByCategoryIsCalled()
+        {
+            MocMainView a = new MocMainView();
+
+            string fileName = "testDBInput.db";
+            string fullPath = "..\\..\\..\\Calendars\\testDBInput.db";
+            bool isNewDatabase = false;
+
+            a._presenter.ProcessDatabaseFile(fileName, fullPath, isNewDatabase);
+
+            Assert.True(a._wasCalled_RecieveCurrentSaveLocation);
+
+            MocPromptView b = new MocPromptView(a._presenter);
+
+            MocHomePage c = new MocHomePage(b._presenter);
+
+            c._presenter.DisplayCalendarItems(c, false, true, DateTime.Now, DateTime.Now, false, 0);
+
+            Assert.True(c._wasCalled_SetCalendarItemsByCategory);
+        }
+        [Fact]
+        public void SetCalendarItemsByMonthAndCategoryIsCalled()
+        {
+            MocMainView a = new MocMainView();
+
+            string fileName = "testDBInput.db";
+            string fullPath = "..\\..\\..\\Calendars\\testDBInput.db";
+            bool isNewDatabase = false;
+
+            a._presenter.ProcessDatabaseFile(fileName, fullPath, isNewDatabase);
+
+            Assert.True(a._wasCalled_RecieveCurrentSaveLocation);
+
+            MocPromptView b = new MocPromptView(a._presenter);
+
+            MocHomePage c = new MocHomePage(b._presenter);
+
+            c._presenter.DisplayCalendarItems(c, true, true, DateTime.Now, DateTime.Now, false, 0);
+
+            Assert.True(c._wasCalled_SetCalendarItemsByMonthAndCategory);
         }
 
 
