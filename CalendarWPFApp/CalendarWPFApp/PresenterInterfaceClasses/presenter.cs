@@ -11,7 +11,7 @@ namespace PresenterInterfaceClasses
     {
         // Model instance
         // Can only be initialized once user chooses database file.
-        HomeCalendar? _Model = null;
+        public HomeCalendar? _Model = null;
 
         // Interface references
         private IMainView _mainWindow;

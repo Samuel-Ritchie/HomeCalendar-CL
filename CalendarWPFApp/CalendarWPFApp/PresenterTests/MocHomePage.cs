@@ -11,14 +11,12 @@ namespace PresenterTests
     internal class MocHomePage : IHomePage
     {
 
+        public Presenter _presenter;
 
-
-
-
-
-
-
-
+        public MocHomePage(Presenter presenter)
+        {
+            _presenter = presenter;
+        }
 
         // =================================
         //  Interface Fields
