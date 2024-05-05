@@ -1,6 +1,7 @@
 ﻿using Calendar;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.Metrics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -40,24 +41,30 @@ namespace PresenterInterfaceClasses
         //==============================================
         public List<CalendarItem> SortEvents(DateTime? startDate, DateTime? endDate, bool FilterFlag, int CategoryID)
         {
-            //if (isByMonthCheck == false && isByCategoryCheck == false)
-            //{
             return _Model.GetCalendarItems(startDate, endDate, FilterFlag, CategoryID);
-            //    home.UpdateEventsGetCalendarItems(calendarItems);
-
-            //} else if (isByMonthCheck == false && isByCategoryCheck == true)
-            //{
-            //    List<CalendarItemsByCategory> calendarItemsByCategory = _Model.GetCalendarItemsByCategory(startDate, endDate, FilterFlag, CategoryID);
-            //    home.UpdateEventsGetCalendarItemsByCategory(calendarItemsByCategory);
-            //} else if (isByMonthCheck == true && isByCategoryCheck == false)
-            //{
-            //    List<CalendarItemsByMonth> calendarItemsByMonth = _Model.GetCalendarItemsByMonth(startDate, endDate, FilterFlag, CategoryID);
-            //    home.UpdateEventsGetCalendarItemsByMonth(calendarItemsByMonth);
-            //} else
-            //{
-            //    List<Dictionary<string, object>> calendarItemsByCategoryAndMonth = _Model.GetCalendarDictionaryByCategoryAndMonth(startDate, endDate, FilterFlag, CategoryID);
-            //    home.UpdateEventsGetCalendarItemsByCategoryAndMonth(calendarItemsByCategoryAndMonth);
-            //}
+        }
+        public List<CalendarItemsByMonth> SortEventsByMonth(DateTime? startDate, DateTime? endDate, bool FilterFlag, int CategoryID)
+        {
+            return _Model.GetCalendarItemsByMonth(startDate, endDate, FilterFlag, CategoryID);
+        }
+        public List<CalendarItemsByCategory> SortEventsByCategory(DateTime? startDate, DateTime? endDate, bool FilterFlag, int CategoryID)
+        {
+            return _Model.GetCalendarItemsByCategory(startDate, endDate, FilterFlag, CategoryID);
+        }
+        public List<Dictionary<string, object>> SortEventsByCategoryAndMonth(DateTime? startDate, DateTime? endDate, bool FilterFlag, int CategoryID)
+        {
+            return _Model.GetCalendarDictionaryByCategoryAndMonth(startDate, endDate, FilterFlag, CategoryID);
+        }
+        public void DisplayCalendarItems(IHomePage page, bool isMonthChecked, bool isCategoryChecked, DateTime startDate, DateTime endDate, bool filter, int selectedCategoryId)
+        {
+            if (!isMonthChecked && !isCategoryChecked)
+                page.SetCalendarItems(startDate, endDate, filter, selectedCategoryId);
+            else if (isMonthChecked && !isCategoryChecked)
+                page.SetCalendarItemsByMonth(startDate, endDate, filter, selectedCategoryId);
+            else if (!isMonthChecked && isCategoryChecked)
+                page.SetCalendarItemsByCategory(startDate, endDate, filter, selectedCategoryId);
+            else
+                page.SetCalendarItemsByCategoryAndMonth(startDate, endDate, filter, selectedCategoryId);
         }
 
         //==============================================

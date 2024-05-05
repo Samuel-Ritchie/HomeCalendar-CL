@@ -5,36 +5,72 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:CalendarWPFApp.Pages"
       mc:Ignorable="d" 
-      d:DesignHeight="450" d:DesignWidth="800"
+      d:DesignHeight="800" d:DesignWidth="1200"
       Title="CreateCategoryPage">
 
-    <Grid ShowGridLines="False">
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*"></ColumnDefinition>
-            <ColumnDefinition Width="2*"></ColumnDefinition>
-            <ColumnDefinition Width="*"></ColumnDefinition>
-        </Grid.ColumnDefinitions>
+    <Grid>
+        <Grid Height="400" Width="400">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="4*"/>
+                <RowDefinition Height="2*"/>
+            </Grid.RowDefinitions>
 
-        <!--Define the rows -->
-        <Grid.RowDefinitions>
-            <RowDefinition Height="*"></RowDefinition>
-            <RowDefinition Height="*"></RowDefinition>
-            <RowDefinition Height="*"></RowDefinition>
-        </Grid.RowDefinitions>
+            <Border Grid.Row="0" BorderBrush="White" BorderThickness="5" CornerRadius="20">
+                <Border Margin="10" Background="#CCFFFFFF" CornerRadius="10">
+                    <Grid Margin="10">
 
-        <TextBlock Grid.Row="0" Grid.Column="1" HorizontalAlignment="Center" FontWeight="Bold" FontSize="18" Text="Create Category!"></TextBlock>
+                        <!--Define the rows -->
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*"></RowDefinition>
+                            <RowDefinition Height="2*"></RowDefinition>
+                            <RowDefinition Height="2*"></RowDefinition>
+                        </Grid.RowDefinitions>
 
-        <TextBlock Grid.Row="1" Grid.Column="1" HorizontalAlignment="Center" FontWeight="Bold" FontSize="14" Text="Select a Category Type for your category"></TextBlock>
-        <ComboBox x:Name="CategoryTypeComboBox" Grid.Row="1" Grid.Column="1" Height="30" Width="180" Margin="0,0,0,60" SelectedIndex="0">
-            <ComboBoxItem Content="Event"></ComboBoxItem>
-            <ComboBoxItem Content="Availibility"></ComboBoxItem>
-            <ComboBoxItem Content="All Day Event"></ComboBoxItem>
-            <ComboBoxItem Content="Holiday"></ComboBoxItem>
-        </ComboBox>
+                        <TextBlock Grid.Row="0" HorizontalAlignment="Center" Foreground="#222222" FontWeight="DemiBold" FontSize="25">Create Category!</TextBlock>
 
-        <TextBlock Grid.Row="2" Grid.Column="1" HorizontalAlignment="Center" FontWeight="Bold" FontSize="14" Text="Please enter a description for your category."></TextBlock>
-        <TextBox x:Name="DescriptionBox" Grid.Row="2" Grid.Column="1" Margin="5,5,5,40" Text="" Height="50" Width="200"/>
+                        <Border Margin="2" Grid.Row="1" Background="#222222" CornerRadius="8" Height="50">
+                            <Grid Grid.Row="0">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="2*"></ColumnDefinition>
+                                    <ColumnDefinition Width="5*"></ColumnDefinition>
+                                </Grid.ColumnDefinitions>
 
-        <Button Name="done" Click="doneDescBtn" Grid.Row="2" Grid.Column="1" Height="20" Width="40" Margin="00,40,0,0">Done</Button>
+                                <Border Grid.Column="0" Margin="3" Background="#e88833" CornerRadius="5">
+                                    <TextBlock Foreground="White" TextAlignment="Center" FontWeight="DemiBold" FontSize="15" VerticalAlignment="Center">Category<LineBreak/>Type</TextBlock>
+                                </Border>
+
+                                <ComboBox x:Name="CategoryTypeComboBox" Grid.Column="1" Margin="5" SelectedIndex="0">
+                                    <ComboBoxItem Content="Event"></ComboBoxItem>
+                                    <ComboBoxItem Content="Availibility"></ComboBoxItem>
+                                    <ComboBoxItem Content="All Day Event"></ComboBoxItem>
+                                    <ComboBoxItem Content="Holiday"></ComboBoxItem>
+                                </ComboBox>
+                            </Grid>
+                        </Border>
+
+                        <Border Margin="2" Grid.Row="2" Background="#222222" CornerRadius="8" Height="50">
+                            <Grid Grid.Row="0">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="2*"></ColumnDefinition>
+                                    <ColumnDefinition Width="5*"></ColumnDefinition>
+                                </Grid.ColumnDefinitions>
+
+                                <Border Grid.Column="0" Margin="3" Background="#e88833" CornerRadius="5">
+                                    <TextBlock Foreground="White" TextAlignment="Center" FontWeight="DemiBold" FontSize="15" VerticalAlignment="Center">Category<LineBreak/>Description</TextBlock>
+                                </Border>
+
+                                <TextBox Grid.Column="1" x:Name="DescriptionBox" Background="Transparent" BorderBrush="Transparent" 
+                                         VerticalAlignment="Center" Foreground="White" FontSize="15" Height="30" Margin="0 0 5 0"></TextBox>
+                            </Grid>
+                        </Border>
+                    </Grid>
+                </Border>
+            </Border>
+
+            <Border Grid.Row="1" Background="#e88833" CornerRadius="10" BorderThickness="5" BorderBrush="White" Margin="0 10">
+                <Button x:Name="done" Click="doneDescBtn"
+                        Background="Transparent" BorderBrush="Transparent" Foreground="White" FontWeight="DemiBold" FontSize="20">Create Category</Button>
+            </Border>
+        </Grid>
     </Grid>
 </Page>
