@@ -5,7 +5,7 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:CalendarWPFApp.Pages"
       mc:Ignorable="d" 
-      d:DesignHeight="600" d:DesignWidth="1100"
+      d:DesignHeight="660" d:DesignWidth="1100"
       Title="HomePage">
 
     <Page.Resources>
@@ -84,23 +84,39 @@
                             <RowDefinition Height="Auto"/>
                             <RowDefinition Height="Auto"/>
                             <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
                         </Grid.RowDefinitions>
-
+                        
                         <Border Grid.Row="0" HorizontalAlignment="Center">
+                            <TextBlock FontSize="15" FontWeight="DemiBold">Search</TextBlock>
+                        </Border>
+
+                        <Grid Grid.Row="1" Margin="0 0 0 20">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="3*"></ColumnDefinition>
+                                <ColumnDefinition></ColumnDefinition>
+                            </Grid.ColumnDefinitions>
+                            
+                            <TextBox Grid.Column="0" x:Name="search"/>
+                            <Button Grid.Column="1" x:Name="search_btn" Click="search_btn_Click">🔍</Button>
+                        </Grid>
+
+                        <Border Grid.Row="2" HorizontalAlignment="Center">
                             <TextBlock FontSize="15" FontWeight="DemiBold">Filter</TextBlock>
                         </Border>
 
-                        <Grid Grid.Row="1" Height="40">
+                        <Grid Grid.Row="3" Height="40">
                             <Grid.RowDefinitions>
                                 <RowDefinition/>
                                 <RowDefinition Height="Auto"/>
                             </Grid.RowDefinitions>
 
                             <TextBlock>StartDate</TextBlock>
-                            <DatePicker x:Name="startDateChosen" Grid.Row="1"></DatePicker>
+                            <DatePicker x:Name="startDateChosen" Grid.Row="4"></DatePicker>
                         </Grid>
 
-                        <Grid Grid.Row="2" Height="40">
+                        <Grid Grid.Row="4" Height="40">
                             <Grid.RowDefinitions>
                                 <RowDefinition/>
                                 <RowDefinition Height="Auto"/>
@@ -110,7 +126,7 @@
                             <DatePicker x:Name="endDateChosen" Grid.Row="1"></DatePicker>
                         </Grid>
 
-                        <Grid Grid.Row="3" Height="40" Margin="0 20">
+                        <Grid Grid.Row="5" Height="40" Margin="0 20">
                             <Grid.RowDefinitions>
                                 <RowDefinition/>
                                 <RowDefinition Height="Auto"/>
@@ -120,11 +136,11 @@
                             <ComboBox x:Name="filterCategory"  Grid.Row="1"/>
                         </Grid>
 
-                        <Border Grid.Row="4" HorizontalAlignment="Center" Margin="0 30 0 0">
+                        <Border Grid.Row="6" HorizontalAlignment="Center">
                             <TextBlock FontSize="15" FontWeight="DemiBold">Summary</TextBlock>
                         </Border>
 
-                        <Grid Grid.Row="5">
+                        <Grid Grid.Row="7">
                             <Grid.RowDefinitions>
                                 <RowDefinition/>
                                 <RowDefinition/>
