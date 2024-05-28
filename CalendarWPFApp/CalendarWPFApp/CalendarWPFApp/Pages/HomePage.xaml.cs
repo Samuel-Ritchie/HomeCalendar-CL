@@ -14,6 +14,7 @@ namespace CalendarWPFApp.Pages
     public partial class HomePage : Page, IHomePage
     {
         private Presenter _presenter;
+        private int _highlightedIndex = 0;
 
         public HomePage(Presenter presenter)
         {
@@ -69,6 +70,8 @@ namespace CalendarWPFApp.Pages
         // =====================================
         public void SetCalendarItems(DateTime? start = null, DateTime? end = null, bool filter = false, int searchCategory = 0)
         {
+            search.IsEnabled = true;
+            search_btn.IsEnabled = true;
             List<CalendarItem> data = _presenter.SortEvents(start, end, filter, searchCategory);
             CalendarItemsTable.ItemsSource = data;
             CalendarItemsTable.Columns.Clear();
@@ -82,6 +85,8 @@ namespace CalendarWPFApp.Pages
         }
         public void SetCalendarItemsByMonth(DateTime? start = null, DateTime? end = null, bool filter = false, int searchCategory = 0)
         {
+            search.IsEnabled = false;
+            search_btn.IsEnabled = false;
             List<CalendarItemsByMonth> data = _presenter.SortEventsByMonth(start, end, filter, searchCategory);
             CalendarItemsTable.ItemsSource = data;
             CalendarItemsTable.Columns.Clear();
@@ -91,6 +96,8 @@ namespace CalendarWPFApp.Pages
         }
         public void SetCalendarItemsByCategory(DateTime? start = null, DateTime? end = null, bool filter = false, int searchCategory = 0)
         {
+            search.IsEnabled = false;
+            search_btn.IsEnabled = false;
             List<CalendarItemsByCategory> data = _presenter.SortEventsByCategory(start, end, filter, searchCategory);
             CalendarItemsTable.ItemsSource = data;
             CalendarItemsTable.Columns.Clear();
@@ -100,6 +107,8 @@ namespace CalendarWPFApp.Pages
         }
         public void SetCalendarItemsByCategoryAndMonth(DateTime? start = null, DateTime? end = null, bool filter = false, int searchCategory = 0)
         {
+            search.IsEnabled = false;
+            search_btn.IsEnabled = false;
             List<Dictionary<string, object>> data = _presenter.SortEventsByCategoryAndMonth(start, end, filter, searchCategory);
             CalendarItemsTable.ItemsSource = data;
             CalendarItemsTable.Columns.Clear();
@@ -112,6 +121,33 @@ namespace CalendarWPFApp.Pages
                 SetColumn(categories[category].Description, $"[{categories[category].Description}]", "N2");
 
             SetColumn("Total Busy Time", "[TotalBusyTime]", "N2");
+        }
+
+        private void search_btn_Click(object sender, RoutedEventArgs e)
+        {
+            List<CalendarItem> items = new List<CalendarItem>();
+            foreach (CalendarItem data in CalendarItemsTable.ItemsSource)
+            {
+                items.Add(data);
+            }
+
+            for (int i = 0; i < items.Count; i++)
+            {
+                int index = (i + _highlightedIndex) % items.Count;
+
+                if (items[index].ShortDescription.ToUpper().Contains(search.Text.ToUpper()) || 
+                    items[index].DurationInMinutes.ToString().Contains(search.Text))
+                {
+                    CalendarItemsTable.Focus();
+                    CalendarItemsTable.SelectedItem = items[index];
+                    CalendarItemsTable.ScrollIntoView(CalendarItemsTable.SelectedItem);
+                    _highlightedIndex = (index + 1) % items.Count;
+                    return;
+                }
+            }
+
+            // None found
+            System.Windows.MessageBox.Show("Your seach has 0 matches.", "No results!", MessageBoxButton.OK, MessageBoxImage.Error);
         }
     }
 }
